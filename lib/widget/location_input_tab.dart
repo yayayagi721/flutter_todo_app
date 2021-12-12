@@ -8,8 +8,6 @@ import 'package:flutter_todo_app/widget/todo_form.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-final mapProvider = StateNotifierProvider((ref) => MapProvider());
-
 class LocationInputTab extends HookWidget {
   @override
   Widget build(BuildContext context) {
@@ -26,8 +24,7 @@ class LocationInputTab extends HookWidget {
           Center(
               child: TextButton(
                   onPressed: () async {
-                    LatLng? latLng =
-                        await _showMapDialog(context, state, mapNotifier);
+                    LatLng? latLng = await _showMapDialog(context);
                     if (latLng != null) {
                       formNotifier.inputLocation(
                           latLng.latitude, latLng.longitude);
@@ -40,10 +37,7 @@ class LocationInputTab extends HookWidget {
     );
   }
 
-  Future<LatLng?> _showMapDialog(
-      BuildContext context, state, mapNotifier) async {
-    final Completer<GoogleMapController> _controller = Completer();
-
+  Future<LatLng?> _showMapDialog(BuildContext context) async {
     final Size fullSize = MediaQuery.of(context).size;
 
     LatLng? latLng = await showDialog(

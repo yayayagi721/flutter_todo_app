@@ -10,7 +10,7 @@ class TodoListStateController extends StateNotifier<TodoListState> {
       String title, DateTime eventAt, double latitude, double longitude) {
     final id = StrUtils.createUuid();
     final now = DateTime.now();
-    final todo = Todo(id, title, eventAt, latitude, longitude, now, now);
+    final todo = Todo(id, title, eventAt, latitude, longitude, null, now, now);
     final newTodoList = [...state.todoList, todo];
     state = state.copyWith(todoList: newTodoList);
   }

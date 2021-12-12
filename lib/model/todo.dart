@@ -9,24 +9,15 @@ part 'todo.g.dart';
 @freezed
 class Todo with _$Todo {
   const Todo._();
-  const factory Todo(String id, String title, DateTime eventAt, double latitude,
-      double longitude, DateTime createdAt, DateTime updatedAt) = _Todo;
+  const factory Todo(
+      String id,
+      String title,
+      DateTime eventAt,
+      double latitude,
+      double longitude,
+      String? locationName,
+      DateTime createdAt,
+      DateTime updatedAt) = _Todo;
 
   factory Todo.fromJson(Map<String, dynamic> json) => _$TodoFromJson(json);
-}
-
-class DefaultId implements Default {
-  const DefaultId();
-
-  get defaultValue => () {
-        final hoge = StrUtils.createUuid();
-        print("hkjhlkjlkjkljkjkjk" + hoge);
-        return hoge;
-      };
-}
-
-class DefaultDt implements Default {
-  const DefaultDt();
-
-  get defaultValue => DateTime.now();
 }

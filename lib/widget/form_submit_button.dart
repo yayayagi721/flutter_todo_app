@@ -6,8 +6,6 @@ import 'package:flutter_todo_app/widget/todo_form.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class FormSubmitButton extends HookWidget {
-  final mapProvider = StateNotifierProvider((ref) => MapProvider());
-
   @override
   Widget build(BuildContext context) {
     final controller = useProvider(todoListProvider.notifier);

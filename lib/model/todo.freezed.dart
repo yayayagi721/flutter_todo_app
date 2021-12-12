@@ -21,14 +21,22 @@ Todo _$TodoFromJson(Map<String, dynamic> json) {
 class _$TodoTearOff {
   const _$TodoTearOff();
 
-  _Todo call(String id, String title, DateTime eventAt, double latitude,
-      double longitude, DateTime createdAt, DateTime updatedAt) {
+  _Todo call(
+      String id,
+      String title,
+      DateTime eventAt,
+      double latitude,
+      double longitude,
+      String? locationName,
+      DateTime createdAt,
+      DateTime updatedAt) {
     return _Todo(
       id,
       title,
       eventAt,
       latitude,
       longitude,
+      locationName,
       createdAt,
       updatedAt,
     );
@@ -49,6 +57,7 @@ mixin _$Todo {
   DateTime get eventAt => throw _privateConstructorUsedError;
   double get latitude => throw _privateConstructorUsedError;
   double get longitude => throw _privateConstructorUsedError;
+  String? get locationName => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
   DateTime get updatedAt => throw _privateConstructorUsedError;
 
@@ -67,6 +76,7 @@ abstract class $TodoCopyWith<$Res> {
       DateTime eventAt,
       double latitude,
       double longitude,
+      String? locationName,
       DateTime createdAt,
       DateTime updatedAt});
 }
@@ -86,6 +96,7 @@ class _$TodoCopyWithImpl<$Res> implements $TodoCopyWith<$Res> {
     Object? eventAt = freezed,
     Object? latitude = freezed,
     Object? longitude = freezed,
+    Object? locationName = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
   }) {
@@ -110,6 +121,10 @@ class _$TodoCopyWithImpl<$Res> implements $TodoCopyWith<$Res> {
           ? _value.longitude
           : longitude // ignore: cast_nullable_to_non_nullable
               as double,
+      locationName: locationName == freezed
+          ? _value.locationName
+          : locationName // ignore: cast_nullable_to_non_nullable
+              as String?,
       createdAt: createdAt == freezed
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -133,6 +148,7 @@ abstract class _$TodoCopyWith<$Res> implements $TodoCopyWith<$Res> {
       DateTime eventAt,
       double latitude,
       double longitude,
+      String? locationName,
       DateTime createdAt,
       DateTime updatedAt});
 }
@@ -153,6 +169,7 @@ class __$TodoCopyWithImpl<$Res> extends _$TodoCopyWithImpl<$Res>
     Object? eventAt = freezed,
     Object? latitude = freezed,
     Object? longitude = freezed,
+    Object? locationName = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
   }) {
@@ -177,6 +194,10 @@ class __$TodoCopyWithImpl<$Res> extends _$TodoCopyWithImpl<$Res>
           ? _value.longitude
           : longitude // ignore: cast_nullable_to_non_nullable
               as double,
+      locationName == freezed
+          ? _value.locationName
+          : locationName // ignore: cast_nullable_to_non_nullable
+              as String?,
       createdAt == freezed
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -193,7 +214,7 @@ class __$TodoCopyWithImpl<$Res> extends _$TodoCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_Todo extends _Todo with DiagnosticableTreeMixin {
   const _$_Todo(this.id, this.title, this.eventAt, this.latitude,
-      this.longitude, this.createdAt, this.updatedAt)
+      this.longitude, this.locationName, this.createdAt, this.updatedAt)
       : super._();
 
   factory _$_Todo.fromJson(Map<String, dynamic> json) => _$$_TodoFromJson(json);
@@ -209,13 +230,15 @@ class _$_Todo extends _Todo with DiagnosticableTreeMixin {
   @override
   final double longitude;
   @override
+  final String? locationName;
+  @override
   final DateTime createdAt;
   @override
   final DateTime updatedAt;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Todo(id: $id, title: $title, eventAt: $eventAt, latitude: $latitude, longitude: $longitude, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'Todo(id: $id, title: $title, eventAt: $eventAt, latitude: $latitude, longitude: $longitude, locationName: $locationName, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
@@ -228,6 +251,7 @@ class _$_Todo extends _Todo with DiagnosticableTreeMixin {
       ..add(DiagnosticsProperty('eventAt', eventAt))
       ..add(DiagnosticsProperty('latitude', latitude))
       ..add(DiagnosticsProperty('longitude', longitude))
+      ..add(DiagnosticsProperty('locationName', locationName))
       ..add(DiagnosticsProperty('createdAt', createdAt))
       ..add(DiagnosticsProperty('updatedAt', updatedAt));
   }
@@ -249,6 +273,9 @@ class _$_Todo extends _Todo with DiagnosticableTreeMixin {
             (identical(other.longitude, longitude) ||
                 const DeepCollectionEquality()
                     .equals(other.longitude, longitude)) &&
+            (identical(other.locationName, locationName) ||
+                const DeepCollectionEquality()
+                    .equals(other.locationName, locationName)) &&
             (identical(other.createdAt, createdAt) ||
                 const DeepCollectionEquality()
                     .equals(other.createdAt, createdAt)) &&
@@ -265,6 +292,7 @@ class _$_Todo extends _Todo with DiagnosticableTreeMixin {
       const DeepCollectionEquality().hash(eventAt) ^
       const DeepCollectionEquality().hash(latitude) ^
       const DeepCollectionEquality().hash(longitude) ^
+      const DeepCollectionEquality().hash(locationName) ^
       const DeepCollectionEquality().hash(createdAt) ^
       const DeepCollectionEquality().hash(updatedAt);
 
@@ -286,6 +314,7 @@ abstract class _Todo extends Todo {
       DateTime eventAt,
       double latitude,
       double longitude,
+      String? locationName,
       DateTime createdAt,
       DateTime updatedAt) = _$_Todo;
   const _Todo._() : super._();
@@ -302,6 +331,8 @@ abstract class _Todo extends Todo {
   double get latitude => throw _privateConstructorUsedError;
   @override
   double get longitude => throw _privateConstructorUsedError;
+  @override
+  String? get locationName => throw _privateConstructorUsedError;
   @override
   DateTime get createdAt => throw _privateConstructorUsedError;
   @override

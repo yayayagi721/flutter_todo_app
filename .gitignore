@@ -1,3 +1,7 @@
+# APIKey隠す対応
+# FIXME:ちゃんと.envとかで対応すること
+**/ios/ios/Runner/AppDelegate.swift
+
 # Miscellaneous
 *.class
 *.log

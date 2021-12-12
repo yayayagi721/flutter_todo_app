@@ -1,26 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_todo_app/widget/location_setting_column.dart';
 
-class SettingView extends StatelessWidget {
+class PushSettingColumn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Todo App"),
-      ),
-      body: _settingBody(),
-    );
-  }
-
-  Widget _settingBody() {
-    return ListView(
-      children: [LocationSettingColumn()],
-    );
-  }
-
-  Widget _locationSetting() {
     return Column(
-      children: [_title("位置情報"), _childColumn("デフォルト位置情報")],
+      children: [_title("位置情報"), _defaultLocation("デフォルト位置情報")],
     );
   }
 
@@ -53,7 +37,7 @@ class SettingView extends StatelessWidget {
     );
   }
 
-  Widget _childColumn(String text) {
+  Widget _defaultLocation(String text) {
     return Container(
       decoration: BoxDecoration(
           border: const Border(

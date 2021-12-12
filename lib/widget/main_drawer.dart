@@ -19,14 +19,25 @@ class MainDrawer extends StatelessWidget {
               decoration: BoxDecoration(
                 color: Colors.blue,
               )),
-          _content("設定"),
-          _content("INFO")
+          _content("設定", () {
+            Navigator.pushNamed(context, "/settingView");
+          }),
+          _content("ライセンス", () {
+            showLicensePage(
+              context: context,
+              applicationName: 'Todo', // アプリの名前
+              applicationVersion: '1.0.0', // バージョン
+              applicationIcon: Icon(Icons.favorite), // アプリのアイコン Widget
+              applicationLegalese: '2021 yayayagi', // 権利情報
+            );
+          })
         ],
       ),
     );
   }
 
-  Widget _content(String text, {IconData icon = Icons.arrow_forward}) {
+  Widget _content(String text, void Function() onTap,
+      {IconData icon = Icons.arrow_forward}) {
     return Container(
         decoration: BoxDecoration(
           border: Border(
@@ -34,6 +45,7 @@ class MainDrawer extends StatelessWidget {
           ),
         ),
         child: ListTile(
+          onTap: onTap,
           title: Text(text),
           trailing: Icon(icon),
         ));

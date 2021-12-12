@@ -12,6 +12,7 @@ _$_Todo _$$_TodoFromJson(Map<String, dynamic> json) => _$_Todo(
       DateTime.parse(json['eventAt'] as String),
       (json['latitude'] as num).toDouble(),
       (json['longitude'] as num).toDouble(),
+      json['locationName'] as String?,
       DateTime.parse(json['createdAt'] as String),
       DateTime.parse(json['updatedAt'] as String),
     );
@@ -22,6 +23,7 @@ Map<String, dynamic> _$$_TodoToJson(_$_Todo instance) => <String, dynamic>{
       'eventAt': instance.eventAt.toIso8601String(),
       'latitude': instance.latitude,
       'longitude': instance.longitude,
+      'locationName': instance.locationName,
       'createdAt': instance.createdAt.toIso8601String(),
       'updatedAt': instance.updatedAt.toIso8601String(),
     };
