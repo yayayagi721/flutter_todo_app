@@ -21,7 +21,7 @@ class MapProvider extends StateNotifier<MapState> {
     state = state.copyWith(markers: newMarkers);
   }
 
-  Future init() async {
+  Future init([LatLng? initLatLng]) async {
     Location location = new Location();
     //TODO:デフォルト値を設定から変えられるようにする
     final defaultLatLng =
@@ -50,7 +50,10 @@ class MapProvider extends StateNotifier<MapState> {
     final _locationData = await location.getLocation();
     LatLng latlng;
 
-    if (_locationData.latitude == null || _locationData.longitude == null) {
+    if (initLatLng != null) {
+      latlng = initLatLng;
+    } else if (_locationData.latitude == null ||
+        _locationData.longitude == null) {
       latlng = LatLng(CommonConst.initPosLat, CommonConst.initPosLng);
     } else {
       latlng = LatLng(_locationData.latitude!, _locationData.longitude!);

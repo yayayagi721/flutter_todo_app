@@ -1,7 +1,10 @@
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_todo_app/const/enums.dart';
 import 'package:flutter_todo_app/model/todo.dart';
-import 'package:flutter_todo_app/view_model/todo_list_controller.dart';
+import 'package:flutter_todo_app/repository/location_search_repository_impl.dart';
+import 'package:flutter_todo_app/repository/todo_list_repository_impl.dart';
+import 'package:flutter_todo_app/view_model/todo_list_view_model.dart';
 import 'package:flutter_todo_app/widget/main_drawer.dart';
 import 'package:flutter_todo_app/widget/todo_form.dart';
 
@@ -9,79 +12,77 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
-final todoListProvider =
-    StateNotifierProvider((ref) => TodoListStateController());
+final todoListRepositoryImpl = Provider(
+  (ref) => TodoListRepositoryImpl(),
+);
+
+final locationSearchProvider = Provider.autoDispose(
+  (ref) => LocationSearchRepositoryImpl(),
+);
+
+final todoListProvider = StateNotifierProvider((ref) => TodoListStateController(
+    ref.read(todoListRepositoryImpl), ref.read(locationSearchProvider)));
 
 class TodoListView extends HookWidget {
   @override
   Widget build(BuildContext context) {
-    return state.markers.isEmpty
-        ? Center(
-            child: CircularProgressIndicator(
-                valueColor: new AlwaysStoppedAnimation<Color>(Colors.white)),
+    final notifier = useProvider(todoListProvider.notifier);
+
+    useEffect(() {
+      notifier.fetch();
+      notifier.getAllAddress();
+      return () {};
+    }, const []);
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Todo App"),
+      ),
+      body: ListView(
+        children: todoList(),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => {
+          showModalBottomSheet(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+            ),
+            isDismissible: false,
+            context: context,
+            builder: (context) => TodoInputForm(FormKind.create),
           )
-        : Scaffold(
-            appBar: AppBar(
-              title: Text("Todo App"),
-            ),
-            body: ListView(
-              children: todoList(),
-            ),
-            floatingActionButton: FloatingActionButton(
-              onPressed: () => {
-                showMaterialModalBottomSheet(
-                  context: context,
-                  builder: (context) => TodoInputForm(),
-                )
-              },
-              tooltip: 'AddTodo',
-              child: Icon(Icons.add),
-            ),
-            drawer: MainDrawer(),
-          );
+        },
+        tooltip: 'AddTodo',
+        child: Icon(Icons.add),
+      ),
+      drawer: MainDrawer(),
+    );
   }
 
   List<Widget> todoList() {
     final state = useProvider(todoListProvider);
-    List<Todo> list = state.todoList;
 
-    DateFormat outputFormat = DateFormat('yyyy-MM-dd');
-    Map<String, List<Todo>> todoMap = {};
+    Map<String, List<Todo>> todoListModel = state.todoList;
 
-    list.forEach((todo) {
-      String date = outputFormat.format(todo.eventAt);
+    //存在する日付でソート
+    var sortKeys = todoListModel.keys.toList();
+    print(sortKeys);
 
-      if (!todoMap.containsKey(date)) {
-        todoMap[date] = <Todo>[];
-      }
-
-      todoMap[date]!.add(todo);
-    });
-
-    todoMap.keys.forEach((todos) {
-      todoMap[todos]!.sort((a, b) {
-        return a.eventAt.compareTo(b.eventAt);
-      });
-    });
-
-    List<Widget> allTodoCards = [];
-    var sortKeys = todoMap.keys.toList();
     sortKeys.sort((a, b) => a.compareTo(b));
 
+    List<Widget> allTodoCards = [];
     sortKeys.forEach((key) {
-      allTodoCards = [...allTodoCards, ...todoOnOneDay(key, todoMap[key]!)];
+      allTodoCards = [
+        ...allTodoCards,
+        ...todoOnOneDay(key, todoListModel[key]!)
+      ];
     });
 
     return allTodoCards;
   }
 
   List<Widget> todoOnOneDay(String targetDate, List<Todo> todos) {
-    final todoCards = todos
-        .map((todo) => _contentsCard(
-            todo.title,
-            DateFormat('hh:mm').format(todo.eventAt),
-            todo.locationName ?? "位置情報未読み込み"))
-        .toList();
+    final todoCards = todos.map((todo) => _contentsCard(todo)).toList();
     return <Widget>[_dateLine(targetDate), ...todoCards];
   }
 
@@ -96,28 +97,42 @@ class TodoListView extends HookWidget {
     );
   }
 
-  Widget _contentsCard(String title, String time, String locationName) {
-    return Card(
-      child: Row(
-        children: [
-          SizedBox(
-            width: 20,
+  Widget _contentsCard(Todo todo) {
+    final context = useContext();
+    return InkWell(
+      onTap: () {
+        showModalBottomSheet(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
           ),
-          Expanded(
-            flex: 4,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                _title(title),
-                SizedBox(
-                  height: 5,
-                ),
-                _subContent(Icons.watch_later, time),
-                _subContent(Icons.place, locationName),
-              ],
+          isDismissible: false,
+          context: context,
+          builder: (context) => TodoInputForm(FormKind.update, todo),
+        );
+      },
+      child: Card(
+        child: Row(
+          children: [
+            SizedBox(
+              width: 20,
             ),
-          )
-        ],
+            Expanded(
+              flex: 4,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  _title(todo.title),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  _subContent(Icons.watch_later,
+                      DateFormat('hh:mm').format(todo.eventAt)),
+                  _subContent(Icons.place, todo.locationName ?? "位置情報未読み込み"),
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

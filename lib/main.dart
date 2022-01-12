@@ -1,15 +1,20 @@
+import 'package:flutter_todo_app/model/location_info.dart';
+import 'package:flutter_todo_app/model/todo.dart';
 import 'package:flutter_todo_app/view/setting_view.dart';
 import 'package:flutter_todo_app/view/todo_list_view.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:hive/hive.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+
+import 'const/hive_const.dart';
 
 void main() async {
   await Hive.initFlutter();
-  await Hive.openBox('todoList');
+  Hive.registerAdapter(TodoAdapter());
+  Hive.registerAdapter(LocationInfoAdapter());
+  await Hive.openBox(BoxName.todoList);
+  await Hive.openBox(BoxName.setting);
   runApp(ProviderScope(child: MyApp()));
 }
 

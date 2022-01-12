@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_todo_app/const/enums.dart';
 import 'package:flutter_todo_app/view/todo_list_view.dart';
-import 'package:flutter_todo_app/view_model/map_provider.dart';
+import 'package:flutter_todo_app/view_model/map_view_model.dart';
 import 'package:flutter_todo_app/widget/todo_form.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -19,8 +20,16 @@ class FormSubmitButton extends HookWidget {
         if (formState.isValidTitle() &&
             formState.isValidLocation() &&
             formState.isValidEventTime()) {
-          controller.create(formState.title, formState.eventTime,
-              formState.latitude, formState.longitude);
+          switch (formState.formKind) {
+            case FormKind.create:
+              controller.create(formState.title, formState.eventTime,
+                  formState.latitude, formState.longitude);
+              break;
+            case FormKind.update:
+              controller.update(formState.id, formState.title,
+                  formState.eventTime, formState.latitude, formState.longitude);
+              break;
+          }
           Navigator.pop(context);
         } else {
           return null;

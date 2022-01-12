@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_todo_app/view/setting_view.dart';
 import 'package:flutter_todo_app/widget/location_input.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -46,9 +47,12 @@ class LocationSettingColumn extends HookWidget {
 
   Widget _defaultLocation(String text) {
     final context = useContext();
+    final settingViewState = useProvider(settingViewModel);
+    final settingViewNotifier = useProvider(settingViewModel.notifier);
     return InkWell(
-        onTap: () {
-          _showMapDialog(context);
+        onTap: () async {
+          LatLng? latLng = await _showMapDialog(context);
+          if (latLng != null) settingViewNotifier.changeDefaultLatLng(latLng);
         },
         child: Container(
           decoration: BoxDecoration(
@@ -77,13 +81,21 @@ class LocationSettingColumn extends HookWidget {
                     ],
                   ),
                 )),
-                Icon(
-                  Icons.arrow_forward_ios,
-                  size: 20,
-                  color: Colors.black45,
+                Container(
+                  child: settingViewState.defaultLocation.address == null
+                      ? Center(
+                          child: CircularProgressIndicator(
+                              valueColor: new AlwaysStoppedAnimation<Color>(
+                                  Colors.white)),
+                        )
+                      : Text(settingViewState.defaultLocation.address,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                              color: Colors.black)),
                 ),
                 SizedBox(
-                  width: 5,
+                  width: 30,
                 )
               ],
             ),

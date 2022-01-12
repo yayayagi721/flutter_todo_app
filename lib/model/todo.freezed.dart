@@ -22,14 +22,14 @@ class _$TodoTearOff {
   const _$TodoTearOff();
 
   _Todo call(
-      String id,
-      String title,
-      DateTime eventAt,
-      double latitude,
-      double longitude,
-      String? locationName,
-      DateTime createdAt,
-      DateTime updatedAt) {
+      @HiveField(0) String id,
+      @HiveField(1) String title,
+      @HiveField(2) DateTime eventAt,
+      @HiveField(3) double latitude,
+      @HiveField(4) double longitude,
+      @HiveField(5) String? locationName,
+      @HiveField(6) DateTime createdAt,
+      @HiveField(7) DateTime updatedAt) {
     return _Todo(
       id,
       title,
@@ -52,13 +52,21 @@ const $Todo = _$TodoTearOff();
 
 /// @nodoc
 mixin _$Todo {
+  @HiveField(0)
   String get id => throw _privateConstructorUsedError;
+  @HiveField(1)
   String get title => throw _privateConstructorUsedError;
+  @HiveField(2)
   DateTime get eventAt => throw _privateConstructorUsedError;
+  @HiveField(3)
   double get latitude => throw _privateConstructorUsedError;
+  @HiveField(4)
   double get longitude => throw _privateConstructorUsedError;
+  @HiveField(5)
   String? get locationName => throw _privateConstructorUsedError;
+  @HiveField(6)
   DateTime get createdAt => throw _privateConstructorUsedError;
+  @HiveField(7)
   DateTime get updatedAt => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -71,14 +79,14 @@ abstract class $TodoCopyWith<$Res> {
   factory $TodoCopyWith(Todo value, $Res Function(Todo) then) =
       _$TodoCopyWithImpl<$Res>;
   $Res call(
-      {String id,
-      String title,
-      DateTime eventAt,
-      double latitude,
-      double longitude,
-      String? locationName,
-      DateTime createdAt,
-      DateTime updatedAt});
+      {@HiveField(0) String id,
+      @HiveField(1) String title,
+      @HiveField(2) DateTime eventAt,
+      @HiveField(3) double latitude,
+      @HiveField(4) double longitude,
+      @HiveField(5) String? locationName,
+      @HiveField(6) DateTime createdAt,
+      @HiveField(7) DateTime updatedAt});
 }
 
 /// @nodoc
@@ -143,14 +151,14 @@ abstract class _$TodoCopyWith<$Res> implements $TodoCopyWith<$Res> {
       __$TodoCopyWithImpl<$Res>;
   @override
   $Res call(
-      {String id,
-      String title,
-      DateTime eventAt,
-      double latitude,
-      double longitude,
-      String? locationName,
-      DateTime createdAt,
-      DateTime updatedAt});
+      {@HiveField(0) String id,
+      @HiveField(1) String title,
+      @HiveField(2) DateTime eventAt,
+      @HiveField(3) double latitude,
+      @HiveField(4) double longitude,
+      @HiveField(5) String? locationName,
+      @HiveField(6) DateTime createdAt,
+      @HiveField(7) DateTime updatedAt});
 }
 
 /// @nodoc
@@ -212,28 +220,44 @@ class __$TodoCopyWithImpl<$Res> extends _$TodoCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
+@HiveType(typeId: 0, adapterName: 'TodoAdapter')
 class _$_Todo extends _Todo with DiagnosticableTreeMixin {
-  const _$_Todo(this.id, this.title, this.eventAt, this.latitude,
-      this.longitude, this.locationName, this.createdAt, this.updatedAt)
+  const _$_Todo(
+      @HiveField(0) this.id,
+      @HiveField(1) this.title,
+      @HiveField(2) this.eventAt,
+      @HiveField(3) this.latitude,
+      @HiveField(4) this.longitude,
+      @HiveField(5) this.locationName,
+      @HiveField(6) this.createdAt,
+      @HiveField(7) this.updatedAt)
       : super._();
 
   factory _$_Todo.fromJson(Map<String, dynamic> json) => _$$_TodoFromJson(json);
 
   @override
+  @HiveField(0)
   final String id;
   @override
+  @HiveField(1)
   final String title;
   @override
+  @HiveField(2)
   final DateTime eventAt;
   @override
+  @HiveField(3)
   final double latitude;
   @override
+  @HiveField(4)
   final double longitude;
   @override
+  @HiveField(5)
   final String? locationName;
   @override
+  @HiveField(6)
   final DateTime createdAt;
   @override
+  @HiveField(7)
   final DateTime updatedAt;
 
   @override
@@ -309,33 +333,41 @@ class _$_Todo extends _Todo with DiagnosticableTreeMixin {
 
 abstract class _Todo extends Todo {
   const factory _Todo(
-      String id,
-      String title,
-      DateTime eventAt,
-      double latitude,
-      double longitude,
-      String? locationName,
-      DateTime createdAt,
-      DateTime updatedAt) = _$_Todo;
+      @HiveField(0) String id,
+      @HiveField(1) String title,
+      @HiveField(2) DateTime eventAt,
+      @HiveField(3) double latitude,
+      @HiveField(4) double longitude,
+      @HiveField(5) String? locationName,
+      @HiveField(6) DateTime createdAt,
+      @HiveField(7) DateTime updatedAt) = _$_Todo;
   const _Todo._() : super._();
 
   factory _Todo.fromJson(Map<String, dynamic> json) = _$_Todo.fromJson;
 
   @override
+  @HiveField(0)
   String get id => throw _privateConstructorUsedError;
   @override
+  @HiveField(1)
   String get title => throw _privateConstructorUsedError;
   @override
+  @HiveField(2)
   DateTime get eventAt => throw _privateConstructorUsedError;
   @override
+  @HiveField(3)
   double get latitude => throw _privateConstructorUsedError;
   @override
+  @HiveField(4)
   double get longitude => throw _privateConstructorUsedError;
   @override
+  @HiveField(5)
   String? get locationName => throw _privateConstructorUsedError;
   @override
+  @HiveField(6)
   DateTime get createdAt => throw _privateConstructorUsedError;
   @override
+  @HiveField(7)
   DateTime get updatedAt => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)

@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_todo_app/view_model/map_provider.dart';
+import 'package:flutter_todo_app/view_model/map_view_model.dart';
 import 'package:flutter_todo_app/widget/location_input.dart';
 import 'package:flutter_todo_app/widget/todo_form.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -24,7 +24,16 @@ class LocationInputTab extends HookWidget {
           Center(
               child: TextButton(
                   onPressed: () async {
-                    LatLng? latLng = await _showMapDialog(context);
+                    var latLng;
+
+                    if (formState.latitude != null &&
+                        formState.longitude != null) {
+                      latLng = await _showMapDialog(context,
+                          LatLng(formState.latitude, formState.longitude));
+                    } else {
+                      latLng = await _showMapDialog(context);
+                    }
+
                     if (latLng != null) {
                       formNotifier.inputLocation(
                           latLng.latitude, latLng.longitude);
@@ -37,7 +46,8 @@ class LocationInputTab extends HookWidget {
     );
   }
 
-  Future<LatLng?> _showMapDialog(BuildContext context) async {
+  Future<LatLng?> _showMapDialog(BuildContext context,
+      [LatLng? initLatLng]) async {
     final Size fullSize = MediaQuery.of(context).size;
 
     LatLng? latLng = await showDialog(
@@ -51,7 +61,7 @@ class LocationInputTab extends HookWidget {
               child: Container(
                   height: fullSize.height * (2 / 3),
                   width: double.infinity,
-                  child: LocationInput()));
+                  child: LocationInput(initLatLng)));
         });
     return latLng;
   }

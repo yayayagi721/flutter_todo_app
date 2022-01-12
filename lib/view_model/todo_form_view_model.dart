@@ -6,6 +6,14 @@ class TodoFormStateController extends StateNotifier<TodoFormState> {
   //TODO:初期化はこれでいいのか調べる
   TodoFormStateController() : super(TodoFormState());
 
+  void setFormKind(FormKind formKind) {
+    state = state.copyWith(formKind: formKind);
+  }
+
+  void inputId(String id) {
+    state = state.copyWith(id: id);
+  }
+
   void inputText(String text) {
     print("change ${state}");
     state = state.copyWith(title: text);
@@ -19,7 +27,11 @@ class TodoFormStateController extends StateNotifier<TodoFormState> {
     state = state.copyWith(eventTime: dateTime);
   }
 
-  void selectKind(Kind kind) {
+  void selectTabKind(TabKind kind) {
     state = state.copyWith(selectedKind: kind);
+  }
+
+  void onFocusChange(bool hasFocus) {
+    state = state.copyWith(isFocus: hasFocus);
   }
 }
