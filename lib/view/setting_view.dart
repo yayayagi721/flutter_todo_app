@@ -7,17 +7,12 @@ import 'package:flutter_todo_app/widget/location_setting_column.dart';
 import 'package:flutter_todo_app/widget/push_setting_column.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-final settingRepositoryImpl = Provider.autoDispose(
+final settingRepositoryProvider = Provider.autoDispose(
   (ref) => SettingRepositoryImpl(),
 );
 
-final locationSearchProvider = Provider.autoDispose(
-  (ref) => LocationSearchRepositoryImpl(),
-);
-
-final settingViewModel = StateNotifierProvider.autoDispose((ref) =>
-    SettingViewModel(
-        ref.read(settingRepositoryImpl), ref.read(locationSearchProvider)));
+final settingViewModel =
+    StateNotifierProvider.autoDispose((ref) => SettingViewModel(ref.read));
 
 class SettingView extends HookWidget {
   @override
@@ -31,11 +26,6 @@ class SettingView extends HookWidget {
   }
 
   Widget _settingBody() {
-    final state = useProvider(settingViewModel);
-
-    print(state.remaindInterval);
-    print(state.defaultLocation);
-
     return ListView(
       children: [LocationSettingColumn(), PushSettingColumn()],
     );

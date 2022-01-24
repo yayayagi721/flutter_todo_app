@@ -42,6 +42,9 @@ class LocationInput extends HookWidget {
               child: TextField(
             decoration: const InputDecoration(
               labelText: '地名を入力',
+              enabledBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.transparent),
+              ),
             ),
             onSubmitted: (_) async {
               final location =
@@ -66,14 +69,16 @@ class LocationInput extends HookWidget {
           )),
           IconButton(
               iconSize: 40,
-              onPressed: () {
-                Marker marker = mapState.markers.elementAt(0);
-                Navigator.pop(
-                    context,
-                    LatLng(
-                        marker.position.latitude, marker.position.longitude));
-              },
-              icon: Icon(Icons.check_circle))
+              onPressed: mapState.markers.isEmpty
+                  ? null
+                  : () {
+                      Marker marker = mapState.markers.elementAt(0);
+                      Navigator.pop(
+                          context,
+                          LatLng(marker.position.latitude,
+                              marker.position.longitude));
+                    },
+              icon: Icon(Icons.done)),
         ]),
         Expanded(child: Map(initLatLng)),
       ],
@@ -135,7 +140,7 @@ class Map extends HookWidget {
     return state.markers.isEmpty
         ? Center(
             child: CircularProgressIndicator(
-                valueColor: new AlwaysStoppedAnimation<Color>(Colors.white)),
+                valueColor: new AlwaysStoppedAnimation<Color>(Colors.black38)),
           )
         : GoogleMap(
             onMapCreated: (GoogleMapController controller) {

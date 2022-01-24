@@ -17,7 +17,8 @@ class Todo with _$Todo {
       @HiveField(4) double longitude,
       @HiveField(5) String? locationName,
       @HiveField(6) DateTime createdAt,
-      @HiveField(7) DateTime updatedAt) = _Todo;
+      @HiveField(7) DateTime updatedAt,
+      @HiveField(8) int noticeId) = _Todo;
 
   factory Todo.fromJson(Map<String, dynamic> json) => _$TodoFromJson(json);
 }

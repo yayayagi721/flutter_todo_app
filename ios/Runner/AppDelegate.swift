@@ -11,6 +11,9 @@ import GoogleMaps
     // let mapAPIKey = Bundle.main.object(forInfoDictionaryKey: "MapAPIKey") as! String
     GMSServices.provideAPIKey("{api-key}")
     GeneratedPluginRegistrant.register(with: self)
+    if #available(iOS 10.0, *) {
+      UNUserNotificationCenter.current().delegate = self as? UNUserNotificationCenterDelegate
+    }
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
 }

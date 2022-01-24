@@ -7,18 +7,9 @@ class MainDrawer extends StatelessWidget {
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
-          // DrawerHeader(
-          //   child: Container(),
-          //   decoration: BoxDecoration(
-          //     color: Colors.blue,
-          //   ),
-          // ),
-
           Container(
               height: 150,
-              decoration: BoxDecoration(
-                color: Colors.blue,
-              )),
+              decoration: BoxDecoration(color: Theme.of(context).primaryColor)),
           _content("設定", () {
             Navigator.pushNamed(context, "/settingView");
           }),

@@ -1,7 +1,5 @@
 import 'package:flutter_todo_app/const/hive_const.dart';
 import 'package:flutter_todo_app/model/todo.dart';
-import 'package:flutter_todo_app/repository/setting_repository.dart';
-import 'package:flutter_todo_app/repository/setting_repository_impl.dart';
 import 'package:flutter_todo_app/repository/todo_list_repository.dart';
 import 'package:hive/hive.dart';
 

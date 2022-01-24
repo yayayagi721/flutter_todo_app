@@ -1,6 +1,8 @@
-import 'package:flutter_todo_app/repository/location_search_repository_impl.dart';
-import 'package:flutter_todo_app/repository/todo_list_repository_impl.dart';
+import 'package:flutter_todo_app/main.dart';
+import 'package:flutter_todo_app/repository/notifications_repository.dart';
 import 'package:flutter_todo_app/utils/str_utils.dart';
+import 'package:flutter_todo_app/view/setting_view.dart';
+import 'package:flutter_todo_app/view/todo_list_view.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -8,32 +10,46 @@ import '../model/todo.dart';
 import 'state/todo_list_state.dart';
 
 class TodoListStateController extends StateNotifier<TodoListState> {
-  TodoListStateController(
-      this.todoListRepositoryImpl, this.locationSearchRepository)
-      : super(TodoListState());
+  TodoListStateController(this.read) : super(TodoListState());
 
-  final TodoListRepositoryImpl todoListRepositoryImpl;
-  final LocationSearchRepositoryImpl locationSearchRepository;
+  final Reader read;
 
   void fetch() {
+    final todoListRepository = read(todoListRepositoryProvider);
     state = state.copyWith(
-        isLoaded: true, todoList: _toTodoMap(todoListRepositoryImpl.getAll()));
+        isLoaded: true, todoList: _toTodoMap(todoListRepository.getAll()));
   }
 
-  void create(
-      String title, DateTime eventAt, double latitude, double longitude) {
+  void create(String title, DateTime eventAt, double latitude, double longitude,
+      String? locationName) {
+    final todoListRepository = read(todoListRepositoryProvider);
+    final notificationsRepository = read(notificationsRepositoryProvider);
+    final idRepository = read(idRepositoryProvider);
+    final settingRepository = read(settingRepositoryProvider);
+
+    final notificationId = idRepository.createNotificationId();
+
+    notificationsRepository.setNotification(
+        notificationId,
+        eventAt.toIso8601String(),
+        title,
+        eventAt.add(Duration(minutes: settingRepository.getRemaindInterval())));
+
     final id = StrUtils.createUuid();
     final now = DateTime.now();
-    final todo = Todo(id, title, eventAt, latitude, longitude, null, now, now);
+    final todo = Todo(id, title, eventAt, latitude, longitude, locationName,
+        now, now, notificationId);
     final newTodoList = _addTodo(todo, {...state.todoList});
     state = state.copyWith(todoList: newTodoList);
-    todoListRepositoryImpl.create(todo);
+    todoListRepository.create(todo);
     getAddress(todo);
   }
 
   void update(String id, String title, DateTime eventTime, double latitude,
-      double longitude) {
-    final todo = todoListRepositoryImpl.get(id);
+      double longitude, String? locationName) {
+    final todoListRepository = read(todoListRepositoryProvider);
+
+    final todo = todoListRepository.get(id);
 
     //update時の時間を記録
     final updatedAt = DateTime.now();
@@ -42,15 +58,18 @@ class TodoListStateController extends StateNotifier<TodoListState> {
         eventAt: eventTime,
         latitude: latitude,
         longitude: longitude,
-        updatedAt: updatedAt);
+        updatedAt: updatedAt,
+        locationName: locationName);
 
-    todoListRepositoryImpl.update(newTodo);
+    todoListRepository.update(newTodo);
     getAddress(newTodo);
     fetch();
   }
 
   void delete(String id) {
-    todoListRepositoryImpl.delete(id);
+    final todoListRepository = read(todoListRepositoryProvider);
+
+    todoListRepository.delete(id);
     fetch();
   }
 
@@ -65,11 +84,14 @@ class TodoListStateController extends StateNotifier<TodoListState> {
   }
 
   Future getAddress(Todo todo) async {
+    final todoListRepository = read(todoListRepositoryProvider);
+    final locationSearchRepository = read(locationSearchRepositoryProvider);
+
     //住所を取得
     final address = await locationSearchRepository
         .getAddress(LatLng(todo.latitude, todo.longitude));
     final newTodo = todo.copyWith(locationName: address);
-    todoListRepositoryImpl.update(newTodo);
+    todoListRepository.update(newTodo);
     fetch();
   }
 

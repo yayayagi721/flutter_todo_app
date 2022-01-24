@@ -2,7 +2,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_todo_app/const/enums.dart';
 import 'package:flutter_todo_app/model/todo.dart';
-import 'package:flutter_todo_app/repository/location_search_repository_impl.dart';
 import 'package:flutter_todo_app/repository/todo_list_repository_impl.dart';
 import 'package:flutter_todo_app/view_model/todo_list_view_model.dart';
 import 'package:flutter_todo_app/widget/main_drawer.dart';
@@ -10,18 +9,13 @@ import 'package:flutter_todo_app/widget/todo_form.dart';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
-final todoListRepositoryImpl = Provider(
+final todoListRepositoryProvider = Provider(
   (ref) => TodoListRepositoryImpl(),
 );
 
-final locationSearchProvider = Provider.autoDispose(
-  (ref) => LocationSearchRepositoryImpl(),
-);
-
-final todoListProvider = StateNotifierProvider((ref) => TodoListStateController(
-    ref.read(todoListRepositoryImpl), ref.read(locationSearchProvider)));
+final todoListProvider =
+    StateNotifierProvider((ref) => TodoListStateController(ref.read));
 
 class TodoListView extends HookWidget {
   @override
@@ -40,6 +34,7 @@ class TodoListView extends HookWidget {
       ),
       body: ListView(
         children: todoList(),
+        padding: EdgeInsets.only(left: 15, right: 15),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => {
@@ -82,17 +77,19 @@ class TodoListView extends HookWidget {
   }
 
   List<Widget> todoOnOneDay(String targetDate, List<Todo> todos) {
+    final datetime = DateTime.parse(targetDate);
+    final formatter = new DateFormat('yyyy年M月d日', "ja_JP");
+    final formatted = formatter.format(datetime); // DateからString
     final todoCards = todos.map((todo) => _contentsCard(todo)).toList();
-    return <Widget>[_dateLine(targetDate), ...todoCards];
+    return <Widget>[_dateLine(formatted), ...todoCards];
   }
 
   Widget _dateLine(String targetDate) {
     return Container(
-      padding: EdgeInsets.only(top: 10, bottom: 10),
-      alignment: AlignmentDirectional.center,
+      padding: EdgeInsets.only(top: 20),
       child: Text(
         targetDate,
-        style: TextStyle(fontSize: 18),
+        style: TextStyle(fontSize: 16, color: Colors.black54),
       ),
     );
   }
@@ -110,14 +107,25 @@ class TodoListView extends HookWidget {
           builder: (context) => TodoInputForm(FormKind.update, todo),
         );
       },
-      child: Card(
-        child: Row(
-          children: [
-            SizedBox(
-              width: 20,
-            ),
+      child: Container(
+        margin: EdgeInsets.only(top: 8),
+        decoration: BoxDecoration(
+          color: Colors.black12,
+          borderRadius: BorderRadius.circular(15),
+        ),
+        child: IntrinsicHeight(
+          child: Row(children: [
+            Container(
+                width: 10,
+                decoration: BoxDecoration(
+                  color: Colors.black45,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(15),
+                      bottomLeft: Radius.circular(15)),
+                )),
             Expanded(
-              flex: 4,
+                child: Padding(
+              padding: EdgeInsets.only(left: 10, top: 10, bottom: 10),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
@@ -125,13 +133,17 @@ class TodoListView extends HookWidget {
                   SizedBox(
                     height: 5,
                   ),
+                  _description(todo.locationName ?? "位置情報未読み込み"),
+                  SizedBox(
+                    height: 5,
+                  ),
                   _subContent(Icons.watch_later,
-                      DateFormat('hh:mm').format(todo.eventAt)),
-                  _subContent(Icons.place, todo.locationName ?? "位置情報未読み込み"),
+                      DateFormat('HH:mm').format(todo.eventAt)),
+                  // _subContent(Icons.place, todo.locationName ?? "位置情報未読み込み"),
                 ],
               ),
-            )
-          ],
+            ))
+          ]),
         ),
       ),
     );
@@ -142,8 +154,15 @@ class TodoListView extends HookWidget {
         alignment: AlignmentDirectional.centerStart,
         child: Text(
           text,
-          style: TextStyle(fontSize: 24),
+          style: TextStyle(fontSize: 20),
         ));
+  }
+
+  Widget _description(String text) {
+    return Container(
+        alignment: AlignmentDirectional.centerStart,
+        child:
+            Text(text, style: TextStyle(fontSize: 14, color: Colors.black54)));
   }
 
   Widget _subContent(IconData icon, String text) {

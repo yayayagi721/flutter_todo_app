@@ -19,11 +19,9 @@ class TextInput extends HookWidget {
 
     useEffect(() {
       _textEditingController = TextEditingController(text: state.title);
-      // WidgetsBinding.instance!
       focusNode.addListener(() {
         controller.onFocusChange(focusNode.hasFocus);
       });
-      // .addPostFrameCallback((_) => ));
     }, [focusNode]);
     double bottomSpace = 0;
 
@@ -39,8 +37,7 @@ class TextInput extends HookWidget {
           controller: _textEditingController,
           focusNode: focusNode,
           enabled: true,
-          maxLength: 10,
-          style: TextStyle(color: Colors.redAccent),
+          maxLength: 20,
           obscureText: false,
           maxLines: 1,
           onChanged: (input) {

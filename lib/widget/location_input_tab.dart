@@ -11,19 +11,24 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 class LocationInputTab extends HookWidget {
   @override
   Widget build(BuildContext context) {
-    final state = useProvider(mapProvider);
-    final mapNotifier = useProvider(mapProvider.notifier);
     final formNotifier = useProvider(todoFormProvider.notifier);
     final formState = useProvider(todoFormProvider);
 
     return Container(
-      height: 200,
-      child: Column(
+      padding: EdgeInsets.only(left: 10),
+      child: Row(
         children: [
-          Text(formState.latitude.toString()),
-          Center(
-              child: TextButton(
-                  onPressed: () async {
+          Icon(
+            Icons.add_location_sharp,
+            size: 50,
+          ),
+          Padding(
+            padding: EdgeInsets.only(left: 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                GestureDetector(
+                  onTap: () async {
                     var latLng;
 
                     if (formState.latitude != null &&
@@ -40,7 +45,24 @@ class LocationInputTab extends HookWidget {
                       print(formState.latitude);
                     }
                   },
-                  child: Text("hoge")))
+                  child: Text(
+                    "場所を入力",
+                    textAlign: TextAlign.right,
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.blue,
+                      decoration: TextDecoration.underline,
+                    ),
+                  ),
+                ),
+                Container(
+                  child: Text(formState.locationName ?? "位置情報未入力"),
+                )
+
+                //
+              ],
+            ),
+          ),
         ],
       ),
     );
@@ -55,7 +77,6 @@ class LocationInputTab extends HookWidget {
         builder: (childContext) {
           return Dialog(
               insetPadding: EdgeInsets.all(20),
-              backgroundColor: Colors.blueAccent,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(20))),
               child: Container(

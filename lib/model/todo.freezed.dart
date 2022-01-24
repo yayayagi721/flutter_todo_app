@@ -29,7 +29,8 @@ class _$TodoTearOff {
       @HiveField(4) double longitude,
       @HiveField(5) String? locationName,
       @HiveField(6) DateTime createdAt,
-      @HiveField(7) DateTime updatedAt) {
+      @HiveField(7) DateTime updatedAt,
+      @HiveField(8) int noticeId) {
     return _Todo(
       id,
       title,
@@ -39,6 +40,7 @@ class _$TodoTearOff {
       locationName,
       createdAt,
       updatedAt,
+      noticeId,
     );
   }
 
@@ -68,6 +70,8 @@ mixin _$Todo {
   DateTime get createdAt => throw _privateConstructorUsedError;
   @HiveField(7)
   DateTime get updatedAt => throw _privateConstructorUsedError;
+  @HiveField(8)
+  int get noticeId => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -86,7 +90,8 @@ abstract class $TodoCopyWith<$Res> {
       @HiveField(4) double longitude,
       @HiveField(5) String? locationName,
       @HiveField(6) DateTime createdAt,
-      @HiveField(7) DateTime updatedAt});
+      @HiveField(7) DateTime updatedAt,
+      @HiveField(8) int noticeId});
 }
 
 /// @nodoc
@@ -107,6 +112,7 @@ class _$TodoCopyWithImpl<$Res> implements $TodoCopyWith<$Res> {
     Object? locationName = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
+    Object? noticeId = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed
@@ -141,6 +147,10 @@ class _$TodoCopyWithImpl<$Res> implements $TodoCopyWith<$Res> {
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      noticeId: noticeId == freezed
+          ? _value.noticeId
+          : noticeId // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -158,7 +168,8 @@ abstract class _$TodoCopyWith<$Res> implements $TodoCopyWith<$Res> {
       @HiveField(4) double longitude,
       @HiveField(5) String? locationName,
       @HiveField(6) DateTime createdAt,
-      @HiveField(7) DateTime updatedAt});
+      @HiveField(7) DateTime updatedAt,
+      @HiveField(8) int noticeId});
 }
 
 /// @nodoc
@@ -180,6 +191,7 @@ class __$TodoCopyWithImpl<$Res> extends _$TodoCopyWithImpl<$Res>
     Object? locationName = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
+    Object? noticeId = freezed,
   }) {
     return _then(_Todo(
       id == freezed
@@ -214,6 +226,10 @@ class __$TodoCopyWithImpl<$Res> extends _$TodoCopyWithImpl<$Res>
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      noticeId == freezed
+          ? _value.noticeId
+          : noticeId // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -230,7 +246,8 @@ class _$_Todo extends _Todo with DiagnosticableTreeMixin {
       @HiveField(4) this.longitude,
       @HiveField(5) this.locationName,
       @HiveField(6) this.createdAt,
-      @HiveField(7) this.updatedAt)
+      @HiveField(7) this.updatedAt,
+      @HiveField(8) this.noticeId)
       : super._();
 
   factory _$_Todo.fromJson(Map<String, dynamic> json) => _$$_TodoFromJson(json);
@@ -259,10 +276,13 @@ class _$_Todo extends _Todo with DiagnosticableTreeMixin {
   @override
   @HiveField(7)
   final DateTime updatedAt;
+  @override
+  @HiveField(8)
+  final int noticeId;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Todo(id: $id, title: $title, eventAt: $eventAt, latitude: $latitude, longitude: $longitude, locationName: $locationName, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'Todo(id: $id, title: $title, eventAt: $eventAt, latitude: $latitude, longitude: $longitude, locationName: $locationName, createdAt: $createdAt, updatedAt: $updatedAt, noticeId: $noticeId)';
   }
 
   @override
@@ -277,7 +297,8 @@ class _$_Todo extends _Todo with DiagnosticableTreeMixin {
       ..add(DiagnosticsProperty('longitude', longitude))
       ..add(DiagnosticsProperty('locationName', locationName))
       ..add(DiagnosticsProperty('createdAt', createdAt))
-      ..add(DiagnosticsProperty('updatedAt', updatedAt));
+      ..add(DiagnosticsProperty('updatedAt', updatedAt))
+      ..add(DiagnosticsProperty('noticeId', noticeId));
   }
 
   @override
@@ -305,7 +326,10 @@ class _$_Todo extends _Todo with DiagnosticableTreeMixin {
                     .equals(other.createdAt, createdAt)) &&
             (identical(other.updatedAt, updatedAt) ||
                 const DeepCollectionEquality()
-                    .equals(other.updatedAt, updatedAt)));
+                    .equals(other.updatedAt, updatedAt)) &&
+            (identical(other.noticeId, noticeId) ||
+                const DeepCollectionEquality()
+                    .equals(other.noticeId, noticeId)));
   }
 
   @override
@@ -318,7 +342,8 @@ class _$_Todo extends _Todo with DiagnosticableTreeMixin {
       const DeepCollectionEquality().hash(longitude) ^
       const DeepCollectionEquality().hash(locationName) ^
       const DeepCollectionEquality().hash(createdAt) ^
-      const DeepCollectionEquality().hash(updatedAt);
+      const DeepCollectionEquality().hash(updatedAt) ^
+      const DeepCollectionEquality().hash(noticeId);
 
   @JsonKey(ignore: true)
   @override
@@ -340,7 +365,8 @@ abstract class _Todo extends Todo {
       @HiveField(4) double longitude,
       @HiveField(5) String? locationName,
       @HiveField(6) DateTime createdAt,
-      @HiveField(7) DateTime updatedAt) = _$_Todo;
+      @HiveField(7) DateTime updatedAt,
+      @HiveField(8) int noticeId) = _$_Todo;
   const _Todo._() : super._();
 
   factory _Todo.fromJson(Map<String, dynamic> json) = _$_Todo.fromJson;
@@ -369,6 +395,9 @@ abstract class _Todo extends Todo {
   @override
   @HiveField(7)
   DateTime get updatedAt => throw _privateConstructorUsedError;
+  @override
+  @HiveField(8)
+  int get noticeId => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$TodoCopyWith<_Todo> get copyWith => throw _privateConstructorUsedError;

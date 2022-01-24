@@ -25,6 +25,8 @@ dependencies:
   fluttertoast: ^8.0.8
   location: ^4.3.0
   flutter_keyboard_visibility: ^5.1.0
+  hexcolor: ^2.0.5
+  flutter_local_notifications: ^9.2.0
 
   flutter:
     sdk: flutter
