@@ -10,11 +10,9 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 final mapProvider = StateNotifierProvider.autoDispose((ref) => MapProvider());
-final locationSearchProvider = Provider.autoDispose(
-  (ref) => LocationSearchRepositoryImpl(),
-);
+
 final locationSearchFormViewModel = StateNotifierProvider.autoDispose(
-  (ref) => LocationSearchFormViewModel(ref.read(locationSearchProvider)),
+  (ref) => LocationSearchFormViewModel(ref.read),
 );
 
 final Completer<GoogleMapController> controller = Completer();

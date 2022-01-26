@@ -41,9 +41,11 @@ final flutterLocalNotificationsProvider = FutureProvider((ref) async {
   return flutterLocalNotificationsPlugin;
 });
 
-final notificationsRepositoryProvider = Provider.autoDispose((ref) {
-  final flnPlugin = ref.watch(flutterLocalNotificationsProvider);
-  return NotificationsRepositoryImpl(flnPlugin.data!.value, ref.read);
+final notificationsRepositoryProvider = FutureProvider.autoDispose((ref) async {
+  final flutterLocalNotificationsPlugin =
+      await ref.read(flutterLocalNotificationsProvider.future);
+
+  return NotificationsRepositoryImpl(flutterLocalNotificationsPlugin, ref.read);
 });
 
 void main() async {

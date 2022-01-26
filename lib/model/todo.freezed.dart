@@ -30,7 +30,7 @@ class _$TodoTearOff {
       @HiveField(5) String? locationName,
       @HiveField(6) DateTime createdAt,
       @HiveField(7) DateTime updatedAt,
-      @HiveField(8) int noticeId) {
+      @HiveField(8) int? notificationId) {
     return _Todo(
       id,
       title,
@@ -40,7 +40,7 @@ class _$TodoTearOff {
       locationName,
       createdAt,
       updatedAt,
-      noticeId,
+      notificationId,
     );
   }
 
@@ -71,7 +71,7 @@ mixin _$Todo {
   @HiveField(7)
   DateTime get updatedAt => throw _privateConstructorUsedError;
   @HiveField(8)
-  int get noticeId => throw _privateConstructorUsedError;
+  int? get notificationId => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -91,7 +91,7 @@ abstract class $TodoCopyWith<$Res> {
       @HiveField(5) String? locationName,
       @HiveField(6) DateTime createdAt,
       @HiveField(7) DateTime updatedAt,
-      @HiveField(8) int noticeId});
+      @HiveField(8) int? notificationId});
 }
 
 /// @nodoc
@@ -112,7 +112,7 @@ class _$TodoCopyWithImpl<$Res> implements $TodoCopyWith<$Res> {
     Object? locationName = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
-    Object? noticeId = freezed,
+    Object? notificationId = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed
@@ -147,10 +147,10 @@ class _$TodoCopyWithImpl<$Res> implements $TodoCopyWith<$Res> {
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      noticeId: noticeId == freezed
-          ? _value.noticeId
-          : noticeId // ignore: cast_nullable_to_non_nullable
-              as int,
+      notificationId: notificationId == freezed
+          ? _value.notificationId
+          : notificationId // ignore: cast_nullable_to_non_nullable
+              as int?,
     ));
   }
 }
@@ -169,7 +169,7 @@ abstract class _$TodoCopyWith<$Res> implements $TodoCopyWith<$Res> {
       @HiveField(5) String? locationName,
       @HiveField(6) DateTime createdAt,
       @HiveField(7) DateTime updatedAt,
-      @HiveField(8) int noticeId});
+      @HiveField(8) int? notificationId});
 }
 
 /// @nodoc
@@ -191,7 +191,7 @@ class __$TodoCopyWithImpl<$Res> extends _$TodoCopyWithImpl<$Res>
     Object? locationName = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
-    Object? noticeId = freezed,
+    Object? notificationId = freezed,
   }) {
     return _then(_Todo(
       id == freezed
@@ -226,10 +226,10 @@ class __$TodoCopyWithImpl<$Res> extends _$TodoCopyWithImpl<$Res>
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      noticeId == freezed
-          ? _value.noticeId
-          : noticeId // ignore: cast_nullable_to_non_nullable
-              as int,
+      notificationId == freezed
+          ? _value.notificationId
+          : notificationId // ignore: cast_nullable_to_non_nullable
+              as int?,
     ));
   }
 }
@@ -247,7 +247,7 @@ class _$_Todo extends _Todo with DiagnosticableTreeMixin {
       @HiveField(5) this.locationName,
       @HiveField(6) this.createdAt,
       @HiveField(7) this.updatedAt,
-      @HiveField(8) this.noticeId)
+      @HiveField(8) this.notificationId)
       : super._();
 
   factory _$_Todo.fromJson(Map<String, dynamic> json) => _$$_TodoFromJson(json);
@@ -278,11 +278,11 @@ class _$_Todo extends _Todo with DiagnosticableTreeMixin {
   final DateTime updatedAt;
   @override
   @HiveField(8)
-  final int noticeId;
+  final int? notificationId;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Todo(id: $id, title: $title, eventAt: $eventAt, latitude: $latitude, longitude: $longitude, locationName: $locationName, createdAt: $createdAt, updatedAt: $updatedAt, noticeId: $noticeId)';
+    return 'Todo(id: $id, title: $title, eventAt: $eventAt, latitude: $latitude, longitude: $longitude, locationName: $locationName, createdAt: $createdAt, updatedAt: $updatedAt, notificationId: $notificationId)';
   }
 
   @override
@@ -298,7 +298,7 @@ class _$_Todo extends _Todo with DiagnosticableTreeMixin {
       ..add(DiagnosticsProperty('locationName', locationName))
       ..add(DiagnosticsProperty('createdAt', createdAt))
       ..add(DiagnosticsProperty('updatedAt', updatedAt))
-      ..add(DiagnosticsProperty('noticeId', noticeId));
+      ..add(DiagnosticsProperty('notificationId', notificationId));
   }
 
   @override
@@ -327,9 +327,9 @@ class _$_Todo extends _Todo with DiagnosticableTreeMixin {
             (identical(other.updatedAt, updatedAt) ||
                 const DeepCollectionEquality()
                     .equals(other.updatedAt, updatedAt)) &&
-            (identical(other.noticeId, noticeId) ||
+            (identical(other.notificationId, notificationId) ||
                 const DeepCollectionEquality()
-                    .equals(other.noticeId, noticeId)));
+                    .equals(other.notificationId, notificationId)));
   }
 
   @override
@@ -343,7 +343,7 @@ class _$_Todo extends _Todo with DiagnosticableTreeMixin {
       const DeepCollectionEquality().hash(locationName) ^
       const DeepCollectionEquality().hash(createdAt) ^
       const DeepCollectionEquality().hash(updatedAt) ^
-      const DeepCollectionEquality().hash(noticeId);
+      const DeepCollectionEquality().hash(notificationId);
 
   @JsonKey(ignore: true)
   @override
@@ -366,7 +366,7 @@ abstract class _Todo extends Todo {
       @HiveField(5) String? locationName,
       @HiveField(6) DateTime createdAt,
       @HiveField(7) DateTime updatedAt,
-      @HiveField(8) int noticeId) = _$_Todo;
+      @HiveField(8) int? notificationId) = _$_Todo;
   const _Todo._() : super._();
 
   factory _Todo.fromJson(Map<String, dynamic> json) = _$_Todo.fromJson;
@@ -397,7 +397,7 @@ abstract class _Todo extends Todo {
   DateTime get updatedAt => throw _privateConstructorUsedError;
   @override
   @HiveField(8)
-  int get noticeId => throw _privateConstructorUsedError;
+  int? get notificationId => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$TodoCopyWith<_Todo> get copyWith => throw _privateConstructorUsedError;

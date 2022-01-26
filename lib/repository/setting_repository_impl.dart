@@ -8,7 +8,7 @@ import 'package:hive/hive.dart';
 class SettingRepositoryImpl implements SettingRepository {
   @override
   LocationInfo getDefaultLocationInfo() {
-    final info = Hive.box(BoxName.setting).get(SettingKey.defaultLocationInfo);
+    final info = Hive.box(BoxName.setting).get(Setting.defaultLocationInfo);
 
     if (info == null) {
       return LocationInfo(CommonConst.initPosLat, CommonConst.initPosLng);
@@ -17,18 +17,18 @@ class SettingRepositoryImpl implements SettingRepository {
   }
 
   @override
-  int getRemaindInterval() => Hive.box(BoxName.setting)
-      .get(SettingKey.remaindInterval, defaultValue: 10);
+  int getRemaindInterval() =>
+      Hive.box(BoxName.setting).get(Setting.remaindInterval, defaultValue: 10);
 
   @override
   bool setDefaultLocationInfo(LocationInfo locationInfo) {
-    Hive.box(BoxName.setting).put(SettingKey.defaultLocationInfo, locationInfo);
+    Hive.box(BoxName.setting).put(Setting.defaultLocationInfo, locationInfo);
     return true;
   }
 
   @override
   bool setRemaindInterval(int interval) {
-    Hive.box(BoxName.setting).put(SettingKey.remaindInterval, interval);
+    Hive.box(BoxName.setting).put(Setting.remaindInterval, interval);
     return true;
   }
 }

@@ -1,7 +1,4 @@
 import 'package:flutter_todo_app/main.dart';
-import 'package:flutter_todo_app/repository/notifications_repository.dart';
-import 'package:flutter_todo_app/utils/str_utils.dart';
-import 'package:flutter_todo_app/view/setting_view.dart';
 import 'package:flutter_todo_app/view/todo_list_view.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -20,24 +17,26 @@ class TodoListStateController extends StateNotifier<TodoListState> {
         isLoaded: true, todoList: _toTodoMap(todoListRepository.getAll()));
   }
 
-  void create(String title, DateTime eventAt, double latitude, double longitude,
-      String? locationName) {
+  Future create(
+      String title,
+      DateTime eventAt,
+      double latitude,
+      double longitude,
+      String? locationName,
+      DateTime? notificationTime) async {
     final todoListRepository = read(todoListRepositoryProvider);
-    final notificationsRepository = read(notificationsRepositoryProvider);
     final idRepository = read(idRepositoryProvider);
-    final settingRepository = read(settingRepositoryProvider);
 
-    final notificationId = idRepository.createNotificationId();
+    final todoId = idRepository.createTodoId();
+    var notificationId = null;
 
-    notificationsRepository.setNotification(
-        notificationId,
-        eventAt.toIso8601String(),
-        title,
-        eventAt.add(Duration(minutes: settingRepository.getRemaindInterval())));
+    //通知時間が入っていたら通知をセットする
+    if (notificationTime != null) {
+      notificationId = _setNotification(title, eventAt, notificationTime);
+    }
 
-    final id = StrUtils.createUuid();
     final now = DateTime.now();
-    final todo = Todo(id, title, eventAt, latitude, longitude, locationName,
+    final todo = Todo(todoId, title, eventAt, latitude, longitude, locationName,
         now, now, notificationId);
     final newTodoList = _addTodo(todo, {...state.todoList});
     state = state.copyWith(todoList: newTodoList);
@@ -45,17 +44,29 @@ class TodoListStateController extends StateNotifier<TodoListState> {
     getAddress(todo);
   }
 
-  void update(String id, String title, DateTime eventTime, double latitude,
-      double longitude, String? locationName) {
+  void update(
+      String id,
+      String title,
+      DateTime eventAt,
+      double latitude,
+      double longitude,
+      String? locationName,
+      DateTime? notificationTime) async {
     final todoListRepository = read(todoListRepositoryProvider);
 
     final todo = todoListRepository.get(id);
+    var notificationId = todo.notificationId;
+
+    if (notificationTime != null) {
+      notificationId = await _setNotification(
+          title, eventAt, notificationTime, notificationId);
+    }
 
     //update時の時間を記録
     final updatedAt = DateTime.now();
     final newTodo = todo.copyWith(
         title: title,
-        eventAt: eventTime,
+        eventAt: eventAt,
         latitude: latitude,
         longitude: longitude,
         updatedAt: updatedAt,
@@ -64,6 +75,26 @@ class TodoListStateController extends StateNotifier<TodoListState> {
     todoListRepository.update(newTodo);
     getAddress(newTodo);
     fetch();
+  }
+
+  Future<int> _setNotification(
+      String title, DateTime eventAt, DateTime notificationTime,
+      [int? notificationId]) async {
+    final notificationsRepository =
+        await read(notificationsRepositoryProvider.future);
+    //通知IDがnullの場合新規作成とみなし、IDを発行する
+    if (notificationId == null) {
+      final idRepository = read(idRepositoryProvider);
+      notificationId = idRepository.createNotificationId();
+    }
+
+    notificationsRepository.setNotification(
+        notificationId,
+        "予定リマインド",
+        '''${DateFormat('yyyy年M月d日 HH:mm').format(eventAt)}
+${title}''',
+        notificationTime);
+    return notificationId;
   }
 
   void delete(String id) {

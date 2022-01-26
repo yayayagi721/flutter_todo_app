@@ -4,8 +4,8 @@ class BoxName {
   static const String todoList = "todo_list";
   //設定画面の永続化用Box名
   static const String setting = "setting";
-  //BOX作るほどじゃないけど保存したい値を入れる
-  static const String commonValue = "commonValue";
+  //IdRepositoryで使用するBox名
+  static const String id = "id";
 }
 
 class Setting {

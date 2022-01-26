@@ -25,7 +25,7 @@ class TodoAdapter extends TypeAdapter<_$_Todo> {
       fields[5] as String?,
       fields[6] as DateTime,
       fields[7] as DateTime,
-      fields[8] as int,
+      fields[8] as int?,
     );
   }
 
@@ -50,7 +50,7 @@ class TodoAdapter extends TypeAdapter<_$_Todo> {
       ..writeByte(7)
       ..write(obj.updatedAt)
       ..writeByte(8)
-      ..write(obj.noticeId);
+      ..write(obj.notificationId);
   }
 
   @override
@@ -77,7 +77,7 @@ _$_Todo _$$_TodoFromJson(Map<String, dynamic> json) => _$_Todo(
       json['locationName'] as String?,
       DateTime.parse(json['createdAt'] as String),
       DateTime.parse(json['updatedAt'] as String),
-      json['noticeId'] as int,
+      json['notificationId'] as int?,
     );
 
 Map<String, dynamic> _$$_TodoToJson(_$_Todo instance) => <String, dynamic>{
@@ -89,5 +89,5 @@ Map<String, dynamic> _$$_TodoToJson(_$_Todo instance) => <String, dynamic>{
       'locationName': instance.locationName,
       'createdAt': instance.createdAt.toIso8601String(),
       'updatedAt': instance.updatedAt.toIso8601String(),
-      'noticeId': instance.noticeId,
+      'notificationId': instance.notificationId,
     };

@@ -29,7 +29,8 @@ class FormSubmitButton extends HookWidget {
                           formState.eventTime,
                           formState.latitude,
                           formState.longitude,
-                          formState.locationName);
+                          formState.locationName,
+                          formState.notificationTime);
                       break;
                     case FormKind.update:
                       controller.update(
@@ -38,7 +39,8 @@ class FormSubmitButton extends HookWidget {
                           formState.eventTime,
                           formState.latitude,
                           formState.longitude,
-                          formState.locationName);
+                          formState.locationName,
+                          formState.notificationTime);
                       break;
                   }
                   Navigator.pop(context);

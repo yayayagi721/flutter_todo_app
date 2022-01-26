@@ -26,6 +26,7 @@ class _$TodoFormStateTearOff {
       double? longitude = null,
       String? locationName = null,
       DateTime? eventTime = null,
+      DateTime? notificationTime = null,
       bool isFocus = false}) {
     return _TodoFormState(
       formKind: formKind,
@@ -36,6 +37,7 @@ class _$TodoFormStateTearOff {
       longitude: longitude,
       locationName: locationName,
       eventTime: eventTime,
+      notificationTime: notificationTime,
       isFocus: isFocus,
     );
   }
@@ -54,6 +56,7 @@ mixin _$TodoFormState {
   double? get longitude => throw _privateConstructorUsedError;
   String? get locationName => throw _privateConstructorUsedError;
   DateTime? get eventTime => throw _privateConstructorUsedError;
+  DateTime? get notificationTime => throw _privateConstructorUsedError;
   bool get isFocus => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -75,6 +78,7 @@ abstract class $TodoFormStateCopyWith<$Res> {
       double? longitude,
       String? locationName,
       DateTime? eventTime,
+      DateTime? notificationTime,
       bool isFocus});
 }
 
@@ -97,6 +101,7 @@ class _$TodoFormStateCopyWithImpl<$Res>
     Object? longitude = freezed,
     Object? locationName = freezed,
     Object? eventTime = freezed,
+    Object? notificationTime = freezed,
     Object? isFocus = freezed,
   }) {
     return _then(_value.copyWith(
@@ -132,6 +137,10 @@ class _$TodoFormStateCopyWithImpl<$Res>
           ? _value.eventTime
           : eventTime // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      notificationTime: notificationTime == freezed
+          ? _value.notificationTime
+          : notificationTime // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
       isFocus: isFocus == freezed
           ? _value.isFocus
           : isFocus // ignore: cast_nullable_to_non_nullable
@@ -156,6 +165,7 @@ abstract class _$TodoFormStateCopyWith<$Res>
       double? longitude,
       String? locationName,
       DateTime? eventTime,
+      DateTime? notificationTime,
       bool isFocus});
 }
 
@@ -180,6 +190,7 @@ class __$TodoFormStateCopyWithImpl<$Res>
     Object? longitude = freezed,
     Object? locationName = freezed,
     Object? eventTime = freezed,
+    Object? notificationTime = freezed,
     Object? isFocus = freezed,
   }) {
     return _then(_TodoFormState(
@@ -215,6 +226,10 @@ class __$TodoFormStateCopyWithImpl<$Res>
           ? _value.eventTime
           : eventTime // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      notificationTime: notificationTime == freezed
+          ? _value.notificationTime
+          : notificationTime // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
       isFocus: isFocus == freezed
           ? _value.isFocus
           : isFocus // ignore: cast_nullable_to_non_nullable
@@ -235,6 +250,7 @@ class _$_TodoFormState extends _TodoFormState with DiagnosticableTreeMixin {
       this.longitude = null,
       this.locationName = null,
       this.eventTime = null,
+      this.notificationTime = null,
       this.isFocus = false})
       : super._();
 
@@ -262,13 +278,16 @@ class _$_TodoFormState extends _TodoFormState with DiagnosticableTreeMixin {
   @JsonKey(defaultValue: null)
   @override
   final DateTime? eventTime;
+  @JsonKey(defaultValue: null)
+  @override
+  final DateTime? notificationTime;
   @JsonKey(defaultValue: false)
   @override
   final bool isFocus;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'TodoFormState(formKind: $formKind, selectedKind: $selectedKind, id: $id, title: $title, latitude: $latitude, longitude: $longitude, locationName: $locationName, eventTime: $eventTime, isFocus: $isFocus)';
+    return 'TodoFormState(formKind: $formKind, selectedKind: $selectedKind, id: $id, title: $title, latitude: $latitude, longitude: $longitude, locationName: $locationName, eventTime: $eventTime, notificationTime: $notificationTime, isFocus: $isFocus)';
   }
 
   @override
@@ -284,6 +303,7 @@ class _$_TodoFormState extends _TodoFormState with DiagnosticableTreeMixin {
       ..add(DiagnosticsProperty('longitude', longitude))
       ..add(DiagnosticsProperty('locationName', locationName))
       ..add(DiagnosticsProperty('eventTime', eventTime))
+      ..add(DiagnosticsProperty('notificationTime', notificationTime))
       ..add(DiagnosticsProperty('isFocus', isFocus));
   }
 
@@ -313,6 +333,9 @@ class _$_TodoFormState extends _TodoFormState with DiagnosticableTreeMixin {
             (identical(other.eventTime, eventTime) ||
                 const DeepCollectionEquality()
                     .equals(other.eventTime, eventTime)) &&
+            (identical(other.notificationTime, notificationTime) ||
+                const DeepCollectionEquality()
+                    .equals(other.notificationTime, notificationTime)) &&
             (identical(other.isFocus, isFocus) ||
                 const DeepCollectionEquality().equals(other.isFocus, isFocus)));
   }
@@ -328,6 +351,7 @@ class _$_TodoFormState extends _TodoFormState with DiagnosticableTreeMixin {
       const DeepCollectionEquality().hash(longitude) ^
       const DeepCollectionEquality().hash(locationName) ^
       const DeepCollectionEquality().hash(eventTime) ^
+      const DeepCollectionEquality().hash(notificationTime) ^
       const DeepCollectionEquality().hash(isFocus);
 
   @JsonKey(ignore: true)
@@ -346,6 +370,7 @@ abstract class _TodoFormState extends TodoFormState {
       double? longitude,
       String? locationName,
       DateTime? eventTime,
+      DateTime? notificationTime,
       bool isFocus}) = _$_TodoFormState;
   const _TodoFormState._() : super._();
 
@@ -365,6 +390,8 @@ abstract class _TodoFormState extends TodoFormState {
   String? get locationName => throw _privateConstructorUsedError;
   @override
   DateTime? get eventTime => throw _privateConstructorUsedError;
+  @override
+  DateTime? get notificationTime => throw _privateConstructorUsedError;
   @override
   bool get isFocus => throw _privateConstructorUsedError;
   @override

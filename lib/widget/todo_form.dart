@@ -9,6 +9,7 @@ import 'package:flutter_todo_app/repository/location_search_repository_impl.dart
 import 'package:flutter_todo_app/view_model/todo_form_view_model.dart';
 import 'package:flutter_todo_app/widget/datetime_input.dart';
 import 'package:flutter_todo_app/widget/location_input_tab.dart';
+import 'package:flutter_todo_app/widget/notification_input_tab.dart';
 import 'package:flutter_todo_app/widget/text_input.dart';
 import 'package:hexcolor/hexcolor.dart';
 
@@ -141,6 +142,8 @@ class TodoInputForm extends HookWidget {
         return LocationInputTab();
       case TabKind.datetime:
         return DatetimeInput();
+      case TabKind.notifications:
+        return NotificationInputTab();
       default:
         print('select kind is not exist');
         exit(0);
@@ -180,6 +183,15 @@ class TodoInputForm extends HookWidget {
                   : HexColor("#FF0058")),
           onPressed: () {
             controller.selectTabKind(TabKind.location);
+          },
+        ),
+        IconButton(
+          icon: Icon(Icons.notifications,
+              color: formState.isValidLocation()
+                  ? HexColor("#009A00")
+                  : HexColor("#FF0058")),
+          onPressed: () {
+            controller.selectTabKind(TabKind.notifications);
           },
         ),
       ],
