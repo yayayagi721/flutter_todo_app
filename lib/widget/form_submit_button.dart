@@ -1,34 +1,106 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_todo_app/const/enums.dart';
 import 'package:flutter_todo_app/view/todo_list_view.dart';
-import 'package:flutter_todo_app/view_model/map_provider.dart';
 import 'package:flutter_todo_app/widget/todo_form.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class FormSubmitButton extends HookWidget {
-  final mapProvider = StateNotifierProvider((ref) => MapProvider());
-
   @override
   Widget build(BuildContext context) {
     final controller = useProvider(todoListProvider.notifier);
     final formState = useProvider(todoFormProvider);
-    return TextButton(
-      style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all<Color>(Colors.cyan),
-        foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
-      ),
-      onPressed: () {
-        if (formState.isValidTitle() &&
-            formState.isValidLocation() &&
-            formState.isValidEventTime()) {
-          controller.create(formState.title, formState.eventTime,
-              formState.latitude, formState.longitude);
-          Navigator.pop(context);
-        } else {
-          return null;
-        }
-      },
-      child: Text('TextButton'),
+    return Row(
+      children: [
+        ElevatedButton(
+          child: Text('作成'),
+          style: ElevatedButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
+          onPressed: () {
+            if (!_validation(context, formState)) return;
+
+            switch (formState.formKind) {
+              case FormKind.create:
+                controller.create(
+                    formState.title,
+                    formState.eventTime,
+                    formState.latitude,
+                    formState.longitude,
+                    formState.locationName,
+                    formState.notifyInAdvanceVal);
+                break;
+              case FormKind.update:
+                controller.update(
+                    formState.id,
+                    formState.title,
+                    formState.eventTime,
+                    formState.latitude,
+                    formState.longitude,
+                    formState.locationName,
+                    formState.notifyInAdvanceVal);
+                break;
+            }
+            Navigator.pop(context);
+          },
+        )
+      ],
     );
+  }
+
+  bool _validation(BuildContext context, dynamic state) {
+    final fToast = FToast();
+    fToast.init(context);
+
+    var massege;
+
+    if (!state.isValidTitle()) {
+      massege = "予定の内容を入力してください";
+    } else if (!state.isValidLocation()) {
+      massege = "予定の場所を入力してください";
+    } else if (!state.isValidEventTime()) {
+      massege = "予定の時間を入力してください";
+    }
+
+    if (massege != null) {
+      fToast.showToast(
+        child: _toast(massege),
+        gravity: ToastGravity.BOTTOM,
+        toastDuration: Duration(seconds: 2),
+      );
+      return false;
+    }
+    return true;
+  }
+
+  Widget _toast(String text) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(25.0),
+        color: Colors.redAccent,
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(Icons.close),
+          SizedBox(
+            width: 12.0,
+          ),
+          Text(text),
+        ],
+      ),
+    );
+  }
+
+  bool _isSubmittable() {
+    final formState = useProvider(todoFormProvider);
+
+    return formState.isValidTitle() &&
+        formState.isValidLocation() &&
+        formState.isValidEventTime();
   }
 }

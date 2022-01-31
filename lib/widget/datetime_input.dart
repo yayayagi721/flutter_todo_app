@@ -8,10 +8,18 @@ class DatetimeInput extends HookWidget {
   Widget build(BuildContext context) {
     final controller = useProvider(todoFormProvider.notifier);
     final state = useProvider(todoFormProvider);
+    final now = DateTime.now();
+
+    useEffect(() {
+      WidgetsBinding.instance!
+          .addPostFrameCallback((_) => controller.inputDatetime(now));
+    }, []);
+
     return Container(
+      padding: EdgeInsets.only(top: 15, bottom: 15),
       height: 100,
       child: CupertinoDatePicker(
-        initialDateTime: state.eventTime,
+        initialDateTime: state.eventTime ?? now,
         onDateTimeChanged: (DateTime newDt) {
           controller.inputDatetime(newDt);
         },

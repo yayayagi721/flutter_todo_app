@@ -17,8 +17,11 @@ final _privateConstructorUsedError = UnsupportedError(
 class _$MapStateTearOff {
   const _$MapStateTearOff();
 
-  _MapState call({Set<Marker> markers = const {}}) {
+  _MapState call(
+      {Completer<GoogleMapController>? controller = null,
+      Set<Marker> markers = const {}}) {
     return _MapState(
+      controller: controller,
       markers: markers,
     );
   }
@@ -29,6 +32,8 @@ const $MapState = _$MapStateTearOff();
 
 /// @nodoc
 mixin _$MapState {
+  Completer<GoogleMapController>? get controller =>
+      throw _privateConstructorUsedError;
   Set<Marker> get markers => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -40,7 +45,7 @@ mixin _$MapState {
 abstract class $MapStateCopyWith<$Res> {
   factory $MapStateCopyWith(MapState value, $Res Function(MapState) then) =
       _$MapStateCopyWithImpl<$Res>;
-  $Res call({Set<Marker> markers});
+  $Res call({Completer<GoogleMapController>? controller, Set<Marker> markers});
 }
 
 /// @nodoc
@@ -53,9 +58,14 @@ class _$MapStateCopyWithImpl<$Res> implements $MapStateCopyWith<$Res> {
 
   @override
   $Res call({
+    Object? controller = freezed,
     Object? markers = freezed,
   }) {
     return _then(_value.copyWith(
+      controller: controller == freezed
+          ? _value.controller
+          : controller // ignore: cast_nullable_to_non_nullable
+              as Completer<GoogleMapController>?,
       markers: markers == freezed
           ? _value.markers
           : markers // ignore: cast_nullable_to_non_nullable
@@ -69,7 +79,7 @@ abstract class _$MapStateCopyWith<$Res> implements $MapStateCopyWith<$Res> {
   factory _$MapStateCopyWith(_MapState value, $Res Function(_MapState) then) =
       __$MapStateCopyWithImpl<$Res>;
   @override
-  $Res call({Set<Marker> markers});
+  $Res call({Completer<GoogleMapController>? controller, Set<Marker> markers});
 }
 
 /// @nodoc
@@ -83,9 +93,14 @@ class __$MapStateCopyWithImpl<$Res> extends _$MapStateCopyWithImpl<$Res>
 
   @override
   $Res call({
+    Object? controller = freezed,
     Object? markers = freezed,
   }) {
     return _then(_MapState(
+      controller: controller == freezed
+          ? _value.controller
+          : controller // ignore: cast_nullable_to_non_nullable
+              as Completer<GoogleMapController>?,
       markers: markers == freezed
           ? _value.markers
           : markers // ignore: cast_nullable_to_non_nullable
@@ -97,28 +112,36 @@ class __$MapStateCopyWithImpl<$Res> extends _$MapStateCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_MapState implements _MapState {
-  const _$_MapState({this.markers = const {}});
+  const _$_MapState({this.controller = null, this.markers = const {}});
 
+  @JsonKey(defaultValue: null)
+  @override
+  final Completer<GoogleMapController>? controller;
   @JsonKey(defaultValue: const {})
   @override
   final Set<Marker> markers;
 
   @override
   String toString() {
-    return 'MapState(markers: $markers)';
+    return 'MapState(controller: $controller, markers: $markers)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other is _MapState &&
+            (identical(other.controller, controller) ||
+                const DeepCollectionEquality()
+                    .equals(other.controller, controller)) &&
             (identical(other.markers, markers) ||
                 const DeepCollectionEquality().equals(other.markers, markers)));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(markers);
+      runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(controller) ^
+      const DeepCollectionEquality().hash(markers);
 
   @JsonKey(ignore: true)
   @override
@@ -127,8 +150,13 @@ class _$_MapState implements _MapState {
 }
 
 abstract class _MapState implements MapState {
-  const factory _MapState({Set<Marker> markers}) = _$_MapState;
+  const factory _MapState(
+      {Completer<GoogleMapController>? controller,
+      Set<Marker> markers}) = _$_MapState;
 
+  @override
+  Completer<GoogleMapController>? get controller =>
+      throw _privateConstructorUsedError;
   @override
   Set<Marker> get markers => throw _privateConstructorUsedError;
   @override

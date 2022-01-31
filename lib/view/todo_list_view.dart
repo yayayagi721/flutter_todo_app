@@ -1,31 +1,50 @@
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_todo_app/view_model/todo_list_controller.dart';
+import 'package:flutter_todo_app/const/enums.dart';
+import 'package:flutter_todo_app/model/todo.dart';
+import 'package:flutter_todo_app/repository/todo_list_repository_impl.dart';
+import 'package:flutter_todo_app/view_model/todo_list_view_model.dart';
 import 'package:flutter_todo_app/widget/main_drawer.dart';
 import 'package:flutter_todo_app/widget/todo_form.dart';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+
+final todoListRepositoryProvider = Provider(
+  (ref) => TodoListRepositoryImpl(),
+);
 
 final todoListProvider =
-    StateNotifierProvider((ref) => TodoListStateController());
+    StateNotifierProvider((ref) => TodoListStateController(ref.read));
 
 class TodoListView extends HookWidget {
   @override
   Widget build(BuildContext context) {
+    final notifier = useProvider(todoListProvider.notifier);
+
+    useEffect(() {
+      notifier.fetch();
+      notifier.getAllAddress();
+      return () {};
+    }, const []);
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Todo App"),
       ),
       body: ListView(
         children: todoList(),
+        padding: EdgeInsets.only(left: 15, right: 15),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => {
-          showMaterialModalBottomSheet(
+          showModalBottomSheet(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+            ),
+            isDismissible: false,
             context: context,
-            builder: (context) => TodoInputForm(),
+            builder: (context) => TodoInputForm(FormKind.create),
           )
         },
         tooltip: 'AddTodo',
@@ -37,51 +56,96 @@ class TodoListView extends HookWidget {
 
   List<Widget> todoList() {
     final state = useProvider(todoListProvider);
-    final list = state.todoList;
-    final hoge =
-        list.map((todo) => _contentsCard(todo.title, todo.id)).toList();
-    final huga = [_dateLine(DateTime.now()), ...hoge];
-    return huga.cast<Widget>();
+
+    Map<String, List<Todo>> todoListModel = state.todoList;
+
+    //存在する日付でソート
+    var sortKeys = todoListModel.keys.toList();
+    print(sortKeys);
+
+    sortKeys.sort((a, b) => a.compareTo(b));
+
+    List<Widget> allTodoCards = [];
+    sortKeys.forEach((key) {
+      allTodoCards = [
+        ...allTodoCards,
+        ...todoOnOneDay(key, todoListModel[key]!)
+      ];
+    });
+
+    return allTodoCards;
   }
 
-  Widget _dateLine(DateTime dt) {
-    DateFormat outputFormat = DateFormat('yyyy-MM-dd');
-    String date = outputFormat.format(dt);
+  List<Widget> todoOnOneDay(String targetDate, List<Todo> todos) {
+    final datetime = DateTime.parse(targetDate);
+    final formatter = new DateFormat('yyyy年M月d日', "ja_JP");
+    final formatted = formatter.format(datetime); // DateからString
+    final todoCards = todos.map((todo) => _contentsCard(todo)).toList();
+    return <Widget>[_dateLine(formatted), ...todoCards];
+  }
+
+  Widget _dateLine(String targetDate) {
     return Container(
-      padding: EdgeInsets.only(top: 10, bottom: 10),
-      alignment: AlignmentDirectional.center,
+      padding: EdgeInsets.only(top: 20),
       child: Text(
-        date,
-        style: TextStyle(fontSize: 18),
+        targetDate,
+        style: TextStyle(fontSize: 16, color: Colors.black54),
       ),
     );
   }
 
-  Widget _contentsCard(
-    String title,
-    String text,
-  ) {
-    return Card(
-      child: Row(
-        children: [
-          SizedBox(
-            width: 20,
+  Widget _contentsCard(Todo todo) {
+    final context = useContext();
+    return InkWell(
+      onTap: () {
+        showModalBottomSheet(
+          enableDrag: false,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
           ),
-          Expanded(
-            flex: 4,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                _title("ラーメン生男"),
-                SizedBox(
-                  height: 5,
-                ),
-                _subContent(Icons.watch_later, "piyo"),
-                _subContent(Icons.place, "huga"),
-              ],
-            ),
-          )
-        ],
+          isDismissible: false,
+          context: context,
+          builder: (context) => TodoInputForm(FormKind.update, todo),
+        );
+      },
+      child: Container(
+        margin: EdgeInsets.only(top: 8),
+        decoration: BoxDecoration(
+          color: Colors.black12,
+          borderRadius: BorderRadius.circular(15),
+        ),
+        child: IntrinsicHeight(
+          child: Row(children: [
+            Container(
+                width: 10,
+                decoration: BoxDecoration(
+                  color: Colors.black45,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(15),
+                      bottomLeft: Radius.circular(15)),
+                )),
+            Expanded(
+                child: Padding(
+              padding: EdgeInsets.only(left: 10, top: 10, bottom: 10),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  _title(todo.title),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  _description(todo.locationName ?? "位置情報未読み込み"),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  _subContent(Icons.watch_later,
+                      DateFormat('HH:mm').format(todo.eventAt)),
+                  // _subContent(Icons.place, todo.locationName ?? "位置情報未読み込み"),
+                ],
+              ),
+            ))
+          ]),
+        ),
       ),
     );
   }
@@ -90,9 +154,16 @@ class TodoListView extends HookWidget {
     return Container(
         alignment: AlignmentDirectional.centerStart,
         child: Text(
-          "huga",
-          style: TextStyle(fontSize: 24),
+          text,
+          style: TextStyle(fontSize: 20),
         ));
+  }
+
+  Widget _description(String text) {
+    return Container(
+        alignment: AlignmentDirectional.centerStart,
+        child:
+            Text(text, style: TextStyle(fontSize: 14, color: Colors.black54)));
   }
 
   Widget _subContent(IconData icon, String text) {
@@ -104,7 +175,7 @@ class TodoListView extends HookWidget {
             SizedBox(
               width: 5,
             ),
-            Text("huga")
+            Text(text)
           ],
         ));
   }

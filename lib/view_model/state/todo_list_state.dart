@@ -7,6 +7,7 @@ part 'todo_list_state.freezed.dart';
 @freezed
 class TodoListState with _$TodoListState {
   const factory TodoListState({
-    @Default(<Todo>[]) List<Todo> todoList,
+    @Default(false) bool isLoaded,
+    @Default({}) Map<String, List<Todo>> todoList,
   }) = _TodoListState;
 }

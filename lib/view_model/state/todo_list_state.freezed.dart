@@ -17,8 +17,10 @@ final _privateConstructorUsedError = UnsupportedError(
 class _$TodoListStateTearOff {
   const _$TodoListStateTearOff();
 
-  _TodoListState call({List<Todo> todoList = const <Todo>[]}) {
+  _TodoListState call(
+      {bool isLoaded = false, Map<String, List<Todo>> todoList = const {}}) {
     return _TodoListState(
+      isLoaded: isLoaded,
       todoList: todoList,
     );
   }
@@ -29,7 +31,8 @@ const $TodoListState = _$TodoListStateTearOff();
 
 /// @nodoc
 mixin _$TodoListState {
-  List<Todo> get todoList => throw _privateConstructorUsedError;
+  bool get isLoaded => throw _privateConstructorUsedError;
+  Map<String, List<Todo>> get todoList => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $TodoListStateCopyWith<TodoListState> get copyWith =>
@@ -41,7 +44,7 @@ abstract class $TodoListStateCopyWith<$Res> {
   factory $TodoListStateCopyWith(
           TodoListState value, $Res Function(TodoListState) then) =
       _$TodoListStateCopyWithImpl<$Res>;
-  $Res call({List<Todo> todoList});
+  $Res call({bool isLoaded, Map<String, List<Todo>> todoList});
 }
 
 /// @nodoc
@@ -55,13 +58,18 @@ class _$TodoListStateCopyWithImpl<$Res>
 
   @override
   $Res call({
+    Object? isLoaded = freezed,
     Object? todoList = freezed,
   }) {
     return _then(_value.copyWith(
+      isLoaded: isLoaded == freezed
+          ? _value.isLoaded
+          : isLoaded // ignore: cast_nullable_to_non_nullable
+              as bool,
       todoList: todoList == freezed
           ? _value.todoList
           : todoList // ignore: cast_nullable_to_non_nullable
-              as List<Todo>,
+              as Map<String, List<Todo>>,
     ));
   }
 }
@@ -73,7 +81,7 @@ abstract class _$TodoListStateCopyWith<$Res>
           _TodoListState value, $Res Function(_TodoListState) then) =
       __$TodoListStateCopyWithImpl<$Res>;
   @override
-  $Res call({List<Todo> todoList});
+  $Res call({bool isLoaded, Map<String, List<Todo>> todoList});
 }
 
 /// @nodoc
@@ -89,13 +97,18 @@ class __$TodoListStateCopyWithImpl<$Res>
 
   @override
   $Res call({
+    Object? isLoaded = freezed,
     Object? todoList = freezed,
   }) {
     return _then(_TodoListState(
+      isLoaded: isLoaded == freezed
+          ? _value.isLoaded
+          : isLoaded // ignore: cast_nullable_to_non_nullable
+              as bool,
       todoList: todoList == freezed
           ? _value.todoList
           : todoList // ignore: cast_nullable_to_non_nullable
-              as List<Todo>,
+              as Map<String, List<Todo>>,
     ));
   }
 }
@@ -103,15 +116,18 @@ class __$TodoListStateCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_TodoListState with DiagnosticableTreeMixin implements _TodoListState {
-  const _$_TodoListState({this.todoList = const <Todo>[]});
+  const _$_TodoListState({this.isLoaded = false, this.todoList = const {}});
 
-  @JsonKey(defaultValue: const <Todo>[])
+  @JsonKey(defaultValue: false)
   @override
-  final List<Todo> todoList;
+  final bool isLoaded;
+  @JsonKey(defaultValue: const {})
+  @override
+  final Map<String, List<Todo>> todoList;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'TodoListState(todoList: $todoList)';
+    return 'TodoListState(isLoaded: $isLoaded, todoList: $todoList)';
   }
 
   @override
@@ -119,6 +135,7 @@ class _$_TodoListState with DiagnosticableTreeMixin implements _TodoListState {
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'TodoListState'))
+      ..add(DiagnosticsProperty('isLoaded', isLoaded))
       ..add(DiagnosticsProperty('todoList', todoList));
   }
 
@@ -126,6 +143,9 @@ class _$_TodoListState with DiagnosticableTreeMixin implements _TodoListState {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other is _TodoListState &&
+            (identical(other.isLoaded, isLoaded) ||
+                const DeepCollectionEquality()
+                    .equals(other.isLoaded, isLoaded)) &&
             (identical(other.todoList, todoList) ||
                 const DeepCollectionEquality()
                     .equals(other.todoList, todoList)));
@@ -133,7 +153,9 @@ class _$_TodoListState with DiagnosticableTreeMixin implements _TodoListState {
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(todoList);
+      runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(isLoaded) ^
+      const DeepCollectionEquality().hash(todoList);
 
   @JsonKey(ignore: true)
   @override
@@ -142,10 +164,13 @@ class _$_TodoListState with DiagnosticableTreeMixin implements _TodoListState {
 }
 
 abstract class _TodoListState implements TodoListState {
-  const factory _TodoListState({List<Todo> todoList}) = _$_TodoListState;
+  const factory _TodoListState(
+      {bool isLoaded, Map<String, List<Todo>> todoList}) = _$_TodoListState;
 
   @override
-  List<Todo> get todoList => throw _privateConstructorUsedError;
+  bool get isLoaded => throw _privateConstructorUsedError;
+  @override
+  Map<String, List<Todo>> get todoList => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$TodoListStateCopyWith<_TodoListState> get copyWith =>
