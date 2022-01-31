@@ -18,6 +18,10 @@ class TodoFormStateController extends StateNotifier<TodoFormState> {
     state = state.copyWith(id: id);
   }
 
+  void inputNotifyInAdvanceVal(int? value) {
+    state = state.copyWith(notifyInAdvanceVal: value);
+  }
+
   void inputText(String text) {
     print("change ${state}");
     state = state.copyWith(title: text);

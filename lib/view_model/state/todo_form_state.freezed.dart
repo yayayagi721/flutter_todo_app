@@ -27,6 +27,7 @@ class _$TodoFormStateTearOff {
       String? locationName = null,
       DateTime? eventTime = null,
       DateTime? notificationTime = null,
+      int? notifyInAdvanceVal = 360,
       bool isFocus = false}) {
     return _TodoFormState(
       formKind: formKind,
@@ -38,6 +39,7 @@ class _$TodoFormStateTearOff {
       locationName: locationName,
       eventTime: eventTime,
       notificationTime: notificationTime,
+      notifyInAdvanceVal: notifyInAdvanceVal,
       isFocus: isFocus,
     );
   }
@@ -57,6 +59,7 @@ mixin _$TodoFormState {
   String? get locationName => throw _privateConstructorUsedError;
   DateTime? get eventTime => throw _privateConstructorUsedError;
   DateTime? get notificationTime => throw _privateConstructorUsedError;
+  int? get notifyInAdvanceVal => throw _privateConstructorUsedError;
   bool get isFocus => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -79,6 +82,7 @@ abstract class $TodoFormStateCopyWith<$Res> {
       String? locationName,
       DateTime? eventTime,
       DateTime? notificationTime,
+      int? notifyInAdvanceVal,
       bool isFocus});
 }
 
@@ -102,6 +106,7 @@ class _$TodoFormStateCopyWithImpl<$Res>
     Object? locationName = freezed,
     Object? eventTime = freezed,
     Object? notificationTime = freezed,
+    Object? notifyInAdvanceVal = freezed,
     Object? isFocus = freezed,
   }) {
     return _then(_value.copyWith(
@@ -141,6 +146,10 @@ class _$TodoFormStateCopyWithImpl<$Res>
           ? _value.notificationTime
           : notificationTime // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      notifyInAdvanceVal: notifyInAdvanceVal == freezed
+          ? _value.notifyInAdvanceVal
+          : notifyInAdvanceVal // ignore: cast_nullable_to_non_nullable
+              as int?,
       isFocus: isFocus == freezed
           ? _value.isFocus
           : isFocus // ignore: cast_nullable_to_non_nullable
@@ -166,6 +175,7 @@ abstract class _$TodoFormStateCopyWith<$Res>
       String? locationName,
       DateTime? eventTime,
       DateTime? notificationTime,
+      int? notifyInAdvanceVal,
       bool isFocus});
 }
 
@@ -191,6 +201,7 @@ class __$TodoFormStateCopyWithImpl<$Res>
     Object? locationName = freezed,
     Object? eventTime = freezed,
     Object? notificationTime = freezed,
+    Object? notifyInAdvanceVal = freezed,
     Object? isFocus = freezed,
   }) {
     return _then(_TodoFormState(
@@ -230,6 +241,10 @@ class __$TodoFormStateCopyWithImpl<$Res>
           ? _value.notificationTime
           : notificationTime // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      notifyInAdvanceVal: notifyInAdvanceVal == freezed
+          ? _value.notifyInAdvanceVal
+          : notifyInAdvanceVal // ignore: cast_nullable_to_non_nullable
+              as int?,
       isFocus: isFocus == freezed
           ? _value.isFocus
           : isFocus // ignore: cast_nullable_to_non_nullable
@@ -251,6 +266,7 @@ class _$_TodoFormState extends _TodoFormState with DiagnosticableTreeMixin {
       this.locationName = null,
       this.eventTime = null,
       this.notificationTime = null,
+      this.notifyInAdvanceVal = 360,
       this.isFocus = false})
       : super._();
 
@@ -281,13 +297,16 @@ class _$_TodoFormState extends _TodoFormState with DiagnosticableTreeMixin {
   @JsonKey(defaultValue: null)
   @override
   final DateTime? notificationTime;
+  @JsonKey(defaultValue: 360)
+  @override
+  final int? notifyInAdvanceVal;
   @JsonKey(defaultValue: false)
   @override
   final bool isFocus;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'TodoFormState(formKind: $formKind, selectedKind: $selectedKind, id: $id, title: $title, latitude: $latitude, longitude: $longitude, locationName: $locationName, eventTime: $eventTime, notificationTime: $notificationTime, isFocus: $isFocus)';
+    return 'TodoFormState(formKind: $formKind, selectedKind: $selectedKind, id: $id, title: $title, latitude: $latitude, longitude: $longitude, locationName: $locationName, eventTime: $eventTime, notificationTime: $notificationTime, notifyInAdvanceVal: $notifyInAdvanceVal, isFocus: $isFocus)';
   }
 
   @override
@@ -304,6 +323,7 @@ class _$_TodoFormState extends _TodoFormState with DiagnosticableTreeMixin {
       ..add(DiagnosticsProperty('locationName', locationName))
       ..add(DiagnosticsProperty('eventTime', eventTime))
       ..add(DiagnosticsProperty('notificationTime', notificationTime))
+      ..add(DiagnosticsProperty('notifyInAdvanceVal', notifyInAdvanceVal))
       ..add(DiagnosticsProperty('isFocus', isFocus));
   }
 
@@ -336,6 +356,9 @@ class _$_TodoFormState extends _TodoFormState with DiagnosticableTreeMixin {
             (identical(other.notificationTime, notificationTime) ||
                 const DeepCollectionEquality()
                     .equals(other.notificationTime, notificationTime)) &&
+            (identical(other.notifyInAdvanceVal, notifyInAdvanceVal) ||
+                const DeepCollectionEquality()
+                    .equals(other.notifyInAdvanceVal, notifyInAdvanceVal)) &&
             (identical(other.isFocus, isFocus) ||
                 const DeepCollectionEquality().equals(other.isFocus, isFocus)));
   }
@@ -352,6 +375,7 @@ class _$_TodoFormState extends _TodoFormState with DiagnosticableTreeMixin {
       const DeepCollectionEquality().hash(locationName) ^
       const DeepCollectionEquality().hash(eventTime) ^
       const DeepCollectionEquality().hash(notificationTime) ^
+      const DeepCollectionEquality().hash(notifyInAdvanceVal) ^
       const DeepCollectionEquality().hash(isFocus);
 
   @JsonKey(ignore: true)
@@ -371,6 +395,7 @@ abstract class _TodoFormState extends TodoFormState {
       String? locationName,
       DateTime? eventTime,
       DateTime? notificationTime,
+      int? notifyInAdvanceVal,
       bool isFocus}) = _$_TodoFormState;
   const _TodoFormState._() : super._();
 
@@ -392,6 +417,8 @@ abstract class _TodoFormState extends TodoFormState {
   DateTime? get eventTime => throw _privateConstructorUsedError;
   @override
   DateTime? get notificationTime => throw _privateConstructorUsedError;
+  @override
+  int? get notifyInAdvanceVal => throw _privateConstructorUsedError;
   @override
   bool get isFocus => throw _privateConstructorUsedError;
   @override

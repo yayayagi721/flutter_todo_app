@@ -3,15 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_todo_app/const/common.dart';
 import 'package:flutter_todo_app/const/enums.dart';
-import 'package:flutter_todo_app/main.dart';
 import 'package:flutter_todo_app/model/todo.dart';
-import 'package:flutter_todo_app/repository/location_search_repository_impl.dart';
 import 'package:flutter_todo_app/view_model/todo_form_view_model.dart';
 import 'package:flutter_todo_app/widget/datetime_input.dart';
 import 'package:flutter_todo_app/widget/location_input_tab.dart';
 import 'package:flutter_todo_app/widget/notification_input_tab.dart';
 import 'package:flutter_todo_app/widget/text_input.dart';
-import 'package:hexcolor/hexcolor.dart';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -45,45 +42,93 @@ class TodoInputForm extends HookWidget {
       return () {};
     }, const []);
 
-    return Focus(
-        child: Container(
-      padding: EdgeInsets.all(5),
-      // key: _key,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          _headerArea(),
-          _inputArea(),
-          _selectArea(),
-        ],
-      ),
-    ));
+    return SingleChildScrollView(
+        physics: NeverScrollableScrollPhysics(),
+        child: Focus(
+          child: Container(
+            // key: _key,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                _headerArea(),
+                _inputArea(),
+                _selectArea(),
+              ],
+            ),
+          ),
+        ));
   }
 
   Widget _selectArea() {
+    final context = useContext();
     return Container(
-      height: lyoutConst.menuBarHeight,
-      padding: EdgeInsets.all(5),
-      child: Center(
-          child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          _inputKinds(),
-          FormSubmitButton(),
-        ],
-      )),
-    );
+        height: lyoutConst.menuBarHeight,
+        decoration: BoxDecoration(
+          color: Theme.of(context).primaryColorLight.withOpacity(0.5),
+          borderRadius: BorderRadius.circular(15),
+        ),
+        padding: EdgeInsets.only(left: 15, right: 15, bottom: 10),
+        child: Center(
+            child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            _inputKinds(),
+            FormSubmitButton(),
+          ],
+        )));
   }
 
   Widget _headerArea() {
     return Container(
       height: lyoutConst.formHeaderHeight,
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: const BorderSide(
+            color: Colors.black12,
+          ),
+        ),
+      ),
       child: Center(
           child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [_headerIcon()],
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Padding(
+              padding: EdgeInsets.only(
+                left: 20,
+              ),
+              child: _headerText()),
+          _headerIcon()
+        ],
       )),
+    );
+  }
+
+  Widget _headerText() {
+    final formState = useProvider(todoFormProvider);
+
+    final headerStr;
+    switch (formState.selectedKind) {
+      case TabKind.text:
+        headerStr = "タイトル";
+        break;
+      case TabKind.location:
+        headerStr = "予定がある場所";
+        break;
+      case TabKind.datetime:
+        headerStr = "予定がある日時";
+        break;
+      case TabKind.notifications:
+        headerStr = "通知時間";
+        break;
+      default:
+        print('select kind is not exist');
+        exit(0);
+    }
+
+    return Text(
+      headerStr,
+      style: TextStyle(color: Colors.black38),
     );
   }
 
@@ -153,48 +198,53 @@ class TodoInputForm extends HookWidget {
   Widget _inputKinds() {
     final controller = useProvider(todoFormProvider.notifier);
     final formState = useProvider(todoFormProvider);
+    final context = useContext();
 
     return Row(
       children: [
-        IconButton(
-          icon: Icon(
-            Icons.add_comment,
-            color: formState.isValidTitle()
-                ? HexColor("#009A00")
-                : HexColor("#FF0058"),
-          ),
-          onPressed: () {
-            controller.selectTabKind(TabKind.text);
-          },
-        ),
-        IconButton(
-          icon: Icon(Icons.access_time_filled,
-              color: formState.isValidEventTime()
-                  ? HexColor("#009A00")
-                  : HexColor("#FF0058")),
-          onPressed: () {
-            controller.selectTabKind(TabKind.datetime);
-          },
-        ),
-        IconButton(
-          icon: Icon(Icons.add_location_sharp,
-              color: formState.isValidLocation()
-                  ? HexColor("#009A00")
-                  : HexColor("#FF0058")),
-          onPressed: () {
-            controller.selectTabKind(TabKind.location);
-          },
-        ),
-        IconButton(
-          icon: Icon(Icons.notifications,
-              color: formState.isValidLocation()
-                  ? HexColor("#009A00")
-                  : HexColor("#FF0058")),
-          onPressed: () {
-            controller.selectTabKind(TabKind.notifications);
-          },
-        ),
+        _kindButton(TabKind.text),
+        _kindButton(TabKind.datetime),
+        _kindButton(TabKind.location),
+        _kindButton(TabKind.notifications),
       ],
     );
+  }
+
+  Widget _kindButton(TabKind kind) {
+    final formState = useProvider(todoFormProvider);
+    final controller = useProvider(todoFormProvider.notifier);
+
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        color: formState.selectedKind == kind
+            ? Colors.white.withOpacity(0.8)
+            : null,
+      ),
+      child: IconButton(
+        icon: Icon(_icon(kind),
+            color:
+                formState.selectedKind == kind ? Colors.black : Colors.black54),
+        onPressed: () {
+          controller.selectTabKind(kind);
+        },
+      ),
+    );
+  }
+
+  IconData _icon(TabKind kind) {
+    switch (kind) {
+      case TabKind.text:
+        return Icons.add_comment;
+      case TabKind.location:
+        return Icons.add_location_sharp;
+      case TabKind.datetime:
+        return Icons.access_time_filled;
+      case TabKind.notifications:
+        return Icons.notifications;
+      default:
+        print('select kind is not exist');
+        exit(0);
+    }
   }
 }

@@ -15,7 +15,7 @@ class LocationInputTab extends HookWidget {
     final formState = useProvider(todoFormProvider);
 
     return Container(
-      padding: EdgeInsets.only(left: 10),
+      padding: EdgeInsets.only(top: 15, bottom: 15, left: 10),
       child: Row(
         children: [
           Icon(

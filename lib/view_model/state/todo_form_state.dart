@@ -17,6 +17,7 @@ class TodoFormState with _$TodoFormState {
     @Default(null) String? locationName,
     @Default(null) DateTime? eventTime,
     @Default(null) DateTime? notificationTime,
+    @Default(360) int? notifyInAdvanceVal,
     @Default(false) bool isFocus,
   }) = _TodoFormState;
 

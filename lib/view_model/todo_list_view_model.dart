@@ -17,49 +17,41 @@ class TodoListStateController extends StateNotifier<TodoListState> {
         isLoaded: true, todoList: _toTodoMap(todoListRepository.getAll()));
   }
 
-  Future create(
-      String title,
-      DateTime eventAt,
-      double latitude,
-      double longitude,
-      String? locationName,
-      DateTime? notificationTime) async {
+  Future create(String title, DateTime eventAt, double latitude,
+      double longitude, String? locationName, int? notifyInAdvanceVal) async {
     final todoListRepository = read(todoListRepositoryProvider);
     final idRepository = read(idRepositoryProvider);
 
     final todoId = idRepository.createTodoId();
     var notificationId = null;
-
-    //通知時間が入っていたら通知をセットする
-    if (notificationTime != null) {
-      notificationId = _setNotification(title, eventAt, notificationTime);
+    if (notifyInAdvanceVal != null) {
+      final durationed = eventAt.add(Duration(minutes: -notifyInAdvanceVal));
+      if (durationed.isAfter(DateTime.now())) {
+        notificationId = await _setNotification(title, eventAt,
+            eventAt.add(Duration(minutes: -notifyInAdvanceVal)));
+      }
     }
 
+    //通知時間が入っていたら通知をセットする
     final now = DateTime.now();
     final todo = Todo(todoId, title, eventAt, latitude, longitude, locationName,
-        now, now, notificationId);
+        now, now, notificationId, notifyInAdvanceVal);
     final newTodoList = _addTodo(todo, {...state.todoList});
     state = state.copyWith(todoList: newTodoList);
     todoListRepository.create(todo);
     getAddress(todo);
   }
 
-  void update(
-      String id,
-      String title,
-      DateTime eventAt,
-      double latitude,
-      double longitude,
-      String? locationName,
-      DateTime? notificationTime) async {
+  void update(String id, String title, DateTime eventAt, double latitude,
+      double longitude, String? locationName, int? notifyInAdvanceVal) async {
     final todoListRepository = read(todoListRepositoryProvider);
 
     final todo = todoListRepository.get(id);
     var notificationId = todo.notificationId;
 
-    if (notificationTime != null) {
-      notificationId = await _setNotification(
-          title, eventAt, notificationTime, notificationId);
+    if (notifyInAdvanceVal != null) {
+      notificationId = await _setNotification(title, eventAt,
+          eventAt.add(Duration(minutes: -notifyInAdvanceVal)), notificationId);
     }
 
     //update時の時間を記録
@@ -70,7 +62,8 @@ class TodoListStateController extends StateNotifier<TodoListState> {
         latitude: latitude,
         longitude: longitude,
         updatedAt: updatedAt,
-        locationName: locationName);
+        locationName: locationName,
+        notifyInAdvanceVal: notifyInAdvanceVal);
 
     todoListRepository.update(newTodo);
     getAddress(newTodo);

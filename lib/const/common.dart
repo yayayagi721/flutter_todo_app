@@ -8,6 +8,6 @@ class CommonConst {
 }
 
 class lyoutConst {
-  static const double menuBarHeight = 80;
-  static const double formHeaderHeight = 45;
+  static const double menuBarHeight = 90;
+  static const double formHeaderHeight = 60;
 }

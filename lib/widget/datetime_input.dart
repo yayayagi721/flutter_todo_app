@@ -16,6 +16,7 @@ class DatetimeInput extends HookWidget {
     }, []);
 
     return Container(
+      padding: EdgeInsets.only(top: 15, bottom: 15),
       height: 100,
       child: CupertinoDatePicker(
         initialDateTime: state.eventTime ?? now,

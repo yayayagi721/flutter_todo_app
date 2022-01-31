@@ -31,18 +31,24 @@ class TextInput extends HookWidget {
     }
 
     return Container(
+      padding: EdgeInsets.only(top: 15, bottom: 15),
       child: Padding(
-        padding: EdgeInsets.only(bottom: bottomSpace),
+        padding:
+            EdgeInsets.only(top: 10, left: 20, right: 20, bottom: bottomSpace),
         child: TextField(
           controller: _textEditingController,
           focusNode: focusNode,
           enabled: true,
-          maxLength: 20,
           obscureText: false,
+          maxLength: 20,
           maxLines: 1,
           onChanged: (input) {
             controller.inputText(input);
           },
+          decoration: InputDecoration(
+            hintText: '予定内容を入力してください',
+            filled: true,
+          ),
           onSubmitted: (_) {
             FocusManager.instance.primaryFocus?.unfocus();
           },

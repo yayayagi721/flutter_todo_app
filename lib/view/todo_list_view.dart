@@ -99,6 +99,7 @@ class TodoListView extends HookWidget {
     return InkWell(
       onTap: () {
         showModalBottomSheet(
+          enableDrag: false,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
           ),
