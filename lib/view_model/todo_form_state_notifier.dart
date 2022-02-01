@@ -4,9 +4,9 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'state/todo_form_state.dart';
 
-class TodoFormStateController extends StateNotifier<TodoFormState> {
+class TodoFormStateNotifier extends StateNotifier<TodoFormState> {
   //TODO:初期化はこれでいいのか調べる
-  TodoFormStateController(this.read) : super(TodoFormState());
+  TodoFormStateNotifier(this.read) : super(TodoFormState());
 
   final Reader read;
 

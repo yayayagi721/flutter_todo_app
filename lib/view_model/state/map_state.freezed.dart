@@ -1,5 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
 part of 'map_state.dart';
@@ -114,10 +115,10 @@ class __$MapStateCopyWithImpl<$Res> extends _$MapStateCopyWithImpl<$Res>
 class _$_MapState implements _MapState {
   const _$_MapState({this.controller = null, this.markers = const {}});
 
-  @JsonKey(defaultValue: null)
+  @JsonKey()
   @override
   final Completer<GoogleMapController>? controller;
-  @JsonKey(defaultValue: const {})
+  @JsonKey()
   @override
   final Set<Marker> markers;
 
@@ -129,19 +130,18 @@ class _$_MapState implements _MapState {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _MapState &&
-            (identical(other.controller, controller) ||
-                const DeepCollectionEquality()
-                    .equals(other.controller, controller)) &&
-            (identical(other.markers, markers) ||
-                const DeepCollectionEquality().equals(other.markers, markers)));
+        (other.runtimeType == runtimeType &&
+            other is _MapState &&
+            const DeepCollectionEquality()
+                .equals(other.controller, controller) &&
+            const DeepCollectionEquality().equals(other.markers, markers));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(controller) ^
-      const DeepCollectionEquality().hash(markers);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(controller),
+      const DeepCollectionEquality().hash(markers));
 
   @JsonKey(ignore: true)
   @override
@@ -155,10 +155,9 @@ abstract class _MapState implements MapState {
       Set<Marker> markers}) = _$_MapState;
 
   @override
-  Completer<GoogleMapController>? get controller =>
-      throw _privateConstructorUsedError;
+  Completer<GoogleMapController>? get controller;
   @override
-  Set<Marker> get markers => throw _privateConstructorUsedError;
+  Set<Marker> get markers;
   @override
   @JsonKey(ignore: true)
   _$MapStateCopyWith<_MapState> get copyWith =>

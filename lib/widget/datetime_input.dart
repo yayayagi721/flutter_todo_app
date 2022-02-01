@@ -3,12 +3,12 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_todo_app/widget/todo_form.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class DatetimeInput extends HookWidget {
+class DatetimeInput extends HookConsumerWidget {
   @override
-  Widget build(BuildContext context) {
-    final controller = useProvider(todoFormProvider.notifier);
-    final state = useProvider(todoFormProvider);
+  Widget build(BuildContext context, WidgetRef ref) {
     final now = DateTime.now();
+    final todoFormController = ref.read(todoFormProvider.notifier);
+    final todoFormState = ref.watch(todoFormProvider);
 
     useEffect(() {
       WidgetsBinding.instance!

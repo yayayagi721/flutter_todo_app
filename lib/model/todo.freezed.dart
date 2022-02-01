@@ -1,5 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
 part of 'todo.dart';
@@ -46,7 +47,7 @@ class _$TodoTearOff {
     );
   }
 
-  Todo fromJson(Map<String, Object> json) {
+  Todo fromJson(Map<String, Object?> json) {
     return Todo.fromJson(json);
   }
 }
@@ -325,50 +326,36 @@ class _$_Todo extends _Todo with DiagnosticableTreeMixin {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Todo &&
-            (identical(other.id, id) ||
-                const DeepCollectionEquality().equals(other.id, id)) &&
-            (identical(other.title, title) ||
-                const DeepCollectionEquality().equals(other.title, title)) &&
-            (identical(other.eventAt, eventAt) ||
-                const DeepCollectionEquality()
-                    .equals(other.eventAt, eventAt)) &&
-            (identical(other.latitude, latitude) ||
-                const DeepCollectionEquality()
-                    .equals(other.latitude, latitude)) &&
-            (identical(other.longitude, longitude) ||
-                const DeepCollectionEquality()
-                    .equals(other.longitude, longitude)) &&
-            (identical(other.locationName, locationName) ||
-                const DeepCollectionEquality()
-                    .equals(other.locationName, locationName)) &&
-            (identical(other.createdAt, createdAt) ||
-                const DeepCollectionEquality()
-                    .equals(other.createdAt, createdAt)) &&
-            (identical(other.updatedAt, updatedAt) ||
-                const DeepCollectionEquality()
-                    .equals(other.updatedAt, updatedAt)) &&
-            (identical(other.notificationId, notificationId) ||
-                const DeepCollectionEquality()
-                    .equals(other.notificationId, notificationId)) &&
-            (identical(other.notifyInAdvanceVal, notifyInAdvanceVal) ||
-                const DeepCollectionEquality()
-                    .equals(other.notifyInAdvanceVal, notifyInAdvanceVal)));
+        (other.runtimeType == runtimeType &&
+            other is _Todo &&
+            const DeepCollectionEquality().equals(other.id, id) &&
+            const DeepCollectionEquality().equals(other.title, title) &&
+            const DeepCollectionEquality().equals(other.eventAt, eventAt) &&
+            const DeepCollectionEquality().equals(other.latitude, latitude) &&
+            const DeepCollectionEquality().equals(other.longitude, longitude) &&
+            const DeepCollectionEquality()
+                .equals(other.locationName, locationName) &&
+            const DeepCollectionEquality().equals(other.createdAt, createdAt) &&
+            const DeepCollectionEquality().equals(other.updatedAt, updatedAt) &&
+            const DeepCollectionEquality()
+                .equals(other.notificationId, notificationId) &&
+            const DeepCollectionEquality()
+                .equals(other.notifyInAdvanceVal, notifyInAdvanceVal));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(id) ^
-      const DeepCollectionEquality().hash(title) ^
-      const DeepCollectionEquality().hash(eventAt) ^
-      const DeepCollectionEquality().hash(latitude) ^
-      const DeepCollectionEquality().hash(longitude) ^
-      const DeepCollectionEquality().hash(locationName) ^
-      const DeepCollectionEquality().hash(createdAt) ^
-      const DeepCollectionEquality().hash(updatedAt) ^
-      const DeepCollectionEquality().hash(notificationId) ^
-      const DeepCollectionEquality().hash(notifyInAdvanceVal);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(id),
+      const DeepCollectionEquality().hash(title),
+      const DeepCollectionEquality().hash(eventAt),
+      const DeepCollectionEquality().hash(latitude),
+      const DeepCollectionEquality().hash(longitude),
+      const DeepCollectionEquality().hash(locationName),
+      const DeepCollectionEquality().hash(createdAt),
+      const DeepCollectionEquality().hash(updatedAt),
+      const DeepCollectionEquality().hash(notificationId),
+      const DeepCollectionEquality().hash(notifyInAdvanceVal));
 
   @JsonKey(ignore: true)
   @override
@@ -399,34 +386,34 @@ abstract class _Todo extends Todo {
 
   @override
   @HiveField(0)
-  String get id => throw _privateConstructorUsedError;
+  String get id;
   @override
   @HiveField(1)
-  String get title => throw _privateConstructorUsedError;
+  String get title;
   @override
   @HiveField(2)
-  DateTime get eventAt => throw _privateConstructorUsedError;
+  DateTime get eventAt;
   @override
   @HiveField(3)
-  double get latitude => throw _privateConstructorUsedError;
+  double get latitude;
   @override
   @HiveField(4)
-  double get longitude => throw _privateConstructorUsedError;
+  double get longitude;
   @override
   @HiveField(5)
-  String? get locationName => throw _privateConstructorUsedError;
+  String? get locationName;
   @override
   @HiveField(6)
-  DateTime get createdAt => throw _privateConstructorUsedError;
+  DateTime get createdAt;
   @override
   @HiveField(7)
-  DateTime get updatedAt => throw _privateConstructorUsedError;
+  DateTime get updatedAt;
   @override
   @HiveField(8)
-  int? get notificationId => throw _privateConstructorUsedError;
+  int? get notificationId;
   @override
   @HiveField(9)
-  int? get notifyInAdvanceVal => throw _privateConstructorUsedError;
+  int? get notifyInAdvanceVal;
   @override
   @JsonKey(ignore: true)
   _$TodoCopyWith<_Todo> get copyWith => throw _privateConstructorUsedError;

@@ -1,5 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
 part of 'todo_form_state.dart';
@@ -270,37 +271,37 @@ class _$_TodoFormState extends _TodoFormState with DiagnosticableTreeMixin {
       this.isFocus = false})
       : super._();
 
-  @JsonKey(defaultValue: FormKind.create)
+  @JsonKey()
   @override
   final FormKind formKind;
-  @JsonKey(defaultValue: TabKind.text)
+  @JsonKey()
   @override
   final TabKind selectedKind;
-  @JsonKey(defaultValue: null)
+  @JsonKey()
   @override
   final String? id;
-  @JsonKey(defaultValue: "")
+  @JsonKey()
   @override
   final String title;
-  @JsonKey(defaultValue: null)
+  @JsonKey()
   @override
   final double? latitude;
-  @JsonKey(defaultValue: null)
+  @JsonKey()
   @override
   final double? longitude;
-  @JsonKey(defaultValue: null)
+  @JsonKey()
   @override
   final String? locationName;
-  @JsonKey(defaultValue: null)
+  @JsonKey()
   @override
   final DateTime? eventTime;
-  @JsonKey(defaultValue: null)
+  @JsonKey()
   @override
   final DateTime? notificationTime;
-  @JsonKey(defaultValue: 360)
+  @JsonKey()
   @override
   final int? notifyInAdvanceVal;
-  @JsonKey(defaultValue: false)
+  @JsonKey()
   @override
   final bool isFocus;
 
@@ -330,53 +331,39 @@ class _$_TodoFormState extends _TodoFormState with DiagnosticableTreeMixin {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _TodoFormState &&
-            (identical(other.formKind, formKind) ||
-                const DeepCollectionEquality()
-                    .equals(other.formKind, formKind)) &&
-            (identical(other.selectedKind, selectedKind) ||
-                const DeepCollectionEquality()
-                    .equals(other.selectedKind, selectedKind)) &&
-            (identical(other.id, id) ||
-                const DeepCollectionEquality().equals(other.id, id)) &&
-            (identical(other.title, title) ||
-                const DeepCollectionEquality().equals(other.title, title)) &&
-            (identical(other.latitude, latitude) ||
-                const DeepCollectionEquality()
-                    .equals(other.latitude, latitude)) &&
-            (identical(other.longitude, longitude) ||
-                const DeepCollectionEquality()
-                    .equals(other.longitude, longitude)) &&
-            (identical(other.locationName, locationName) ||
-                const DeepCollectionEquality()
-                    .equals(other.locationName, locationName)) &&
-            (identical(other.eventTime, eventTime) ||
-                const DeepCollectionEquality()
-                    .equals(other.eventTime, eventTime)) &&
-            (identical(other.notificationTime, notificationTime) ||
-                const DeepCollectionEquality()
-                    .equals(other.notificationTime, notificationTime)) &&
-            (identical(other.notifyInAdvanceVal, notifyInAdvanceVal) ||
-                const DeepCollectionEquality()
-                    .equals(other.notifyInAdvanceVal, notifyInAdvanceVal)) &&
-            (identical(other.isFocus, isFocus) ||
-                const DeepCollectionEquality().equals(other.isFocus, isFocus)));
+        (other.runtimeType == runtimeType &&
+            other is _TodoFormState &&
+            const DeepCollectionEquality().equals(other.formKind, formKind) &&
+            const DeepCollectionEquality()
+                .equals(other.selectedKind, selectedKind) &&
+            const DeepCollectionEquality().equals(other.id, id) &&
+            const DeepCollectionEquality().equals(other.title, title) &&
+            const DeepCollectionEquality().equals(other.latitude, latitude) &&
+            const DeepCollectionEquality().equals(other.longitude, longitude) &&
+            const DeepCollectionEquality()
+                .equals(other.locationName, locationName) &&
+            const DeepCollectionEquality().equals(other.eventTime, eventTime) &&
+            const DeepCollectionEquality()
+                .equals(other.notificationTime, notificationTime) &&
+            const DeepCollectionEquality()
+                .equals(other.notifyInAdvanceVal, notifyInAdvanceVal) &&
+            const DeepCollectionEquality().equals(other.isFocus, isFocus));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(formKind) ^
-      const DeepCollectionEquality().hash(selectedKind) ^
-      const DeepCollectionEquality().hash(id) ^
-      const DeepCollectionEquality().hash(title) ^
-      const DeepCollectionEquality().hash(latitude) ^
-      const DeepCollectionEquality().hash(longitude) ^
-      const DeepCollectionEquality().hash(locationName) ^
-      const DeepCollectionEquality().hash(eventTime) ^
-      const DeepCollectionEquality().hash(notificationTime) ^
-      const DeepCollectionEquality().hash(notifyInAdvanceVal) ^
-      const DeepCollectionEquality().hash(isFocus);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(formKind),
+      const DeepCollectionEquality().hash(selectedKind),
+      const DeepCollectionEquality().hash(id),
+      const DeepCollectionEquality().hash(title),
+      const DeepCollectionEquality().hash(latitude),
+      const DeepCollectionEquality().hash(longitude),
+      const DeepCollectionEquality().hash(locationName),
+      const DeepCollectionEquality().hash(eventTime),
+      const DeepCollectionEquality().hash(notificationTime),
+      const DeepCollectionEquality().hash(notifyInAdvanceVal),
+      const DeepCollectionEquality().hash(isFocus));
 
   @JsonKey(ignore: true)
   @override
@@ -400,27 +387,27 @@ abstract class _TodoFormState extends TodoFormState {
   const _TodoFormState._() : super._();
 
   @override
-  FormKind get formKind => throw _privateConstructorUsedError;
+  FormKind get formKind;
   @override
-  TabKind get selectedKind => throw _privateConstructorUsedError;
+  TabKind get selectedKind;
   @override
-  String? get id => throw _privateConstructorUsedError;
+  String? get id;
   @override
-  String get title => throw _privateConstructorUsedError;
+  String get title;
   @override
-  double? get latitude => throw _privateConstructorUsedError;
+  double? get latitude;
   @override
-  double? get longitude => throw _privateConstructorUsedError;
+  double? get longitude;
   @override
-  String? get locationName => throw _privateConstructorUsedError;
+  String? get locationName;
   @override
-  DateTime? get eventTime => throw _privateConstructorUsedError;
+  DateTime? get eventTime;
   @override
-  DateTime? get notificationTime => throw _privateConstructorUsedError;
+  DateTime? get notificationTime;
   @override
-  int? get notifyInAdvanceVal => throw _privateConstructorUsedError;
+  int? get notifyInAdvanceVal;
   @override
-  bool get isFocus => throw _privateConstructorUsedError;
+  bool get isFocus;
   @override
   @JsonKey(ignore: true)
   _$TodoFormStateCopyWith<_TodoFormState> get copyWith =>

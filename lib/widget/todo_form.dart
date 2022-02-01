@@ -4,7 +4,8 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_todo_app/const/common.dart';
 import 'package:flutter_todo_app/const/enums.dart';
 import 'package:flutter_todo_app/model/todo.dart';
-import 'package:flutter_todo_app/view_model/todo_form_view_model.dart';
+import 'package:flutter_todo_app/view_model/state/todo_form_state.dart';
+import 'package:flutter_todo_app/view_model/todo_form_state_notifier.dart';
 import 'package:flutter_todo_app/widget/datetime_input.dart';
 import 'package:flutter_todo_app/widget/location_input_tab.dart';
 import 'package:flutter_todo_app/widget/notification_input_tab.dart';
@@ -14,10 +15,11 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'form_submit_button.dart';
 
-final todoFormProvider = StateNotifierProvider.autoDispose(
-    (ref) => TodoFormStateController(ref.read));
+final todoFormProvider =
+    StateNotifierProvider.autoDispose<TodoFormStateNotifier, TodoFormState>(
+        (ref) => TodoFormStateNotifier(ref.read));
 
-class TodoInputForm extends HookWidget {
+class TodoInputForm extends HookConsumerWidget {
   final Todo? todo;
   final FormKind formKind;
   final GlobalKey _key = GlobalKey();
@@ -25,20 +27,20 @@ class TodoInputForm extends HookWidget {
   TodoInputForm(this.formKind, [this.todo]);
 
   @override
-  Widget build(BuildContext context) {
-    final notifier = useProvider(todoFormProvider.notifier);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final FormNotifier = ref.read(todoFormProvider.notifier);
 
     useEffect(() {
       if (todo != null) {
-        notifier.inputId(todo!.id);
-        notifier.inputText(todo!.title);
-        notifier.inputDatetime(todo!.eventAt);
-        notifier.inputLocation(
+        FormNotifier.inputId(todo!.id);
+        FormNotifier.inputText(todo!.title);
+        FormNotifier.inputDatetime(todo!.eventAt);
+        FormNotifier.inputLocation(
             todo!.latitude, todo!.longitude, todo!.locationName);
       }
 
       //FIXME:form種別を変更できてしまうのが良くない
-      notifier.setFormKind(formKind);
+      FormNotifier.setFormKind(formKind);
       return () {};
     }, const []);
 
@@ -52,15 +54,15 @@ class TodoInputForm extends HookWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 _headerArea(),
-                _inputArea(),
-                _selectArea(),
+                FormMainArea(),
+                _footerArea(),
               ],
             ),
           ),
         ));
   }
 
-  Widget _selectArea() {
+  Widget _footerArea() {
     final context = useContext();
     return Container(
         height: lyoutConst.menuBarHeight,
@@ -97,15 +99,73 @@ class TodoInputForm extends HookWidget {
               padding: EdgeInsets.only(
                 left: 20,
               ),
-              child: _headerText()),
-          _headerIcon()
+              child: HeaderText()),
+          HeaderIcon()
         ],
       )),
     );
   }
 
-  Widget _headerText() {
-    final formState = useProvider(todoFormProvider);
+  Widget _inputKinds() {
+    return Row(
+      children: [
+        KindSelectButton(TabKind.text),
+        KindSelectButton(TabKind.datetime),
+        KindSelectButton(TabKind.location),
+        KindSelectButton(TabKind.notifications),
+      ],
+    );
+  }
+}
+
+class KindSelectButton extends HookConsumerWidget {
+  final TabKind kind;
+  KindSelectButton(this.kind);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final formState = ref.watch(todoFormProvider);
+    final formNotifier = ref.read(todoFormProvider.notifier);
+
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        color: formState.selectedKind == kind
+            ? Colors.white.withOpacity(0.8)
+            : null,
+      ),
+      child: IconButton(
+        icon: Icon(_icon(kind),
+            color:
+                formState.selectedKind == kind ? Colors.black : Colors.black54),
+        onPressed: () {
+          formNotifier.selectTabKind(kind);
+        },
+      ),
+    );
+  }
+
+  IconData _icon(TabKind kind) {
+    switch (kind) {
+      case TabKind.text:
+        return Icons.add_comment;
+      case TabKind.location:
+        return Icons.add_location_sharp;
+      case TabKind.datetime:
+        return Icons.access_time_filled;
+      case TabKind.notifications:
+        return Icons.notifications;
+      default:
+        print('select kind is not exist');
+        exit(0);
+    }
+  }
+}
+
+class HeaderText extends HookConsumerWidget {
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final formState = ref.watch(todoFormProvider);
 
     final headerStr;
     switch (formState.selectedKind) {
@@ -131,10 +191,34 @@ class TodoInputForm extends HookWidget {
       style: TextStyle(color: Colors.black38),
     );
   }
+}
 
-  Widget _headerIcon() {
-    final formState = useProvider(todoFormProvider);
-    final context = useContext();
+class FormMainArea extends HookConsumerWidget {
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final formState = ref.watch(todoFormProvider);
+
+    switch (formState.selectedKind) {
+      case TabKind.text:
+        return TextInput();
+      case TabKind.location:
+        return LocationInputTab();
+      case TabKind.datetime:
+        return DatetimeInput();
+      case TabKind.notifications:
+        return NotificationInputTab();
+      default:
+        print('select kind is not exist');
+        exit(0);
+    }
+  }
+}
+
+class HeaderIcon extends HookConsumerWidget {
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final formState = ref.watch(todoFormProvider);
+
     if (formState.isFocus) {
       return IconButton(
           onPressed: () {
@@ -175,76 +259,5 @@ class TodoInputForm extends HookWidget {
     );
 
     return isExit;
-  }
-
-  Widget _inputArea() {
-    final state = useProvider(todoFormProvider);
-
-    switch (state.selectedKind) {
-      case TabKind.text:
-        return TextInput(_key);
-      case TabKind.location:
-        return LocationInputTab();
-      case TabKind.datetime:
-        return DatetimeInput();
-      case TabKind.notifications:
-        return NotificationInputTab();
-      default:
-        print('select kind is not exist');
-        exit(0);
-    }
-  }
-
-  Widget _inputKinds() {
-    final controller = useProvider(todoFormProvider.notifier);
-    final formState = useProvider(todoFormProvider);
-    final context = useContext();
-
-    return Row(
-      children: [
-        _kindButton(TabKind.text),
-        _kindButton(TabKind.datetime),
-        _kindButton(TabKind.location),
-        _kindButton(TabKind.notifications),
-      ],
-    );
-  }
-
-  Widget _kindButton(TabKind kind) {
-    final formState = useProvider(todoFormProvider);
-    final controller = useProvider(todoFormProvider.notifier);
-
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
-        color: formState.selectedKind == kind
-            ? Colors.white.withOpacity(0.8)
-            : null,
-      ),
-      child: IconButton(
-        icon: Icon(_icon(kind),
-            color:
-                formState.selectedKind == kind ? Colors.black : Colors.black54),
-        onPressed: () {
-          controller.selectTabKind(kind);
-        },
-      ),
-    );
-  }
-
-  IconData _icon(TabKind kind) {
-    switch (kind) {
-      case TabKind.text:
-        return Icons.add_comment;
-      case TabKind.location:
-        return Icons.add_location_sharp;
-      case TabKind.datetime:
-        return Icons.access_time_filled;
-      case TabKind.notifications:
-        return Icons.notifications;
-      default:
-        print('select kind is not exist');
-        exit(0);
-    }
   }
 }

@@ -6,11 +6,11 @@ import 'package:flutter_todo_app/widget/todo_form.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-class FormSubmitButton extends HookWidget {
+class FormSubmitButton extends HookConsumerWidget {
   @override
-  Widget build(BuildContext context) {
-    final controller = useProvider(todoListProvider.notifier);
-    final formState = useProvider(todoFormProvider);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final controller = ref.read(todoListProvider.notifier);
+    final formState = ref.watch(todoFormProvider);
     return Row(
       children: [
         ElevatedButton(
@@ -27,19 +27,19 @@ class FormSubmitButton extends HookWidget {
               case FormKind.create:
                 controller.create(
                     formState.title,
-                    formState.eventTime,
-                    formState.latitude,
-                    formState.longitude,
+                    formState.eventTime!,
+                    formState.latitude!,
+                    formState.longitude!,
                     formState.locationName,
                     formState.notifyInAdvanceVal);
                 break;
               case FormKind.update:
                 controller.update(
-                    formState.id,
+                    formState.id!,
                     formState.title,
-                    formState.eventTime,
-                    formState.latitude,
-                    formState.longitude,
+                    formState.eventTime!,
+                    formState.latitude!,
+                    formState.longitude!,
                     formState.locationName,
                     formState.notifyInAdvanceVal);
                 break;
@@ -51,7 +51,7 @@ class FormSubmitButton extends HookWidget {
     );
   }
 
-  bool _validation(BuildContext context, dynamic state) {
+  bool _validation(BuildContext context, FormState formState) {
     final fToast = FToast();
     fToast.init(context);
 

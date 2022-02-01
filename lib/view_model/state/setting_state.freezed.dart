@@ -1,5 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
 part of 'setting_state.dart';
@@ -140,20 +141,19 @@ class _$_SettingState implements _SettingState {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _SettingState &&
-            (identical(other.remaindInterval, remaindInterval) ||
-                const DeepCollectionEquality()
-                    .equals(other.remaindInterval, remaindInterval)) &&
-            (identical(other.defaultLocation, defaultLocation) ||
-                const DeepCollectionEquality()
-                    .equals(other.defaultLocation, defaultLocation)));
+        (other.runtimeType == runtimeType &&
+            other is _SettingState &&
+            const DeepCollectionEquality()
+                .equals(other.remaindInterval, remaindInterval) &&
+            const DeepCollectionEquality()
+                .equals(other.defaultLocation, defaultLocation));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(remaindInterval) ^
-      const DeepCollectionEquality().hash(defaultLocation);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(remaindInterval),
+      const DeepCollectionEquality().hash(defaultLocation));
 
   @JsonKey(ignore: true)
   @override
@@ -166,9 +166,9 @@ abstract class _SettingState implements SettingState {
       int remaindInterval, LocationInfo defaultLocation) = _$_SettingState;
 
   @override
-  int get remaindInterval => throw _privateConstructorUsedError;
+  int get remaindInterval;
   @override
-  LocationInfo get defaultLocation => throw _privateConstructorUsedError;
+  LocationInfo get defaultLocation;
   @override
   @JsonKey(ignore: true)
   _$SettingStateCopyWith<_SettingState> get copyWith =>
