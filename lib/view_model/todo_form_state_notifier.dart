@@ -10,8 +10,8 @@ class TodoFormStateNotifier extends StateNotifier<TodoFormState> {
 
   final Reader read;
 
-  void setFormKind(FormKind formKind) {
-    state = state.copyWith(formKind: formKind);
+  void setFormKind(SaveType formKind) {
+    state = state.copyWith(saveType: formKind);
   }
 
   void inputId(String id) {
@@ -49,11 +49,11 @@ class TodoFormStateNotifier extends StateNotifier<TodoFormState> {
     state = state.copyWith(eventTime: dateTime);
   }
 
-  void selectTabKind(TabKind kind) {
-    state = state.copyWith(selectedKind: kind);
+  void selectTabKind(InputKind kind) {
+    state = state.copyWith(inputKind: kind);
   }
 
-  void onFocusChange(bool hasFocus) {
-    state = state.copyWith(isFocus: hasFocus);
+  void onFocusChangeTextfield(bool hasFocus) {
+    state = state.copyWith(isUpKeyboard: hasFocus);
   }
 }

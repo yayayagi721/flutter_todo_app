@@ -4,7 +4,7 @@ import 'package:flutter_todo_app/const/common.dart';
 import 'package:flutter_todo_app/widget/todo_form.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class TextInput extends HookConsumerWidget {
+class TextInputTab extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     TextEditingController? _textEditingController;
@@ -16,7 +16,7 @@ class TextInput extends HookConsumerWidget {
     useEffect(() {
       _textEditingController = TextEditingController(text: formState.title);
       focusNode.addListener(() {
-        formNotifier.onFocusChange(focusNode.hasFocus);
+        formNotifier.onFocusChangeTextfield(focusNode.hasFocus);
       });
     }, [focusNode]);
     double bottomSpace = 0;
@@ -49,7 +49,6 @@ class TextInput extends HookConsumerWidget {
           onSubmitted: (_) {
             FocusManager.instance.primaryFocus?.unfocus();
           },
-          // ),
         ),
       ),
     );

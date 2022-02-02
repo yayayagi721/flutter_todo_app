@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_todo_app/widget/todo_form.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -40,7 +39,6 @@ class NotificationSetBotton extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final formState = ref.watch(todoFormProvider);
     final formNotifier = ref.read(todoFormProvider.notifier);
-    final context = useContext();
 
     final selected = formState.notifyInAdvanceVal == value;
     return Padding(

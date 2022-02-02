@@ -23,8 +23,8 @@ class FormSubmitButton extends HookConsumerWidget {
           onPressed: () {
             if (!_validation(context, formState)) return;
 
-            switch (formState.formKind) {
-              case FormKind.create:
+            switch (formState.saveType) {
+              case SaveType.create:
                 controller.create(
                     formState.title,
                     formState.eventTime!,
@@ -33,7 +33,7 @@ class FormSubmitButton extends HookConsumerWidget {
                     formState.locationName,
                     formState.notifyInAdvanceVal);
                 break;
-              case FormKind.update:
+              case SaveType.update:
                 controller.update(
                     formState.id!,
                     formState.title,

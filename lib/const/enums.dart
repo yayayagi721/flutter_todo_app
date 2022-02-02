@@ -1,4 +1,4 @@
 //予定入力のタブ種別
-enum TabKind { text, location, datetime, notifications }
+enum InputKind { text, location, datetime, notifications }
 
-enum FormKind { update, create }
+enum SaveType { update, create }

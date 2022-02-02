@@ -48,7 +48,7 @@ class TodoListView extends HookConsumerWidget {
             ),
             isDismissible: false,
             context: context,
-            builder: (context) => TodoInputForm(FormKind.create),
+            builder: (context) => TodoInputForm(SaveType.create),
           )
         },
         tooltip: 'AddTodo',
@@ -104,7 +104,7 @@ class TodoListView extends HookConsumerWidget {
           ),
           isDismissible: false,
           context: context,
-          builder: (context) => TodoInputForm(FormKind.update, todo),
+          builder: (context) => TodoInputForm(SaveType.update, todo),
         );
       },
       child: Container(

@@ -11,17 +11,17 @@ class HeaderText extends HookConsumerWidget {
     final formState = ref.watch(todoFormProvider);
 
     final headerStr;
-    switch (formState.selectedKind) {
-      case TabKind.text:
+    switch (formState.inputKind) {
+      case InputKind.text:
         headerStr = "予定の内容";
         break;
-      case TabKind.location:
+      case InputKind.location:
         headerStr = "予定の場所";
         break;
-      case TabKind.datetime:
+      case InputKind.datetime:
         headerStr = "予定の日時";
         break;
-      case TabKind.notifications:
+      case InputKind.notifications:
         headerStr = "通知時間";
         break;
       default:
@@ -41,7 +41,7 @@ class HeaderIcon extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final formState = ref.watch(todoFormProvider);
 
-    if (formState.isFocus) {
+    if (formState.isUpKeyboard) {
       return IconButton(
           onPressed: () {
             FocusManager.instance.primaryFocus?.unfocus();

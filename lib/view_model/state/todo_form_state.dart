@@ -8,8 +8,8 @@ part 'todo_form_state.freezed.dart';
 class TodoFormState with _$TodoFormState {
   const TodoFormState._();
   const factory TodoFormState({
-    @Default(FormKind.create) FormKind formKind,
-    @Default(TabKind.text) TabKind selectedKind,
+    @Default(SaveType.create) SaveType saveType,
+    @Default(InputKind.text) InputKind inputKind,
     @Default(null) String? id,
     @Default("") String title,
     @Default(null) double? latitude,
@@ -18,7 +18,7 @@ class TodoFormState with _$TodoFormState {
     @Default(null) DateTime? eventTime,
     @Default(null) DateTime? notificationTime,
     @Default(360) int? notifyInAdvanceVal,
-    @Default(false) bool isFocus,
+    @Default(false) bool isUpKeyboard,
   }) = _TodoFormState;
 
   bool isValidTitle() {

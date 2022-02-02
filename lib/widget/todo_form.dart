@@ -6,12 +6,12 @@ import 'package:flutter_todo_app/const/enums.dart';
 import 'package:flutter_todo_app/model/todo.dart';
 import 'package:flutter_todo_app/view_model/state/todo_form_state.dart';
 import 'package:flutter_todo_app/view_model/todo_form_state_notifier.dart';
-import 'package:flutter_todo_app/widget/datetime_input.dart';
+import 'package:flutter_todo_app/widget/datetime_input_tab.dart';
 import 'package:flutter_todo_app/widget/header_components.dart';
 import 'package:flutter_todo_app/widget/kind_select_button.dart';
 import 'package:flutter_todo_app/widget/location_input_tab.dart';
 import 'package:flutter_todo_app/widget/notification_input_tab.dart';
-import 'package:flutter_todo_app/widget/text_input.dart';
+import 'package:flutter_todo_app/widget/text_input_tab.dart';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -23,9 +23,9 @@ final todoFormProvider =
 
 class TodoInputForm extends HookConsumerWidget {
   final Todo? todo;
-  final FormKind formKind;
+  final SaveType saveType;
 
-  TodoInputForm(this.formKind, [this.todo]);
+  TodoInputForm(this.saveType, [this.todo]);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -41,7 +41,7 @@ class TodoInputForm extends HookConsumerWidget {
       }
 
       //FIXME:form種別を変更できてしまうのが良くない
-      FormNotifier.setFormKind(formKind);
+      FormNotifier.setFormKind(saveType);
       return () {};
     }, const []);
 
@@ -110,10 +110,10 @@ class TodoInputForm extends HookConsumerWidget {
   Widget _inputKinds() {
     return Row(
       children: [
-        KindSelectButton(TabKind.text),
-        KindSelectButton(TabKind.datetime),
-        KindSelectButton(TabKind.location),
-        KindSelectButton(TabKind.notifications),
+        KindSelectButton(InputKind.text),
+        KindSelectButton(InputKind.datetime),
+        KindSelectButton(InputKind.location),
+        KindSelectButton(InputKind.notifications),
       ],
     );
   }
@@ -124,14 +124,14 @@ class FormMainArea extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final formState = ref.watch(todoFormProvider);
 
-    switch (formState.selectedKind) {
-      case TabKind.text:
-        return TextInput();
-      case TabKind.location:
+    switch (formState.inputKind) {
+      case InputKind.text:
+        return TextInputTab();
+      case InputKind.location:
         return LocationInputTab();
-      case TabKind.datetime:
-        return DatetimeInput();
-      case TabKind.notifications:
+      case InputKind.datetime:
+        return DatetimeInputTab();
+      case InputKind.notifications:
         return NotificationInputTab();
       default:
         print('select kind is not exist');
