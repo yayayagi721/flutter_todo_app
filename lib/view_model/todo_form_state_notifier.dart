@@ -4,14 +4,14 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'state/todo_form_state.dart';
 
-class TodoFormStateController extends StateNotifier<TodoFormState> {
+class TodoFormStateNotifier extends StateNotifier<TodoFormState> {
   //TODO:初期化はこれでいいのか調べる
-  TodoFormStateController(this.read) : super(TodoFormState());
+  TodoFormStateNotifier(this.read) : super(TodoFormState());
 
   final Reader read;
 
-  void setFormKind(FormKind formKind) {
-    state = state.copyWith(formKind: formKind);
+  void setFormKind(SaveType formKind) {
+    state = state.copyWith(saveType: formKind);
   }
 
   void inputId(String id) {
@@ -49,11 +49,11 @@ class TodoFormStateController extends StateNotifier<TodoFormState> {
     state = state.copyWith(eventTime: dateTime);
   }
 
-  void selectTabKind(TabKind kind) {
-    state = state.copyWith(selectedKind: kind);
+  void selectTabKind(InputKind kind) {
+    state = state.copyWith(inputKind: kind);
   }
 
-  void onFocusChange(bool hasFocus) {
-    state = state.copyWith(isFocus: hasFocus);
+  void onFocusChangeTextfield(bool hasFocus) {
+    state = state.copyWith(isUpKeyboard: hasFocus);
   }
 }

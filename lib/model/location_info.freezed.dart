@@ -1,5 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
 part of 'location_info.dart';
@@ -147,7 +148,7 @@ class _$_LocationInfo with DiagnosticableTreeMixin implements _LocationInfo {
   @override
   @HiveField(1)
   final double longitude;
-  @JsonKey(defaultValue: null)
+  @JsonKey()
   @override
   @HiveField(2)
   final String? address;
@@ -170,23 +171,19 @@ class _$_LocationInfo with DiagnosticableTreeMixin implements _LocationInfo {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _LocationInfo &&
-            (identical(other.latitude, latitude) ||
-                const DeepCollectionEquality()
-                    .equals(other.latitude, latitude)) &&
-            (identical(other.longitude, longitude) ||
-                const DeepCollectionEquality()
-                    .equals(other.longitude, longitude)) &&
-            (identical(other.address, address) ||
-                const DeepCollectionEquality().equals(other.address, address)));
+        (other.runtimeType == runtimeType &&
+            other is _LocationInfo &&
+            const DeepCollectionEquality().equals(other.latitude, latitude) &&
+            const DeepCollectionEquality().equals(other.longitude, longitude) &&
+            const DeepCollectionEquality().equals(other.address, address));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(latitude) ^
-      const DeepCollectionEquality().hash(longitude) ^
-      const DeepCollectionEquality().hash(address);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(latitude),
+      const DeepCollectionEquality().hash(longitude),
+      const DeepCollectionEquality().hash(address));
 
   @JsonKey(ignore: true)
   @override
@@ -201,13 +198,13 @@ abstract class _LocationInfo implements LocationInfo {
 
   @override
   @HiveField(0)
-  double get latitude => throw _privateConstructorUsedError;
+  double get latitude;
   @override
   @HiveField(1)
-  double get longitude => throw _privateConstructorUsedError;
+  double get longitude;
   @override
   @HiveField(2)
-  String? get address => throw _privateConstructorUsedError;
+  String? get address;
   @override
   @JsonKey(ignore: true)
   _$LocationInfoCopyWith<_LocationInfo> get copyWith =>

@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_todo_app/const/enums.dart';
 import 'package:flutter_todo_app/model/todo.dart';
 import 'package:flutter_todo_app/repository/todo_list_repository_impl.dart';
+import 'package:flutter_todo_app/view_model/state/todo_list_state.dart';
 import 'package:flutter_todo_app/view_model/todo_list_view_model.dart';
-import 'package:flutter_todo_app/widget/main_drawer.dart';
 import 'package:flutter_todo_app/widget/todo_form.dart';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -15,16 +15,20 @@ final todoListRepositoryProvider = Provider(
 );
 
 final todoListProvider =
-    StateNotifierProvider((ref) => TodoListStateController(ref.read));
+    StateNotifierProvider.autoDispose<TodoListStateController, TodoListState>(
+        (ref) => TodoListStateController(ref.read));
 
-class TodoListView extends HookWidget {
+class TodoListView extends HookConsumerWidget {
   @override
-  Widget build(BuildContext context) {
-    final notifier = useProvider(todoListProvider.notifier);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final todoListNotifier = ref.read(todoListProvider.notifier);
+    final todoListState = ref.watch(todoListProvider);
 
     useEffect(() {
-      notifier.fetch();
-      notifier.getAllAddress();
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
+        todoListNotifier.fetch();
+        todoListNotifier.getAllAddress();
+      });
       return () {};
     }, const []);
 
@@ -33,7 +37,7 @@ class TodoListView extends HookWidget {
         title: Text("Todo App"),
       ),
       body: ListView(
-        children: todoList(),
+        children: todoList(todoListState.todoList),
         padding: EdgeInsets.only(left: 15, right: 15),
       ),
       floatingActionButton: FloatingActionButton(
@@ -44,21 +48,16 @@ class TodoListView extends HookWidget {
             ),
             isDismissible: false,
             context: context,
-            builder: (context) => TodoInputForm(FormKind.create),
+            builder: (context) => TodoInputForm(SaveType.create),
           )
         },
         tooltip: 'AddTodo',
         child: Icon(Icons.add),
       ),
-      drawer: MainDrawer(),
     );
   }
 
-  List<Widget> todoList() {
-    final state = useProvider(todoListProvider);
-
-    Map<String, List<Todo>> todoListModel = state.todoList;
-
+  List<Widget> todoList(Map<String, List<Todo>> todoListModel) {
     //存在する日付でソート
     var sortKeys = todoListModel.keys.toList();
     print(sortKeys);
@@ -105,7 +104,7 @@ class TodoListView extends HookWidget {
           ),
           isDismissible: false,
           context: context,
-          builder: (context) => TodoInputForm(FormKind.update, todo),
+          builder: (context) => TodoInputForm(SaveType.update, todo),
         );
       },
       child: Container(

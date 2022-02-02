@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_todo_app/view_model/location_search_form_view_model.dart';
 import 'package:flutter_todo_app/view_model/map_view_model.dart';
+import 'package:flutter_todo_app/view_model/state/map_state.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-final mapProvider = StateNotifierProvider.autoDispose((ref) => MapProvider());
+final mapProvider = StateNotifierProvider.autoDispose<MapProvider, MapState>(
+    (ref) => MapProvider());
 
 final locationSearchFormViewModel = StateNotifierProvider.autoDispose(
   (ref) => LocationSearchFormViewModel(ref.read),
@@ -16,16 +18,18 @@ final locationSearchFormViewModel = StateNotifierProvider.autoDispose(
 
 final Completer<GoogleMapController> controller = Completer();
 
-class LocationInput extends HookWidget {
+class LocationInputer extends HookConsumerWidget {
+  //マーカおよび、カメラの初期位置
   final LatLng? initLatLng;
-  LocationInput([this.initLatLng]);
+  LocationInputer([this.initLatLng]);
 
   @override
-  Widget build(BuildContext context) {
-    final mapState = useProvider(mapProvider);
+  Widget build(BuildContext context, WidgetRef ref) {
     final locationSearchFormNotifier =
-        useProvider(locationSearchFormViewModel.notifier);
-    final mapNotifier = useProvider(mapProvider.notifier);
+        ref.read(locationSearchFormViewModel.notifier);
+    final mapState = ref.watch(mapProvider);
+    final mapNotifier = ref.read(mapProvider.notifier);
+
     final fToast = FToast();
     fToast.init(context);
 
@@ -120,34 +124,34 @@ Widget _toast(Color color, IconData icon, String text) {
   );
 }
 
-class Map extends HookWidget {
+class Map extends HookConsumerWidget {
   final LatLng? latLng;
   Map([this.latLng]);
 
   @override
-  Widget build(BuildContext context) {
-    final state = useProvider(mapProvider);
-    final mapNotifier = useProvider(mapProvider.notifier);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final mapState = ref.watch(mapProvider);
+    final mapNotifier = ref.read(mapProvider.notifier);
 
     useEffect(() {
       mapNotifier.init(latLng);
       return () {};
     }, const []);
 
-    return state.markers.isEmpty
+    return mapState.markers.isEmpty
         ? Center(
             child: CircularProgressIndicator(
                 valueColor: new AlwaysStoppedAnimation<Color>(Colors.black38)),
           )
         : GoogleMap(
             onMapCreated: (GoogleMapController controller) {
-              if (!state.controller.isCompleted)
-                state.controller.complete(controller);
+              if (!mapState.controller!.isCompleted)
+                mapState.controller!.complete(controller);
             },
             mapType: MapType.normal,
-            markers: state.markers,
+            markers: mapState.markers,
             initialCameraPosition: CameraPosition(
-                target: state.markers.elementAt(0).position, zoom: 15),
+                target: mapState.markers.elementAt(0).position, zoom: 15),
             onTap: (latLng) => mapNotifier.createMarker(latLng),
             myLocationEnabled: true,
             myLocationButtonEnabled: true);

@@ -1,5 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
 part of 'textbox_state.dart';
@@ -103,7 +104,7 @@ class __$TextBoxStateCopyWithImpl<$Res> extends _$TextBoxStateCopyWithImpl<$Res>
 class _$_TextBoxState implements _TextBoxState {
   const _$_TextBoxState({this.text = ""});
 
-  @JsonKey(defaultValue: "")
+  @JsonKey()
   @override
   final String text;
 
@@ -115,14 +116,14 @@ class _$_TextBoxState implements _TextBoxState {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _TextBoxState &&
-            (identical(other.text, text) ||
-                const DeepCollectionEquality().equals(other.text, text)));
+        (other.runtimeType == runtimeType &&
+            other is _TextBoxState &&
+            const DeepCollectionEquality().equals(other.text, text));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(text);
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(text));
 
   @JsonKey(ignore: true)
   @override
@@ -134,7 +135,7 @@ abstract class _TextBoxState implements TextBoxState {
   const factory _TextBoxState({String text}) = _$_TextBoxState;
 
   @override
-  String get text => throw _privateConstructorUsedError;
+  String get text;
   @override
   @JsonKey(ignore: true)
   _$TextBoxStateCopyWith<_TextBoxState> get copyWith =>

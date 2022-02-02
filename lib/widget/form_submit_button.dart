@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_todo_app/const/enums.dart';
 import 'package:flutter_todo_app/view/todo_list_view.dart';
+import 'package:flutter_todo_app/view_model/state/todo_form_state.dart';
 import 'package:flutter_todo_app/widget/todo_form.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-class FormSubmitButton extends HookWidget {
+class FormSubmitButton extends HookConsumerWidget {
   @override
-  Widget build(BuildContext context) {
-    final controller = useProvider(todoListProvider.notifier);
-    final formState = useProvider(todoFormProvider);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final controller = ref.read(todoListProvider.notifier);
+    final formState = ref.watch(todoFormProvider);
     return Row(
       children: [
         ElevatedButton(
@@ -23,23 +23,23 @@ class FormSubmitButton extends HookWidget {
           onPressed: () {
             if (!_validation(context, formState)) return;
 
-            switch (formState.formKind) {
-              case FormKind.create:
+            switch (formState.saveType) {
+              case SaveType.create:
                 controller.create(
                     formState.title,
-                    formState.eventTime,
-                    formState.latitude,
-                    formState.longitude,
+                    formState.eventTime!,
+                    formState.latitude!,
+                    formState.longitude!,
                     formState.locationName,
                     formState.notifyInAdvanceVal);
                 break;
-              case FormKind.update:
+              case SaveType.update:
                 controller.update(
-                    formState.id,
+                    formState.id!,
                     formState.title,
-                    formState.eventTime,
-                    formState.latitude,
-                    formState.longitude,
+                    formState.eventTime!,
+                    formState.latitude!,
+                    formState.longitude!,
                     formState.locationName,
                     formState.notifyInAdvanceVal);
                 break;
@@ -51,17 +51,17 @@ class FormSubmitButton extends HookWidget {
     );
   }
 
-  bool _validation(BuildContext context, dynamic state) {
+  bool _validation(BuildContext context, TodoFormState formState) {
     final fToast = FToast();
     fToast.init(context);
 
     var massege;
 
-    if (!state.isValidTitle()) {
+    if (!formState.isValidTitle()) {
       massege = "予定の内容を入力してください";
-    } else if (!state.isValidLocation()) {
+    } else if (!formState.isValidLocation()) {
       massege = "予定の場所を入力してください";
-    } else if (!state.isValidEventTime()) {
+    } else if (!formState.isValidEventTime()) {
       massege = "予定の時間を入力してください";
     }
 
@@ -94,13 +94,5 @@ class FormSubmitButton extends HookWidget {
         ],
       ),
     );
-  }
-
-  bool _isSubmittable() {
-    final formState = useProvider(todoFormProvider);
-
-    return formState.isValidTitle() &&
-        formState.isValidLocation() &&
-        formState.isValidEventTime();
   }
 }
