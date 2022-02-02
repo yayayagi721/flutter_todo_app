@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_todo_app/const/enums.dart';
 import 'package:flutter_todo_app/view/todo_list_view.dart';
+import 'package:flutter_todo_app/view_model/state/todo_form_state.dart';
 import 'package:flutter_todo_app/widget/todo_form.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -51,17 +51,17 @@ class FormSubmitButton extends HookConsumerWidget {
     );
   }
 
-  bool _validation(BuildContext context, FormState formState) {
+  bool _validation(BuildContext context, TodoFormState formState) {
     final fToast = FToast();
     fToast.init(context);
 
     var massege;
 
-    if (!state.isValidTitle()) {
+    if (!formState.isValidTitle()) {
       massege = "予定の内容を入力してください";
-    } else if (!state.isValidLocation()) {
+    } else if (!formState.isValidLocation()) {
       massege = "予定の場所を入力してください";
-    } else if (!state.isValidEventTime()) {
+    } else if (!formState.isValidEventTime()) {
       massege = "予定の時間を入力してください";
     }
 
@@ -94,13 +94,5 @@ class FormSubmitButton extends HookConsumerWidget {
         ],
       ),
     );
-  }
-
-  bool _isSubmittable() {
-    final formState = useProvider(todoFormProvider);
-
-    return formState.isValidTitle() &&
-        formState.isValidLocation() &&
-        formState.isValidEventTime();
   }
 }

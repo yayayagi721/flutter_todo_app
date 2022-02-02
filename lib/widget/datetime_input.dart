@@ -7,21 +7,21 @@ class DatetimeInput extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final now = DateTime.now();
-    final todoFormController = ref.read(todoFormProvider.notifier);
+    final todoFormNotifier = ref.read(todoFormProvider.notifier);
     final todoFormState = ref.watch(todoFormProvider);
 
     useEffect(() {
       WidgetsBinding.instance!
-          .addPostFrameCallback((_) => controller.inputDatetime(now));
+          .addPostFrameCallback((_) => todoFormNotifier.inputDatetime(now));
     }, []);
 
     return Container(
       padding: EdgeInsets.only(top: 15, bottom: 15),
       height: 100,
       child: CupertinoDatePicker(
-        initialDateTime: state.eventTime ?? now,
+        initialDateTime: todoFormState.eventTime ?? now,
         onDateTimeChanged: (DateTime newDt) {
-          controller.inputDatetime(newDt);
+          todoFormNotifier.inputDatetime(newDt);
         },
         use24hFormat: true,
         minuteInterval: 1,
