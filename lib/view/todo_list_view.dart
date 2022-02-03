@@ -34,6 +34,14 @@ class TodoListView extends HookConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
+        actions: [
+          IconButton(
+            icon: Icon(Icons.settings),
+            onPressed: () {
+              Navigator.of(context).pushNamed('/settingView');
+            },
+          )
+        ],
         title: Text("Todo App"),
       ),
       body: ListView(

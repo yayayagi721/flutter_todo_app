@@ -4,6 +4,7 @@ import 'package:flutter_todo_app/model/todo.dart';
 import 'package:flutter_todo_app/repository/id_repository_impl.dart';
 import 'package:flutter_todo_app/repository/location_search_repository_impl.dart';
 import 'package:flutter_todo_app/repository/notifications_repository_impl.dart';
+import 'package:flutter_todo_app/view/setting_view.dart';
 import 'package:flutter_todo_app/view/todo_list_view.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flutter/material.dart';
@@ -79,6 +80,7 @@ class MyApp extends StatelessWidget {
         initialRoute: "/listView",
         routes: {
           '/listView': (BuildContext context) => TodoListView(),
+          '/settingView': (BuildContext context) => SettingView()
         });
   }
 }
