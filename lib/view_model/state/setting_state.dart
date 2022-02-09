@@ -7,5 +7,5 @@ part 'setting_state.freezed.dart';
 @freezed
 class SettingState with _$SettingState {
   const factory SettingState(
-      int remaindInterval, LocationInfo defaultLocation) = _SettingState;
+      int remaindInterval, LocationInfo? defaultLocation) = _SettingState;
 }

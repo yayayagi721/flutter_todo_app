@@ -141,7 +141,7 @@ class TodoListView extends HookConsumerWidget {
                   SizedBox(
                     height: 5,
                   ),
-                  _description(todo.locationName ?? "位置情報未読み込み"),
+                  _description(todo.locationInfo.address ?? "位置情報未読み込み"),
                   SizedBox(
                     height: 5,
                   ),

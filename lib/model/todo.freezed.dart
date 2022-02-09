@@ -14,10 +14,6 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
-Todo _$TodoFromJson(Map<String, dynamic> json) {
-  return _Todo.fromJson(json);
-}
-
 /// @nodoc
 class _$TodoTearOff {
   const _$TodoTearOff();
@@ -26,29 +22,21 @@ class _$TodoTearOff {
       @HiveField(0) String id,
       @HiveField(1) String title,
       @HiveField(2) DateTime eventAt,
-      @HiveField(3) double latitude,
-      @HiveField(4) double longitude,
-      @HiveField(5) String? locationName,
-      @HiveField(6) DateTime createdAt,
-      @HiveField(7) DateTime updatedAt,
-      @HiveField(8) int? notificationId,
-      @HiveField(9) int? notifyInAdvanceVal) {
+      @HiveField(3) LocationInfo locationInfo,
+      @HiveField(4) DateTime createdAt,
+      @HiveField(5) DateTime updatedAt,
+      @HiveField(6) int? notificationId,
+      @HiveField(7) int? notifyInAdvanceVal) {
     return _Todo(
       id,
       title,
       eventAt,
-      latitude,
-      longitude,
-      locationName,
+      locationInfo,
       createdAt,
       updatedAt,
       notificationId,
       notifyInAdvanceVal,
     );
-  }
-
-  Todo fromJson(Map<String, Object?> json) {
-    return Todo.fromJson(json);
   }
 }
 
@@ -64,21 +52,16 @@ mixin _$Todo {
   @HiveField(2)
   DateTime get eventAt => throw _privateConstructorUsedError;
   @HiveField(3)
-  double get latitude => throw _privateConstructorUsedError;
+  LocationInfo get locationInfo => throw _privateConstructorUsedError;
   @HiveField(4)
-  double get longitude => throw _privateConstructorUsedError;
-  @HiveField(5)
-  String? get locationName => throw _privateConstructorUsedError;
-  @HiveField(6)
   DateTime get createdAt => throw _privateConstructorUsedError;
-  @HiveField(7)
+  @HiveField(5)
   DateTime get updatedAt => throw _privateConstructorUsedError;
-  @HiveField(8)
+  @HiveField(6)
   int? get notificationId => throw _privateConstructorUsedError;
-  @HiveField(9)
+  @HiveField(7)
   int? get notifyInAdvanceVal => throw _privateConstructorUsedError;
 
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $TodoCopyWith<Todo> get copyWith => throw _privateConstructorUsedError;
 }
@@ -91,13 +74,13 @@ abstract class $TodoCopyWith<$Res> {
       {@HiveField(0) String id,
       @HiveField(1) String title,
       @HiveField(2) DateTime eventAt,
-      @HiveField(3) double latitude,
-      @HiveField(4) double longitude,
-      @HiveField(5) String? locationName,
-      @HiveField(6) DateTime createdAt,
-      @HiveField(7) DateTime updatedAt,
-      @HiveField(8) int? notificationId,
-      @HiveField(9) int? notifyInAdvanceVal});
+      @HiveField(3) LocationInfo locationInfo,
+      @HiveField(4) DateTime createdAt,
+      @HiveField(5) DateTime updatedAt,
+      @HiveField(6) int? notificationId,
+      @HiveField(7) int? notifyInAdvanceVal});
+
+  $LocationInfoCopyWith<$Res> get locationInfo;
 }
 
 /// @nodoc
@@ -113,9 +96,7 @@ class _$TodoCopyWithImpl<$Res> implements $TodoCopyWith<$Res> {
     Object? id = freezed,
     Object? title = freezed,
     Object? eventAt = freezed,
-    Object? latitude = freezed,
-    Object? longitude = freezed,
-    Object? locationName = freezed,
+    Object? locationInfo = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
     Object? notificationId = freezed,
@@ -134,18 +115,10 @@ class _$TodoCopyWithImpl<$Res> implements $TodoCopyWith<$Res> {
           ? _value.eventAt
           : eventAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      latitude: latitude == freezed
-          ? _value.latitude
-          : latitude // ignore: cast_nullable_to_non_nullable
-              as double,
-      longitude: longitude == freezed
-          ? _value.longitude
-          : longitude // ignore: cast_nullable_to_non_nullable
-              as double,
-      locationName: locationName == freezed
-          ? _value.locationName
-          : locationName // ignore: cast_nullable_to_non_nullable
-              as String?,
+      locationInfo: locationInfo == freezed
+          ? _value.locationInfo
+          : locationInfo // ignore: cast_nullable_to_non_nullable
+              as LocationInfo,
       createdAt: createdAt == freezed
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -164,6 +137,13 @@ class _$TodoCopyWithImpl<$Res> implements $TodoCopyWith<$Res> {
               as int?,
     ));
   }
+
+  @override
+  $LocationInfoCopyWith<$Res> get locationInfo {
+    return $LocationInfoCopyWith<$Res>(_value.locationInfo, (value) {
+      return _then(_value.copyWith(locationInfo: value));
+    });
+  }
 }
 
 /// @nodoc
@@ -175,13 +155,14 @@ abstract class _$TodoCopyWith<$Res> implements $TodoCopyWith<$Res> {
       {@HiveField(0) String id,
       @HiveField(1) String title,
       @HiveField(2) DateTime eventAt,
-      @HiveField(3) double latitude,
-      @HiveField(4) double longitude,
-      @HiveField(5) String? locationName,
-      @HiveField(6) DateTime createdAt,
-      @HiveField(7) DateTime updatedAt,
-      @HiveField(8) int? notificationId,
-      @HiveField(9) int? notifyInAdvanceVal});
+      @HiveField(3) LocationInfo locationInfo,
+      @HiveField(4) DateTime createdAt,
+      @HiveField(5) DateTime updatedAt,
+      @HiveField(6) int? notificationId,
+      @HiveField(7) int? notifyInAdvanceVal});
+
+  @override
+  $LocationInfoCopyWith<$Res> get locationInfo;
 }
 
 /// @nodoc
@@ -198,9 +179,7 @@ class __$TodoCopyWithImpl<$Res> extends _$TodoCopyWithImpl<$Res>
     Object? id = freezed,
     Object? title = freezed,
     Object? eventAt = freezed,
-    Object? latitude = freezed,
-    Object? longitude = freezed,
-    Object? locationName = freezed,
+    Object? locationInfo = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
     Object? notificationId = freezed,
@@ -219,18 +198,10 @@ class __$TodoCopyWithImpl<$Res> extends _$TodoCopyWithImpl<$Res>
           ? _value.eventAt
           : eventAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      latitude == freezed
-          ? _value.latitude
-          : latitude // ignore: cast_nullable_to_non_nullable
-              as double,
-      longitude == freezed
-          ? _value.longitude
-          : longitude // ignore: cast_nullable_to_non_nullable
-              as double,
-      locationName == freezed
-          ? _value.locationName
-          : locationName // ignore: cast_nullable_to_non_nullable
-              as String?,
+      locationInfo == freezed
+          ? _value.locationInfo
+          : locationInfo // ignore: cast_nullable_to_non_nullable
+              as LocationInfo,
       createdAt == freezed
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -252,23 +223,19 @@ class __$TodoCopyWithImpl<$Res> extends _$TodoCopyWithImpl<$Res>
 }
 
 /// @nodoc
-@JsonSerializable()
+
 @HiveType(typeId: 0, adapterName: 'TodoAdapter')
 class _$_Todo extends _Todo with DiagnosticableTreeMixin {
   const _$_Todo(
       @HiveField(0) this.id,
       @HiveField(1) this.title,
       @HiveField(2) this.eventAt,
-      @HiveField(3) this.latitude,
-      @HiveField(4) this.longitude,
-      @HiveField(5) this.locationName,
-      @HiveField(6) this.createdAt,
-      @HiveField(7) this.updatedAt,
-      @HiveField(8) this.notificationId,
-      @HiveField(9) this.notifyInAdvanceVal)
+      @HiveField(3) this.locationInfo,
+      @HiveField(4) this.createdAt,
+      @HiveField(5) this.updatedAt,
+      @HiveField(6) this.notificationId,
+      @HiveField(7) this.notifyInAdvanceVal)
       : super._();
-
-  factory _$_Todo.fromJson(Map<String, dynamic> json) => _$$_TodoFromJson(json);
 
   @override
   @HiveField(0)
@@ -281,29 +248,23 @@ class _$_Todo extends _Todo with DiagnosticableTreeMixin {
   final DateTime eventAt;
   @override
   @HiveField(3)
-  final double latitude;
+  final LocationInfo locationInfo;
   @override
   @HiveField(4)
-  final double longitude;
-  @override
-  @HiveField(5)
-  final String? locationName;
-  @override
-  @HiveField(6)
   final DateTime createdAt;
   @override
-  @HiveField(7)
+  @HiveField(5)
   final DateTime updatedAt;
   @override
-  @HiveField(8)
+  @HiveField(6)
   final int? notificationId;
   @override
-  @HiveField(9)
+  @HiveField(7)
   final int? notifyInAdvanceVal;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Todo(id: $id, title: $title, eventAt: $eventAt, latitude: $latitude, longitude: $longitude, locationName: $locationName, createdAt: $createdAt, updatedAt: $updatedAt, notificationId: $notificationId, notifyInAdvanceVal: $notifyInAdvanceVal)';
+    return 'Todo(id: $id, title: $title, eventAt: $eventAt, locationInfo: $locationInfo, createdAt: $createdAt, updatedAt: $updatedAt, notificationId: $notificationId, notifyInAdvanceVal: $notifyInAdvanceVal)';
   }
 
   @override
@@ -314,9 +275,7 @@ class _$_Todo extends _Todo with DiagnosticableTreeMixin {
       ..add(DiagnosticsProperty('id', id))
       ..add(DiagnosticsProperty('title', title))
       ..add(DiagnosticsProperty('eventAt', eventAt))
-      ..add(DiagnosticsProperty('latitude', latitude))
-      ..add(DiagnosticsProperty('longitude', longitude))
-      ..add(DiagnosticsProperty('locationName', locationName))
+      ..add(DiagnosticsProperty('locationInfo', locationInfo))
       ..add(DiagnosticsProperty('createdAt', createdAt))
       ..add(DiagnosticsProperty('updatedAt', updatedAt))
       ..add(DiagnosticsProperty('notificationId', notificationId))
@@ -331,10 +290,8 @@ class _$_Todo extends _Todo with DiagnosticableTreeMixin {
             const DeepCollectionEquality().equals(other.id, id) &&
             const DeepCollectionEquality().equals(other.title, title) &&
             const DeepCollectionEquality().equals(other.eventAt, eventAt) &&
-            const DeepCollectionEquality().equals(other.latitude, latitude) &&
-            const DeepCollectionEquality().equals(other.longitude, longitude) &&
             const DeepCollectionEquality()
-                .equals(other.locationName, locationName) &&
+                .equals(other.locationInfo, locationInfo) &&
             const DeepCollectionEquality().equals(other.createdAt, createdAt) &&
             const DeepCollectionEquality().equals(other.updatedAt, updatedAt) &&
             const DeepCollectionEquality()
@@ -349,9 +306,7 @@ class _$_Todo extends _Todo with DiagnosticableTreeMixin {
       const DeepCollectionEquality().hash(id),
       const DeepCollectionEquality().hash(title),
       const DeepCollectionEquality().hash(eventAt),
-      const DeepCollectionEquality().hash(latitude),
-      const DeepCollectionEquality().hash(longitude),
-      const DeepCollectionEquality().hash(locationName),
+      const DeepCollectionEquality().hash(locationInfo),
       const DeepCollectionEquality().hash(createdAt),
       const DeepCollectionEquality().hash(updatedAt),
       const DeepCollectionEquality().hash(notificationId),
@@ -361,11 +316,6 @@ class _$_Todo extends _Todo with DiagnosticableTreeMixin {
   @override
   _$TodoCopyWith<_Todo> get copyWith =>
       __$TodoCopyWithImpl<_Todo>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$_TodoToJson(this);
-  }
 }
 
 abstract class _Todo extends Todo {
@@ -373,16 +323,12 @@ abstract class _Todo extends Todo {
       @HiveField(0) String id,
       @HiveField(1) String title,
       @HiveField(2) DateTime eventAt,
-      @HiveField(3) double latitude,
-      @HiveField(4) double longitude,
-      @HiveField(5) String? locationName,
-      @HiveField(6) DateTime createdAt,
-      @HiveField(7) DateTime updatedAt,
-      @HiveField(8) int? notificationId,
-      @HiveField(9) int? notifyInAdvanceVal) = _$_Todo;
+      @HiveField(3) LocationInfo locationInfo,
+      @HiveField(4) DateTime createdAt,
+      @HiveField(5) DateTime updatedAt,
+      @HiveField(6) int? notificationId,
+      @HiveField(7) int? notifyInAdvanceVal) = _$_Todo;
   const _Todo._() : super._();
-
-  factory _Todo.fromJson(Map<String, dynamic> json) = _$_Todo.fromJson;
 
   @override
   @HiveField(0)
@@ -395,24 +341,18 @@ abstract class _Todo extends Todo {
   DateTime get eventAt;
   @override
   @HiveField(3)
-  double get latitude;
+  LocationInfo get locationInfo;
   @override
   @HiveField(4)
-  double get longitude;
-  @override
-  @HiveField(5)
-  String? get locationName;
-  @override
-  @HiveField(6)
   DateTime get createdAt;
   @override
-  @HiveField(7)
+  @HiveField(5)
   DateTime get updatedAt;
   @override
-  @HiveField(8)
+  @HiveField(6)
   int? get notificationId;
   @override
-  @HiveField(9)
+  @HiveField(7)
   int? get notifyInAdvanceVal;
   @override
   @JsonKey(ignore: true)

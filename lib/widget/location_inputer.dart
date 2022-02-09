@@ -5,14 +5,13 @@ import 'package:flutter_todo_app/view_model/location_search_form_view_model.dart
 import 'package:flutter_todo_app/view_model/map_view_model.dart';
 import 'package:flutter_todo_app/view_model/state/map_state.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 final mapProvider = StateNotifierProvider.autoDispose<MapProvider, MapState>(
-    (ref) => MapProvider());
+    (ref) => MapProvider(ref.read));
 
-final locationSearchFormViewModel = StateNotifierProvider.autoDispose(
+final locationSearchFormViewModel = StateNotifierProvider(
   (ref) => LocationSearchFormViewModel(ref.read),
 );
 
@@ -48,20 +47,17 @@ class LocationInputer extends HookConsumerWidget {
               ),
             ),
             onSubmitted: (_) async {
-              final location =
-                  await locationSearchFormNotifier.searchLocation();
-              Widget toast = _resultToast(location);
+              final latLng = await locationSearchFormNotifier.searchLocation();
+              Widget toast = _resultToast(latLng);
               fToast.showToast(
                 child: toast,
                 gravity: ToastGravity.BOTTOM,
                 toastDuration: Duration(seconds: 2),
               );
 
-              if (location != null) {
-                mapNotifier.createMarker(
-                    LatLng(location.latitude, location.longitude));
-                mapNotifier.changeCameraPosition(
-                    LatLng(location.latitude, location.longitude));
+              if (latLng != null) {
+                mapNotifier.createMarker(latLng);
+                mapNotifier.changeCameraPosition(latLng);
               }
             },
             onChanged: (input) {
@@ -73,11 +69,7 @@ class LocationInputer extends HookConsumerWidget {
               onPressed: mapState.markers.isEmpty
                   ? null
                   : () {
-                      Marker marker = mapState.markers.elementAt(0);
-                      Navigator.pop(
-                          context,
-                          LatLng(marker.position.latitude,
-                              marker.position.longitude));
+                      Navigator.pop(context, mapNotifier.getMarkerLatLng());
                     },
               icon: Icon(Icons.done)),
         ]),
@@ -86,12 +78,12 @@ class LocationInputer extends HookConsumerWidget {
     );
   }
 
-  Widget _resultToast(Location? location) {
+  Widget _resultToast(LatLng? latLng) {
     var icon;
     var text;
     var color;
 
-    if (location == null) {
+    if (latLng == null) {
       icon = Icons.close;
       text = "位置情報が見つかりませんでした。";
       color = Colors.redAccent;

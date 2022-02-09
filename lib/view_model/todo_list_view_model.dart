@@ -1,4 +1,5 @@
 import 'package:flutter_todo_app/main.dart';
+import 'package:flutter_todo_app/model/location_info.dart';
 import 'package:flutter_todo_app/view/todo_list_view.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -17,15 +18,18 @@ class TodoListStateController extends StateNotifier<TodoListState> {
         isLoaded: true, todoList: _toTodoMap(todoListRepository.getAll()));
   }
 
-  Future create(String title, DateTime eventAt, double latitude,
-      double longitude, String? locationName, int? notifyInAdvanceVal) async {
+  Future create(String title, DateTime eventAt, LocationInfo locationInfo,
+      int? notifyInAdvanceVal) async {
     final todoListRepository = read(todoListRepositoryProvider);
     final idRepository = read(idRepositoryProvider);
 
     final todoId = idRepository.createTodoId();
     var notificationId = null;
+
+    //予定の何分前に通知するための値が入っている時
     if (notifyInAdvanceVal != null) {
       final durationed = eventAt.add(Duration(minutes: -notifyInAdvanceVal));
+      //通知時刻が現在時刻より後の時、通知をセットする
       if (durationed.isAfter(DateTime.now())) {
         notificationId = await _setNotification(title, eventAt,
             eventAt.add(Duration(minutes: -notifyInAdvanceVal)));
@@ -34,16 +38,16 @@ class TodoListStateController extends StateNotifier<TodoListState> {
 
     //通知時間が入っていたら通知をセットする
     final now = DateTime.now();
-    final todo = Todo(todoId, title, eventAt, latitude, longitude, locationName,
-        now, now, notificationId, notifyInAdvanceVal);
+    final todo = Todo(todoId, title, eventAt, locationInfo, now, now,
+        notificationId, notifyInAdvanceVal);
     final newTodoList = _addTodo(todo, {...state.todoList});
     state = state.copyWith(todoList: newTodoList);
     todoListRepository.create(todo);
     getAddress(todo);
   }
 
-  void update(String id, String title, DateTime eventAt, double latitude,
-      double longitude, String? locationName, int? notifyInAdvanceVal) async {
+  void update(String id, String title, DateTime eventAt,
+      LocationInfo locationInfo, int? notifyInAdvanceVal) async {
     final todoListRepository = read(todoListRepositoryProvider);
 
     final todo = todoListRepository.get(id);
@@ -59,10 +63,8 @@ class TodoListStateController extends StateNotifier<TodoListState> {
     final newTodo = todo.copyWith(
         title: title,
         eventAt: eventAt,
-        latitude: latitude,
-        longitude: longitude,
+        locationInfo: locationInfo,
         updatedAt: updatedAt,
-        locationName: locationName,
         notifyInAdvanceVal: notifyInAdvanceVal);
 
     todoListRepository.update(newTodo);
@@ -100,7 +102,7 @@ ${title}''',
   Future getAllAddress() async {
     state.todoList.values.forEach((todos) {
       todos.forEach((todo) async {
-        if (todo.locationName == null) {
+        if (todo.locationInfo.address == null) {
           await getAddress(todo);
         }
       });
@@ -111,10 +113,14 @@ ${title}''',
     final todoListRepository = read(todoListRepositoryProvider);
     final locationSearchRepository = read(locationSearchRepositoryProvider);
 
+    final locationInfo = todo.locationInfo;
+
     //住所を取得
     final address = await locationSearchRepository
-        .getAddress(LatLng(todo.latitude, todo.longitude));
-    final newTodo = todo.copyWith(locationName: address);
+        .getAddress(LatLng(locationInfo.latitude, locationInfo.longitude));
+    final newLocationInfo = locationInfo.copyWith(address: address);
+
+    final newTodo = todo.copyWith(locationInfo: newLocationInfo);
     todoListRepository.update(newTodo);
     fetch();
   }

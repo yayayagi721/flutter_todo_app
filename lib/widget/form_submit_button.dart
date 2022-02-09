@@ -25,22 +25,15 @@ class FormSubmitButton extends HookConsumerWidget {
 
             switch (formState.saveType) {
               case SaveType.create:
-                controller.create(
-                    formState.title,
-                    formState.eventTime!,
-                    formState.latitude!,
-                    formState.longitude!,
-                    formState.locationName,
-                    formState.notifyInAdvanceVal);
+                controller.create(formState.title, formState.eventTime!,
+                    formState.locationInfo!, formState.notifyInAdvanceVal);
                 break;
               case SaveType.update:
                 controller.update(
                     formState.id!,
                     formState.title,
                     formState.eventTime!,
-                    formState.latitude!,
-                    formState.longitude!,
-                    formState.locationName,
+                    formState.locationInfo!,
                     formState.notifyInAdvanceVal);
                 break;
             }

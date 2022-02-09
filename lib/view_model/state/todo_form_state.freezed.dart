@@ -23,9 +23,7 @@ class _$TodoFormStateTearOff {
       InputKind inputKind = InputKind.text,
       String? id = null,
       String title = "",
-      double? latitude = null,
-      double? longitude = null,
-      String? locationName = null,
+      LocationInfo? locationInfo = null,
       DateTime? eventTime = null,
       DateTime? notificationTime = null,
       int? notifyInAdvanceVal = 360,
@@ -35,9 +33,7 @@ class _$TodoFormStateTearOff {
       inputKind: inputKind,
       id: id,
       title: title,
-      latitude: latitude,
-      longitude: longitude,
-      locationName: locationName,
+      locationInfo: locationInfo,
       eventTime: eventTime,
       notificationTime: notificationTime,
       notifyInAdvanceVal: notifyInAdvanceVal,
@@ -55,9 +51,7 @@ mixin _$TodoFormState {
   InputKind get inputKind => throw _privateConstructorUsedError;
   String? get id => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
-  double? get latitude => throw _privateConstructorUsedError;
-  double? get longitude => throw _privateConstructorUsedError;
-  String? get locationName => throw _privateConstructorUsedError;
+  LocationInfo? get locationInfo => throw _privateConstructorUsedError;
   DateTime? get eventTime => throw _privateConstructorUsedError;
   DateTime? get notificationTime => throw _privateConstructorUsedError;
   int? get notifyInAdvanceVal => throw _privateConstructorUsedError;
@@ -78,13 +72,13 @@ abstract class $TodoFormStateCopyWith<$Res> {
       InputKind inputKind,
       String? id,
       String title,
-      double? latitude,
-      double? longitude,
-      String? locationName,
+      LocationInfo? locationInfo,
       DateTime? eventTime,
       DateTime? notificationTime,
       int? notifyInAdvanceVal,
       bool isUpKeyboard});
+
+  $LocationInfoCopyWith<$Res>? get locationInfo;
 }
 
 /// @nodoc
@@ -102,9 +96,7 @@ class _$TodoFormStateCopyWithImpl<$Res>
     Object? inputKind = freezed,
     Object? id = freezed,
     Object? title = freezed,
-    Object? latitude = freezed,
-    Object? longitude = freezed,
-    Object? locationName = freezed,
+    Object? locationInfo = freezed,
     Object? eventTime = freezed,
     Object? notificationTime = freezed,
     Object? notifyInAdvanceVal = freezed,
@@ -127,18 +119,10 @@ class _$TodoFormStateCopyWithImpl<$Res>
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
-      latitude: latitude == freezed
-          ? _value.latitude
-          : latitude // ignore: cast_nullable_to_non_nullable
-              as double?,
-      longitude: longitude == freezed
-          ? _value.longitude
-          : longitude // ignore: cast_nullable_to_non_nullable
-              as double?,
-      locationName: locationName == freezed
-          ? _value.locationName
-          : locationName // ignore: cast_nullable_to_non_nullable
-              as String?,
+      locationInfo: locationInfo == freezed
+          ? _value.locationInfo
+          : locationInfo // ignore: cast_nullable_to_non_nullable
+              as LocationInfo?,
       eventTime: eventTime == freezed
           ? _value.eventTime
           : eventTime // ignore: cast_nullable_to_non_nullable
@@ -157,6 +141,17 @@ class _$TodoFormStateCopyWithImpl<$Res>
               as bool,
     ));
   }
+
+  @override
+  $LocationInfoCopyWith<$Res>? get locationInfo {
+    if (_value.locationInfo == null) {
+      return null;
+    }
+
+    return $LocationInfoCopyWith<$Res>(_value.locationInfo!, (value) {
+      return _then(_value.copyWith(locationInfo: value));
+    });
+  }
 }
 
 /// @nodoc
@@ -171,13 +166,14 @@ abstract class _$TodoFormStateCopyWith<$Res>
       InputKind inputKind,
       String? id,
       String title,
-      double? latitude,
-      double? longitude,
-      String? locationName,
+      LocationInfo? locationInfo,
       DateTime? eventTime,
       DateTime? notificationTime,
       int? notifyInAdvanceVal,
       bool isUpKeyboard});
+
+  @override
+  $LocationInfoCopyWith<$Res>? get locationInfo;
 }
 
 /// @nodoc
@@ -197,9 +193,7 @@ class __$TodoFormStateCopyWithImpl<$Res>
     Object? inputKind = freezed,
     Object? id = freezed,
     Object? title = freezed,
-    Object? latitude = freezed,
-    Object? longitude = freezed,
-    Object? locationName = freezed,
+    Object? locationInfo = freezed,
     Object? eventTime = freezed,
     Object? notificationTime = freezed,
     Object? notifyInAdvanceVal = freezed,
@@ -222,18 +216,10 @@ class __$TodoFormStateCopyWithImpl<$Res>
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
-      latitude: latitude == freezed
-          ? _value.latitude
-          : latitude // ignore: cast_nullable_to_non_nullable
-              as double?,
-      longitude: longitude == freezed
-          ? _value.longitude
-          : longitude // ignore: cast_nullable_to_non_nullable
-              as double?,
-      locationName: locationName == freezed
-          ? _value.locationName
-          : locationName // ignore: cast_nullable_to_non_nullable
-              as String?,
+      locationInfo: locationInfo == freezed
+          ? _value.locationInfo
+          : locationInfo // ignore: cast_nullable_to_non_nullable
+              as LocationInfo?,
       eventTime: eventTime == freezed
           ? _value.eventTime
           : eventTime // ignore: cast_nullable_to_non_nullable
@@ -262,9 +248,7 @@ class _$_TodoFormState extends _TodoFormState with DiagnosticableTreeMixin {
       this.inputKind = InputKind.text,
       this.id = null,
       this.title = "",
-      this.latitude = null,
-      this.longitude = null,
-      this.locationName = null,
+      this.locationInfo = null,
       this.eventTime = null,
       this.notificationTime = null,
       this.notifyInAdvanceVal = 360,
@@ -285,13 +269,7 @@ class _$_TodoFormState extends _TodoFormState with DiagnosticableTreeMixin {
   final String title;
   @JsonKey()
   @override
-  final double? latitude;
-  @JsonKey()
-  @override
-  final double? longitude;
-  @JsonKey()
-  @override
-  final String? locationName;
+  final LocationInfo? locationInfo;
   @JsonKey()
   @override
   final DateTime? eventTime;
@@ -307,7 +285,7 @@ class _$_TodoFormState extends _TodoFormState with DiagnosticableTreeMixin {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'TodoFormState(saveType: $saveType, inputKind: $inputKind, id: $id, title: $title, latitude: $latitude, longitude: $longitude, locationName: $locationName, eventTime: $eventTime, notificationTime: $notificationTime, notifyInAdvanceVal: $notifyInAdvanceVal, isUpKeyboard: $isUpKeyboard)';
+    return 'TodoFormState(saveType: $saveType, inputKind: $inputKind, id: $id, title: $title, locationInfo: $locationInfo, eventTime: $eventTime, notificationTime: $notificationTime, notifyInAdvanceVal: $notifyInAdvanceVal, isUpKeyboard: $isUpKeyboard)';
   }
 
   @override
@@ -319,9 +297,7 @@ class _$_TodoFormState extends _TodoFormState with DiagnosticableTreeMixin {
       ..add(DiagnosticsProperty('inputKind', inputKind))
       ..add(DiagnosticsProperty('id', id))
       ..add(DiagnosticsProperty('title', title))
-      ..add(DiagnosticsProperty('latitude', latitude))
-      ..add(DiagnosticsProperty('longitude', longitude))
-      ..add(DiagnosticsProperty('locationName', locationName))
+      ..add(DiagnosticsProperty('locationInfo', locationInfo))
       ..add(DiagnosticsProperty('eventTime', eventTime))
       ..add(DiagnosticsProperty('notificationTime', notificationTime))
       ..add(DiagnosticsProperty('notifyInAdvanceVal', notifyInAdvanceVal))
@@ -337,10 +313,8 @@ class _$_TodoFormState extends _TodoFormState with DiagnosticableTreeMixin {
             const DeepCollectionEquality().equals(other.inputKind, inputKind) &&
             const DeepCollectionEquality().equals(other.id, id) &&
             const DeepCollectionEquality().equals(other.title, title) &&
-            const DeepCollectionEquality().equals(other.latitude, latitude) &&
-            const DeepCollectionEquality().equals(other.longitude, longitude) &&
             const DeepCollectionEquality()
-                .equals(other.locationName, locationName) &&
+                .equals(other.locationInfo, locationInfo) &&
             const DeepCollectionEquality().equals(other.eventTime, eventTime) &&
             const DeepCollectionEquality()
                 .equals(other.notificationTime, notificationTime) &&
@@ -357,9 +331,7 @@ class _$_TodoFormState extends _TodoFormState with DiagnosticableTreeMixin {
       const DeepCollectionEquality().hash(inputKind),
       const DeepCollectionEquality().hash(id),
       const DeepCollectionEquality().hash(title),
-      const DeepCollectionEquality().hash(latitude),
-      const DeepCollectionEquality().hash(longitude),
-      const DeepCollectionEquality().hash(locationName),
+      const DeepCollectionEquality().hash(locationInfo),
       const DeepCollectionEquality().hash(eventTime),
       const DeepCollectionEquality().hash(notificationTime),
       const DeepCollectionEquality().hash(notifyInAdvanceVal),
@@ -377,9 +349,7 @@ abstract class _TodoFormState extends TodoFormState {
       InputKind inputKind,
       String? id,
       String title,
-      double? latitude,
-      double? longitude,
-      String? locationName,
+      LocationInfo? locationInfo,
       DateTime? eventTime,
       DateTime? notificationTime,
       int? notifyInAdvanceVal,
@@ -395,11 +365,7 @@ abstract class _TodoFormState extends TodoFormState {
   @override
   String get title;
   @override
-  double? get latitude;
-  @override
-  double? get longitude;
-  @override
-  String? get locationName;
+  LocationInfo? get locationInfo;
   @override
   DateTime? get eventTime;
   @override

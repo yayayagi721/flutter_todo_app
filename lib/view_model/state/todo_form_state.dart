@@ -1,4 +1,5 @@
 import 'package:flutter_todo_app/const/enums.dart';
+import 'package:flutter_todo_app/model/location_info.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
 
@@ -12,9 +13,7 @@ class TodoFormState with _$TodoFormState {
     @Default(InputKind.text) InputKind inputKind,
     @Default(null) String? id,
     @Default("") String title,
-    @Default(null) double? latitude,
-    @Default(null) double? longitude,
-    @Default(null) String? locationName,
+    @Default(null) LocationInfo? locationInfo,
     @Default(null) DateTime? eventTime,
     @Default(null) DateTime? notificationTime,
     @Default(360) int? notifyInAdvanceVal,
@@ -26,10 +25,24 @@ class TodoFormState with _$TodoFormState {
   }
 
   bool isValidLocation() {
-    return latitude != null && longitude != null;
+    return locationInfo != null;
   }
 
   bool isValidEventTime() {
     return eventTime != null;
+  }
+
+  String loededAddress() {
+    if (locationInfo == null) {
+      return "位置情報未読み込み";
+    } else {
+      print(locationInfo.toString());
+      print(locationInfo!.address);
+      if (locationInfo!.address == null) {
+        return "地域名取得中";
+      } else {
+        return locationInfo!.address!;
+      }
+    }
   }
 }

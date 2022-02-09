@@ -1,5 +1,6 @@
 import 'package:flutter_todo_app/const/enums.dart';
 import 'package:flutter_todo_app/main.dart';
+import 'package:flutter_todo_app/model/location_info.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'state/todo_form_state.dart';
@@ -29,20 +30,17 @@ class TodoFormStateNotifier extends StateNotifier<TodoFormState> {
 
   void inputLocation(double latitude, double longitude,
       [String? locationName]) {
-    state = state.copyWith(latitude: latitude, longitude: longitude);
-    if (locationName != null) {
-      state = state.copyWith(locationName: locationName);
-    } else {
-      _getAddress(latitude, longitude);
-    }
-  }
-
-  Future _getAddress(double latitude, double longitude) async {
     final locationSearchRepository = read(locationSearchRepositoryProvider);
-    //住所を取得
-    final address =
-        await locationSearchRepository.getAddress(LatLng(latitude, longitude));
-    state = state.copyWith(locationName: address);
+    final locationInfo = LocationInfo(latitude, longitude, locationName);
+    state = state.copyWith(locationInfo: locationInfo);
+    if (locationName == null) {
+      locationSearchRepository
+          .getAddress(LatLng(latitude, longitude))
+          .then((address) {
+        final locationInfo = LocationInfo(latitude, longitude, address);
+        state = state.copyWith(locationInfo: locationInfo);
+      });
+    }
   }
 
   void inputDatetime(DateTime dateTime) {
