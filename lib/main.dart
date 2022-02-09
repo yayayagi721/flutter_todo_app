@@ -12,7 +12,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'const/hive_const.dart';
 
-final locationSearchRepositoryProvider = Provider.autoDispose(
+final locationSearchRepositoryProvider = Provider(
   (ref) => LocationSearchRepositoryImpl(),
 );
 
@@ -54,7 +54,10 @@ void main() async {
   await Hive.initFlutter();
   Hive.registerAdapter(TodoAdapter());
   Hive.registerAdapter(LocationInfoAdapter());
+  await Hive.deleteBoxFromDisk(BoxName.todoList);
   await Hive.openBox(BoxName.todoList);
+
+  Hive.box(BoxName.todoList).clear();
   await Hive.openBox(BoxName.setting);
   await Hive.openBox(BoxName.id);
 

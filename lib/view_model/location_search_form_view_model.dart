@@ -1,6 +1,6 @@
 import 'package:flutter_todo_app/main.dart';
 import 'package:flutter_todo_app/view_model/state/textbox_state.dart';
-import 'package:geocoding/geocoding.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class LocationSearchFormViewModel extends StateNotifier<TextBoxState> {
@@ -12,17 +12,17 @@ class LocationSearchFormViewModel extends StateNotifier<TextBoxState> {
     state = state.copyWith(text: text);
   }
 
-  Future<Location?> searchLocation() async {
+  Future<LatLng?> searchLocation() async {
     final locationSearchRepository = read(locationSearchRepositoryProvider);
     final address = state.text;
-    var location;
+    var latLng;
     try {
       final locations = await locationSearchRepository.getLocations(address);
-      location = locations[0];
+      latLng = LatLng(locations[0].latitude, locations[0].longitude);
     } catch (e) {
-      location = null;
+      latLng = null;
     }
 
-    return location;
+    return latLng;
   }
 }

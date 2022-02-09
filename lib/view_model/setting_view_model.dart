@@ -1,3 +1,4 @@
+import 'package:flutter_todo_app/const/common.dart';
 import 'package:flutter_todo_app/main.dart';
 import 'package:flutter_todo_app/model/location_info.dart';
 import 'package:flutter_todo_app/view/setting_view.dart';
@@ -12,31 +13,21 @@ class SettingStateNotifier extends StateNotifier<SettingState> {
 
   final Reader read;
 
-  void changeDefaultLatLng(LatLng newLatLng) {
+  Future changeDefaultLatLng(LatLng newLatLng) async {
     final settingRepository = read(settingRepositoryProvider);
+    final locationSearchRepository = read(locationSearchRepositoryProvider);
 
-    final newInfo = LocationInfo(newLatLng.latitude, newLatLng.longitude);
-    state = state.copyWith(defaultLocation: newInfo);
+    final address = await locationSearchRepository.getAddress(newLatLng);
 
-    getAddress();
+    final newInfo =
+        LocationInfo(newLatLng.latitude, newLatLng.longitude, address);
     settingRepository.setDefaultLocationInfo(newInfo);
+    state = state.copyWith(defaultLocation: newInfo);
   }
 
   void changeRemaindInterval(int newInterval) {
     final settingRepository = read(settingRepositoryProvider);
     state = state.copyWith(remaindInterval: newInterval);
     settingRepository.setRemaindInterval(newInterval);
-  }
-
-  Future getAddress() async {
-    final locationSearchRepository = read(locationSearchRepositoryProvider);
-    final settingRepository = read(settingRepositoryProvider);
-
-    final address = await locationSearchRepository.getAddress(LatLng(
-        state.defaultLocation.latitude, state.defaultLocation.longitude));
-    final newInfo = LocationInfo(state.defaultLocation.latitude,
-        state.defaultLocation.longitude, address);
-    settingRepository.setDefaultLocationInfo(newInfo);
-    state = state.copyWith(defaultLocation: newInfo);
   }
 }

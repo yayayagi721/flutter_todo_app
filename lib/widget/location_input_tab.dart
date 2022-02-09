@@ -1,7 +1,5 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_todo_app/widget/location_inputer.dart';
+import 'package:flutter_todo_app/widget/common_dialog.dart';
 import 'package:flutter_todo_app/widget/todo_form.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -28,19 +26,20 @@ class LocationInputTab extends HookConsumerWidget {
                 GestureDetector(
                   onTap: () async {
                     var latLng;
+                    final locationInfo = formState.locationInfo;
 
-                    if (formState.latitude != null &&
-                        formState.longitude != null) {
-                      latLng = await _showMapDialog(context,
-                          LatLng(formState.latitude!, formState.longitude!));
+                    if (locationInfo != null) {
+                      latLng = await CommonDialog.showMapDialog(
+                          context,
+                          LatLng(
+                              locationInfo.latitude, locationInfo.longitude));
                     } else {
-                      latLng = await _showMapDialog(context);
+                      latLng = await CommonDialog.showMapDialog(context);
                     }
 
                     if (latLng != null) {
                       formNotifier.inputLocation(
                           latLng.latitude, latLng.longitude);
-                      print(formState.latitude);
                     }
                   },
                   child: Text(
@@ -53,35 +52,12 @@ class LocationInputTab extends HookConsumerWidget {
                     ),
                   ),
                 ),
-                Container(
-                  child: Text(formState.locationName ?? "位置情報未入力"),
-                )
-
-                //
+                Container(child: Text(formState.loededAddress()))
               ],
             ),
           ),
         ],
       ),
     );
-  }
-
-  Future<LatLng?> _showMapDialog(BuildContext context,
-      [LatLng? initLatLng]) async {
-    final Size fullSize = MediaQuery.of(context).size;
-
-    LatLng? latLng = await showDialog(
-        context: context,
-        builder: (childContext) {
-          return Dialog(
-              insetPadding: EdgeInsets.all(20),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(20))),
-              child: Container(
-                  height: fullSize.height * (2 / 3),
-                  width: double.infinity,
-                  child: LocationInputer(initLatLng)));
-        });
-    return latLng;
   }
 }

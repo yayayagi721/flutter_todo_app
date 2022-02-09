@@ -12,9 +12,7 @@ import 'package:flutter_todo_app/widget/kind_select_button.dart';
 import 'package:flutter_todo_app/widget/location_input_tab.dart';
 import 'package:flutter_todo_app/widget/notification_input_tab.dart';
 import 'package:flutter_todo_app/widget/text_input_tab.dart';
-
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-
 import 'form_submit_button.dart';
 
 final todoFormProvider =
@@ -36,8 +34,8 @@ class TodoInputForm extends HookConsumerWidget {
         FormNotifier.inputId(todo!.id);
         FormNotifier.inputText(todo!.title);
         FormNotifier.inputDatetime(todo!.eventAt);
-        FormNotifier.inputLocation(
-            todo!.latitude, todo!.longitude, todo!.locationName);
+        FormNotifier.inputLocation(todo!.locationInfo.latitude,
+            todo!.locationInfo.longitude, todo!.locationInfo.address);
       }
 
       //FIXME:form種別を変更できてしまうのが良くない

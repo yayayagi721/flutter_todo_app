@@ -7,12 +7,8 @@ import 'package:hive/hive.dart';
 
 class SettingRepositoryImpl implements SettingRepository {
   @override
-  LocationInfo getDefaultLocationInfo() {
+  LocationInfo? getDefaultLocationInfo() {
     final info = Hive.box(BoxName.setting).get(Setting.defaultLocationInfo);
-
-    if (info == null) {
-      return LocationInfo(CommonConst.initPosLat, CommonConst.initPosLng);
-    }
     return info;
   }
 

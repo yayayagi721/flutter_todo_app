@@ -18,7 +18,7 @@ final _privateConstructorUsedError = UnsupportedError(
 class _$SettingStateTearOff {
   const _$SettingStateTearOff();
 
-  _SettingState call(int remaindInterval, LocationInfo defaultLocation) {
+  _SettingState call(int remaindInterval, LocationInfo? defaultLocation) {
     return _SettingState(
       remaindInterval,
       defaultLocation,
@@ -32,7 +32,7 @@ const $SettingState = _$SettingStateTearOff();
 /// @nodoc
 mixin _$SettingState {
   int get remaindInterval => throw _privateConstructorUsedError;
-  LocationInfo get defaultLocation => throw _privateConstructorUsedError;
+  LocationInfo? get defaultLocation => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $SettingStateCopyWith<SettingState> get copyWith =>
@@ -44,9 +44,9 @@ abstract class $SettingStateCopyWith<$Res> {
   factory $SettingStateCopyWith(
           SettingState value, $Res Function(SettingState) then) =
       _$SettingStateCopyWithImpl<$Res>;
-  $Res call({int remaindInterval, LocationInfo defaultLocation});
+  $Res call({int remaindInterval, LocationInfo? defaultLocation});
 
-  $LocationInfoCopyWith<$Res> get defaultLocation;
+  $LocationInfoCopyWith<$Res>? get defaultLocation;
 }
 
 /// @nodoc
@@ -70,13 +70,17 @@ class _$SettingStateCopyWithImpl<$Res> implements $SettingStateCopyWith<$Res> {
       defaultLocation: defaultLocation == freezed
           ? _value.defaultLocation
           : defaultLocation // ignore: cast_nullable_to_non_nullable
-              as LocationInfo,
+              as LocationInfo?,
     ));
   }
 
   @override
-  $LocationInfoCopyWith<$Res> get defaultLocation {
-    return $LocationInfoCopyWith<$Res>(_value.defaultLocation, (value) {
+  $LocationInfoCopyWith<$Res>? get defaultLocation {
+    if (_value.defaultLocation == null) {
+      return null;
+    }
+
+    return $LocationInfoCopyWith<$Res>(_value.defaultLocation!, (value) {
       return _then(_value.copyWith(defaultLocation: value));
     });
   }
@@ -89,10 +93,10 @@ abstract class _$SettingStateCopyWith<$Res>
           _SettingState value, $Res Function(_SettingState) then) =
       __$SettingStateCopyWithImpl<$Res>;
   @override
-  $Res call({int remaindInterval, LocationInfo defaultLocation});
+  $Res call({int remaindInterval, LocationInfo? defaultLocation});
 
   @override
-  $LocationInfoCopyWith<$Res> get defaultLocation;
+  $LocationInfoCopyWith<$Res>? get defaultLocation;
 }
 
 /// @nodoc
@@ -118,7 +122,7 @@ class __$SettingStateCopyWithImpl<$Res> extends _$SettingStateCopyWithImpl<$Res>
       defaultLocation == freezed
           ? _value.defaultLocation
           : defaultLocation // ignore: cast_nullable_to_non_nullable
-              as LocationInfo,
+              as LocationInfo?,
     ));
   }
 }
@@ -131,7 +135,7 @@ class _$_SettingState implements _SettingState {
   @override
   final int remaindInterval;
   @override
-  final LocationInfo defaultLocation;
+  final LocationInfo? defaultLocation;
 
   @override
   String toString() {
@@ -163,12 +167,12 @@ class _$_SettingState implements _SettingState {
 
 abstract class _SettingState implements SettingState {
   const factory _SettingState(
-      int remaindInterval, LocationInfo defaultLocation) = _$_SettingState;
+      int remaindInterval, LocationInfo? defaultLocation) = _$_SettingState;
 
   @override
   int get remaindInterval;
   @override
-  LocationInfo get defaultLocation;
+  LocationInfo? get defaultLocation;
   @override
   @JsonKey(ignore: true)
   _$SettingStateCopyWith<_SettingState> get copyWith =>

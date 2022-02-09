@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter_todo_app/model/location_info.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive/hive.dart';
 
@@ -13,13 +14,17 @@ class Todo with _$Todo {
       @HiveField(0) String id,
       @HiveField(1) String title,
       @HiveField(2) DateTime eventAt,
-      @HiveField(3) double latitude,
-      @HiveField(4) double longitude,
-      @HiveField(5) String? locationName,
-      @HiveField(6) DateTime createdAt,
-      @HiveField(7) DateTime updatedAt,
-      @HiveField(8) int? notificationId,
-      @HiveField(9) int? notifyInAdvanceVal) = _Todo;
+      @HiveField(3) LocationInfo locationInfo,
+      @HiveField(4) DateTime createdAt,
+      @HiveField(5) DateTime updatedAt,
+      @HiveField(6) int? notificationId,
+      @HiveField(7) int? notifyInAdvanceVal) = _Todo;
 
-  factory Todo.fromJson(Map<String, dynamic> json) => _$TodoFromJson(json);
+  bool isValidTitle() {
+    return 0 < title.length && title.length <= 20;
+  }
+
+  bool isValidLocation() {
+    return locationInfo != null;
+  }
 }
