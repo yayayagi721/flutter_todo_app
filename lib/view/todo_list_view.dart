@@ -9,20 +9,26 @@ import 'package:flutter_todo_app/widget/todo_form.dart';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 final todoListRepositoryProvider = Provider(
   (ref) => TodoListRepositoryImpl(),
 );
 
+final itemScrollControllerProvider = Provider(
+  (ref) => ItemScrollController(),
+);
+
 final todoListProvider =
-    StateNotifierProvider.autoDispose<TodoListStateController, TodoListState>(
-        (ref) => TodoListStateController(ref.read));
+    StateNotifierProvider.autoDispose<TodoListStateNotifier, TodoListState>(
+        (ref) => TodoListStateNotifier(ref.read));
 
 class TodoListView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final todoListNotifier = ref.read(todoListProvider.notifier);
     final todoListState = ref.watch(todoListProvider);
+    final itemScrollController = ref.read(itemScrollControllerProvider);
 
     useEffect(() {
       WidgetsBinding.instance!.addPostFrameCallback((_) {
@@ -31,6 +37,8 @@ class TodoListView extends HookConsumerWidget {
       });
       return () {};
     }, const []);
+
+    final widgetList = todoList(todoListState.todoList, ref);
 
     return Scaffold(
       appBar: AppBar(
@@ -44,10 +52,19 @@ class TodoListView extends HookConsumerWidget {
         ],
         title: Text("Todo App"),
       ),
-      body: ListView(
-        children: todoList(todoListState.todoList),
-        padding: EdgeInsets.only(left: 15, right: 15),
-      ),
+      body: !todoListState.isLoaded
+          ? Center(
+              child: CircularProgressIndicator(
+                  valueColor: new AlwaysStoppedAnimation<Color>(Colors.white)),
+            )
+          : ScrollablePositionedList.builder(
+              itemScrollController: itemScrollController,
+              padding: EdgeInsets.only(left: 15, right: 15),
+              itemCount: widgetList.length,
+              initialScrollIndex: 1,
+              itemBuilder: (BuildContext context, int index) {
+                return widgetList[index];
+              }),
       floatingActionButton: FloatingActionButton(
         onPressed: () => {
           showModalBottomSheet(
@@ -65,34 +82,66 @@ class TodoListView extends HookConsumerWidget {
     );
   }
 
-  List<Widget> todoList(Map<String, List<Todo>> todoListModel) {
+  List<Widget> todoList(Map<String, List<Todo>> todoListModel, WidgetRef ref) {
     //存在する日付でソート
     var sortKeys = todoListModel.keys.toList();
-    print(sortKeys);
-
     sortKeys.sort((a, b) => a.compareTo(b));
+    final todoListState = ref.watch(todoListProvider);
 
-    List<Widget> allTodoCards = [];
+    List<Widget> children = [];
+    if (!todoListState.isOldLoadable) {
+      children.add(_oldLoadButton(ref));
+    }
+
     sortKeys.forEach((key) {
-      allTodoCards = [
-        ...allTodoCards,
-        ...todoOnOneDay(key, todoListModel[key]!)
-      ];
+      children = [...children, todoOnOneDay(key, todoListModel[key]!)];
     });
+    children.add(SizedBox(height: 50));
 
-    return allTodoCards;
+    return children;
   }
 
-  List<Widget> todoOnOneDay(String targetDate, List<Todo> todos) {
+  Widget _oldLoadButton(WidgetRef ref) {
+    final todoListNotifier = ref.read(todoListProvider.notifier);
+    final todoListState = ref.watch(todoListProvider);
+    final itemScrollController = ref.read(itemScrollControllerProvider);
+
+    return Container(
+      decoration: BoxDecoration(
+        border: Border(
+          top: const BorderSide(
+            color: Colors.black12,
+          ),
+          bottom: const BorderSide(
+            color: Colors.black12,
+          ),
+        ),
+      ),
+      child: TextButton(
+        onPressed: () {
+          final crrentLength = todoListState.todoList.length - 1;
+          todoListNotifier.onSwitchOldLoadable();
+          itemScrollController.jumpTo(
+              index: todoListState.todoList.length - crrentLength);
+        },
+        child: Text("過去の予定も確認する"),
+      ),
+    );
+  }
+
+  Widget todoOnOneDay(String targetDate, List<Todo> todos) {
     final datetime = DateTime.parse(targetDate);
     final formatter = new DateFormat('yyyy年M月d日', "ja_JP");
     final formatted = formatter.format(datetime); // DateからString
     final todoCards = todos.map((todo) => _contentsCard(todo)).toList();
-    return <Widget>[_dateLine(formatted), ...todoCards];
+    return Column(
+      children: [_dateLine(formatted), ...todoCards],
+    );
   }
 
   Widget _dateLine(String targetDate) {
     return Container(
+      alignment: AlignmentDirectional.centerStart,
       padding: EdgeInsets.only(top: 20),
       child: Text(
         targetDate,
