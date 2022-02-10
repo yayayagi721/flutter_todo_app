@@ -41,7 +41,7 @@ final flutterLocalNotificationsProvider = FutureProvider((ref) async {
   return flutterLocalNotificationsPlugin;
 });
 
-final notificationsRepositoryProvider = FutureProvider.autoDispose((ref) async {
+final notificationsRepositoryProvider = FutureProvider((ref) async {
   final flutterLocalNotificationsPlugin =
       await ref.read(flutterLocalNotificationsProvider.future);
 
@@ -54,10 +54,7 @@ void main() async {
   await Hive.initFlutter();
   Hive.registerAdapter(TodoAdapter());
   Hive.registerAdapter(LocationInfoAdapter());
-  await Hive.deleteBoxFromDisk(BoxName.todoList);
   await Hive.openBox(BoxName.todoList);
-
-  Hive.box(BoxName.todoList).clear();
   await Hive.openBox(BoxName.setting);
   await Hive.openBox(BoxName.id);
 

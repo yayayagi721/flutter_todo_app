@@ -9,17 +9,19 @@ class DatetimeInputTab extends HookConsumerWidget {
     final now = DateTime.now();
     final todoFormNotifier = ref.read(todoFormProvider.notifier);
     final todoFormState = ref.watch(todoFormProvider);
+    final initDt = DateTime.now().add(Duration(minutes: 1));
 
     useEffect(() {
       WidgetsBinding.instance!
-          .addPostFrameCallback((_) => todoFormNotifier.inputDatetime(now));
+          .addPostFrameCallback((_) => todoFormNotifier.inputDatetime(initDt));
     }, []);
 
     return Container(
       padding: EdgeInsets.only(top: 15, bottom: 15),
       height: 100,
       child: CupertinoDatePicker(
-        initialDateTime: todoFormState.eventTime ?? now,
+        minimumDate: DateTime.now(),
+        initialDateTime: todoFormState.eventTime ?? initDt,
         onDateTimeChanged: (DateTime newDt) {
           todoFormNotifier.inputDatetime(newDt);
         },

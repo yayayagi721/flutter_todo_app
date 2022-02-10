@@ -34,4 +34,13 @@ class TodoListRepositoryImpl implements TodoListRepository {
     Hive.box(BoxName.todoList).put(todo.id, todo);
     return todo;
   }
+
+  @override
+  List<Todo> getTodosAfterDt(DateTime dt) {
+    final todoList = Hive.box(BoxName.todoList)
+        .values
+        .where((todo) => todo.eventAt.isAfter(dt))
+        .toList();
+    return todoList.cast<Todo>();
+  }
 }

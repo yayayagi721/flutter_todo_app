@@ -7,15 +7,28 @@ import 'package:intl/intl.dart';
 import '../model/todo.dart';
 import 'state/todo_list_state.dart';
 
-class TodoListStateController extends StateNotifier<TodoListState> {
-  TodoListStateController(this.read) : super(TodoListState());
+class TodoListStateNotifier extends StateNotifier<TodoListState> {
+  TodoListStateNotifier(this.read) : super(TodoListState());
 
   final Reader read;
 
+  void onSwitchOldLoadable() {
+    state = state.copyWith(isOldLoadable: !state.isOldLoadable);
+    fetch();
+  }
+
   void fetch() {
     final todoListRepository = read(todoListRepositoryProvider);
-    state = state.copyWith(
-        isLoaded: true, todoList: _toTodoMap(todoListRepository.getAll()));
+    if (state.isOldLoadable) {
+      state = state.copyWith(
+          isLoaded: true, todoList: _toTodoMap(todoListRepository.getAll()));
+    } else {
+      print("hoge");
+      state = state.copyWith(
+          isLoaded: true,
+          todoList:
+              _toTodoMap(todoListRepository.getTodosAfterDt(DateTime.now())));
+    }
   }
 
   Future create(String title, DateTime eventAt, LocationInfo locationInfo,
