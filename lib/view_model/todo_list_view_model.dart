@@ -105,9 +105,13 @@ ${title}''',
     return notificationId;
   }
 
-  void delete(String id) {
+  Future delete(String id, int? notificationId) async {
     final todoListRepository = read(todoListRepositoryProvider);
+    final notificationsRepository =
+        await read(notificationsRepositoryProvider.future);
 
+    if (notificationId != null)
+      await notificationsRepository.cancelNotification(notificationId);
     todoListRepository.delete(id);
     fetch();
   }

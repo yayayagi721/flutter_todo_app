@@ -16,7 +16,9 @@ class NotificationsRepositoryImpl implements NotificationsRepository {
 
   @override
   Future<bool> cancelNotification(int id) async {
+    print("nid:${id}");
     await flutterLocalNotificationsPlugin.cancel(id);
+
     return true;
   }
 
@@ -26,6 +28,7 @@ class NotificationsRepositoryImpl implements NotificationsRepository {
     final scheduledTzDt = tz.TZDateTime.from(scheduleAt, tz.local);
 
     print("setDt:${scheduledTzDt.toString()}");
+    print("setNotice:${id}");
 
     await flutterLocalNotificationsPlugin.zonedSchedule(
         id,
