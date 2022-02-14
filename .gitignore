@@ -2,6 +2,9 @@
 # FIXME:ちゃんと.envとかで対応すること
 ios/Runner/AppDelegate.swift
 
+# keyを外だししてる.env
+.env
+
 # Miscellaneous
 *.class
 *.log
