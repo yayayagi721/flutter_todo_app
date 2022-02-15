@@ -1,11 +1,11 @@
 import 'package:flutter_todo_app/main.dart';
 import 'package:flutter_todo_app/model/location_info.dart';
+import 'package:flutter_todo_app/state/todo_list_state.dart';
 import 'package:flutter_todo_app/view/todo_list_view.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import '../model/todo.dart';
-import 'state/todo_list_state.dart';
 
 class TodoListStateNotifier extends StateNotifier<TodoListState> {
   TodoListStateNotifier(this.read) : super(TodoListState());
@@ -23,12 +23,13 @@ class TodoListStateNotifier extends StateNotifier<TodoListState> {
       state = state.copyWith(
           isLoaded: true, todoList: _toTodoMap(todoListRepository.getAll()));
     } else {
-      print("hoge");
       state = state.copyWith(
           isLoaded: true,
           todoList:
               _toTodoMap(todoListRepository.getTodosAfterDt(DateTime.now())));
     }
+
+    _getAllAddress();
   }
 
   Future create(String title, DateTime eventAt, LocationInfo locationInfo,
@@ -56,7 +57,7 @@ class TodoListStateNotifier extends StateNotifier<TodoListState> {
     final newTodoList = _addTodo(todo, {...state.todoList});
     state = state.copyWith(todoList: newTodoList);
     todoListRepository.create(todo);
-    getAddress(todo);
+    _getAddress(todo);
   }
 
   void update(String id, String title, DateTime eventAt,
@@ -81,8 +82,29 @@ class TodoListStateNotifier extends StateNotifier<TodoListState> {
         notifyInAdvanceVal: notifyInAdvanceVal);
 
     todoListRepository.update(newTodo);
-    getAddress(newTodo);
+    _getAddress(newTodo);
     fetch();
+  }
+
+  Future delete(String id, int? notificationId) async {
+    final todoListRepository = read(todoListRepositoryProvider);
+    final notificationsRepository =
+        await read(notificationsRepositoryProvider.future);
+
+    if (notificationId != null)
+      await notificationsRepository.cancelNotification(notificationId);
+    todoListRepository.delete(id);
+    fetch();
+  }
+
+  Future _getAllAddress() async {
+    state.todoList.values.forEach((todos) {
+      todos.forEach((todo) async {
+        if (todo.locationInfo.address == null) {
+          await _getAddress(todo);
+        }
+      });
+    });
   }
 
   Future<int> _setNotification(
@@ -105,28 +127,7 @@ ${title}''',
     return notificationId;
   }
 
-  Future delete(String id, int? notificationId) async {
-    final todoListRepository = read(todoListRepositoryProvider);
-    final notificationsRepository =
-        await read(notificationsRepositoryProvider.future);
-
-    if (notificationId != null)
-      await notificationsRepository.cancelNotification(notificationId);
-    todoListRepository.delete(id);
-    fetch();
-  }
-
-  Future getAllAddress() async {
-    state.todoList.values.forEach((todos) {
-      todos.forEach((todo) async {
-        if (todo.locationInfo.address == null) {
-          await getAddress(todo);
-        }
-      });
-    });
-  }
-
-  Future getAddress(Todo todo) async {
+  Future _getAddress(Todo todo) async {
     final todoListRepository = read(todoListRepositoryProvider);
     final locationSearchRepository = read(locationSearchRepositoryProvider);
 

@@ -19,25 +19,17 @@ class _$TodoFormStateTearOff {
   const _$TodoFormStateTearOff();
 
   _TodoFormState call(
-      {SaveType saveType = SaveType.create,
-      InputKind inputKind = InputKind.text,
-      String? id = null,
+      {String? id = null,
       String title = "",
       LocationInfo? locationInfo = null,
       DateTime? eventTime = null,
-      DateTime? notificationTime = null,
-      int? notifyInAdvanceVal = 360,
-      bool isUpKeyboard = false}) {
+      int? notifyInAdvanceVal = 360}) {
     return _TodoFormState(
-      saveType: saveType,
-      inputKind: inputKind,
       id: id,
       title: title,
       locationInfo: locationInfo,
       eventTime: eventTime,
-      notificationTime: notificationTime,
       notifyInAdvanceVal: notifyInAdvanceVal,
-      isUpKeyboard: isUpKeyboard,
     );
   }
 }
@@ -47,15 +39,11 @@ const $TodoFormState = _$TodoFormStateTearOff();
 
 /// @nodoc
 mixin _$TodoFormState {
-  SaveType get saveType => throw _privateConstructorUsedError;
-  InputKind get inputKind => throw _privateConstructorUsedError;
   String? get id => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   LocationInfo? get locationInfo => throw _privateConstructorUsedError;
   DateTime? get eventTime => throw _privateConstructorUsedError;
-  DateTime? get notificationTime => throw _privateConstructorUsedError;
   int? get notifyInAdvanceVal => throw _privateConstructorUsedError;
-  bool get isUpKeyboard => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $TodoFormStateCopyWith<TodoFormState> get copyWith =>
@@ -68,15 +56,11 @@ abstract class $TodoFormStateCopyWith<$Res> {
           TodoFormState value, $Res Function(TodoFormState) then) =
       _$TodoFormStateCopyWithImpl<$Res>;
   $Res call(
-      {SaveType saveType,
-      InputKind inputKind,
-      String? id,
+      {String? id,
       String title,
       LocationInfo? locationInfo,
       DateTime? eventTime,
-      DateTime? notificationTime,
-      int? notifyInAdvanceVal,
-      bool isUpKeyboard});
+      int? notifyInAdvanceVal});
 
   $LocationInfoCopyWith<$Res>? get locationInfo;
 }
@@ -92,25 +76,13 @@ class _$TodoFormStateCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? saveType = freezed,
-    Object? inputKind = freezed,
     Object? id = freezed,
     Object? title = freezed,
     Object? locationInfo = freezed,
     Object? eventTime = freezed,
-    Object? notificationTime = freezed,
     Object? notifyInAdvanceVal = freezed,
-    Object? isUpKeyboard = freezed,
   }) {
     return _then(_value.copyWith(
-      saveType: saveType == freezed
-          ? _value.saveType
-          : saveType // ignore: cast_nullable_to_non_nullable
-              as SaveType,
-      inputKind: inputKind == freezed
-          ? _value.inputKind
-          : inputKind // ignore: cast_nullable_to_non_nullable
-              as InputKind,
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -127,18 +99,10 @@ class _$TodoFormStateCopyWithImpl<$Res>
           ? _value.eventTime
           : eventTime // ignore: cast_nullable_to_non_nullable
               as DateTime?,
-      notificationTime: notificationTime == freezed
-          ? _value.notificationTime
-          : notificationTime // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
       notifyInAdvanceVal: notifyInAdvanceVal == freezed
           ? _value.notifyInAdvanceVal
           : notifyInAdvanceVal // ignore: cast_nullable_to_non_nullable
               as int?,
-      isUpKeyboard: isUpKeyboard == freezed
-          ? _value.isUpKeyboard
-          : isUpKeyboard // ignore: cast_nullable_to_non_nullable
-              as bool,
     ));
   }
 
@@ -162,15 +126,11 @@ abstract class _$TodoFormStateCopyWith<$Res>
       __$TodoFormStateCopyWithImpl<$Res>;
   @override
   $Res call(
-      {SaveType saveType,
-      InputKind inputKind,
-      String? id,
+      {String? id,
       String title,
       LocationInfo? locationInfo,
       DateTime? eventTime,
-      DateTime? notificationTime,
-      int? notifyInAdvanceVal,
-      bool isUpKeyboard});
+      int? notifyInAdvanceVal});
 
   @override
   $LocationInfoCopyWith<$Res>? get locationInfo;
@@ -189,25 +149,13 @@ class __$TodoFormStateCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? saveType = freezed,
-    Object? inputKind = freezed,
     Object? id = freezed,
     Object? title = freezed,
     Object? locationInfo = freezed,
     Object? eventTime = freezed,
-    Object? notificationTime = freezed,
     Object? notifyInAdvanceVal = freezed,
-    Object? isUpKeyboard = freezed,
   }) {
     return _then(_TodoFormState(
-      saveType: saveType == freezed
-          ? _value.saveType
-          : saveType // ignore: cast_nullable_to_non_nullable
-              as SaveType,
-      inputKind: inputKind == freezed
-          ? _value.inputKind
-          : inputKind // ignore: cast_nullable_to_non_nullable
-              as InputKind,
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -224,18 +172,10 @@ class __$TodoFormStateCopyWithImpl<$Res>
           ? _value.eventTime
           : eventTime // ignore: cast_nullable_to_non_nullable
               as DateTime?,
-      notificationTime: notificationTime == freezed
-          ? _value.notificationTime
-          : notificationTime // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
       notifyInAdvanceVal: notifyInAdvanceVal == freezed
           ? _value.notifyInAdvanceVal
           : notifyInAdvanceVal // ignore: cast_nullable_to_non_nullable
               as int?,
-      isUpKeyboard: isUpKeyboard == freezed
-          ? _value.isUpKeyboard
-          : isUpKeyboard // ignore: cast_nullable_to_non_nullable
-              as bool,
     ));
   }
 }
@@ -244,23 +184,13 @@ class __$TodoFormStateCopyWithImpl<$Res>
 
 class _$_TodoFormState extends _TodoFormState with DiagnosticableTreeMixin {
   const _$_TodoFormState(
-      {this.saveType = SaveType.create,
-      this.inputKind = InputKind.text,
-      this.id = null,
+      {this.id = null,
       this.title = "",
       this.locationInfo = null,
       this.eventTime = null,
-      this.notificationTime = null,
-      this.notifyInAdvanceVal = 360,
-      this.isUpKeyboard = false})
+      this.notifyInAdvanceVal = 360})
       : super._();
 
-  @JsonKey()
-  @override
-  final SaveType saveType;
-  @JsonKey()
-  @override
-  final InputKind inputKind;
   @JsonKey()
   @override
   final String? id;
@@ -275,17 +205,11 @@ class _$_TodoFormState extends _TodoFormState with DiagnosticableTreeMixin {
   final DateTime? eventTime;
   @JsonKey()
   @override
-  final DateTime? notificationTime;
-  @JsonKey()
-  @override
   final int? notifyInAdvanceVal;
-  @JsonKey()
-  @override
-  final bool isUpKeyboard;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'TodoFormState(saveType: $saveType, inputKind: $inputKind, id: $id, title: $title, locationInfo: $locationInfo, eventTime: $eventTime, notificationTime: $notificationTime, notifyInAdvanceVal: $notifyInAdvanceVal, isUpKeyboard: $isUpKeyboard)';
+    return 'TodoFormState(id: $id, title: $title, locationInfo: $locationInfo, eventTime: $eventTime, notifyInAdvanceVal: $notifyInAdvanceVal)';
   }
 
   @override
@@ -293,15 +217,11 @@ class _$_TodoFormState extends _TodoFormState with DiagnosticableTreeMixin {
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'TodoFormState'))
-      ..add(DiagnosticsProperty('saveType', saveType))
-      ..add(DiagnosticsProperty('inputKind', inputKind))
       ..add(DiagnosticsProperty('id', id))
       ..add(DiagnosticsProperty('title', title))
       ..add(DiagnosticsProperty('locationInfo', locationInfo))
       ..add(DiagnosticsProperty('eventTime', eventTime))
-      ..add(DiagnosticsProperty('notificationTime', notificationTime))
-      ..add(DiagnosticsProperty('notifyInAdvanceVal', notifyInAdvanceVal))
-      ..add(DiagnosticsProperty('isUpKeyboard', isUpKeyboard));
+      ..add(DiagnosticsProperty('notifyInAdvanceVal', notifyInAdvanceVal));
   }
 
   @override
@@ -309,33 +229,23 @@ class _$_TodoFormState extends _TodoFormState with DiagnosticableTreeMixin {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _TodoFormState &&
-            const DeepCollectionEquality().equals(other.saveType, saveType) &&
-            const DeepCollectionEquality().equals(other.inputKind, inputKind) &&
             const DeepCollectionEquality().equals(other.id, id) &&
             const DeepCollectionEquality().equals(other.title, title) &&
             const DeepCollectionEquality()
                 .equals(other.locationInfo, locationInfo) &&
             const DeepCollectionEquality().equals(other.eventTime, eventTime) &&
             const DeepCollectionEquality()
-                .equals(other.notificationTime, notificationTime) &&
-            const DeepCollectionEquality()
-                .equals(other.notifyInAdvanceVal, notifyInAdvanceVal) &&
-            const DeepCollectionEquality()
-                .equals(other.isUpKeyboard, isUpKeyboard));
+                .equals(other.notifyInAdvanceVal, notifyInAdvanceVal));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      const DeepCollectionEquality().hash(saveType),
-      const DeepCollectionEquality().hash(inputKind),
       const DeepCollectionEquality().hash(id),
       const DeepCollectionEquality().hash(title),
       const DeepCollectionEquality().hash(locationInfo),
       const DeepCollectionEquality().hash(eventTime),
-      const DeepCollectionEquality().hash(notificationTime),
-      const DeepCollectionEquality().hash(notifyInAdvanceVal),
-      const DeepCollectionEquality().hash(isUpKeyboard));
+      const DeepCollectionEquality().hash(notifyInAdvanceVal));
 
   @JsonKey(ignore: true)
   @override
@@ -345,21 +255,13 @@ class _$_TodoFormState extends _TodoFormState with DiagnosticableTreeMixin {
 
 abstract class _TodoFormState extends TodoFormState {
   const factory _TodoFormState(
-      {SaveType saveType,
-      InputKind inputKind,
-      String? id,
+      {String? id,
       String title,
       LocationInfo? locationInfo,
       DateTime? eventTime,
-      DateTime? notificationTime,
-      int? notifyInAdvanceVal,
-      bool isUpKeyboard}) = _$_TodoFormState;
+      int? notifyInAdvanceVal}) = _$_TodoFormState;
   const _TodoFormState._() : super._();
 
-  @override
-  SaveType get saveType;
-  @override
-  InputKind get inputKind;
   @override
   String? get id;
   @override
@@ -369,11 +271,7 @@ abstract class _TodoFormState extends TodoFormState {
   @override
   DateTime? get eventTime;
   @override
-  DateTime? get notificationTime;
-  @override
   int? get notifyInAdvanceVal;
-  @override
-  bool get isUpKeyboard;
   @override
   @JsonKey(ignore: true)
   _$TodoFormStateCopyWith<_TodoFormState> get copyWith =>

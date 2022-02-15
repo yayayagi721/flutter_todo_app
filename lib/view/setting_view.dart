@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_todo_app/notifier/setting_state_notifier.dart';
 import 'package:flutter_todo_app/repository/setting_repository_impl.dart';
-import 'package:flutter_todo_app/view_model/setting_view_model.dart';
-import 'package:flutter_todo_app/view_model/state/setting_state.dart';
+import 'package:flutter_todo_app/state/setting_state.dart';
 import 'package:flutter_todo_app/widget/location_setting_row.dart';
 import 'package:flutter_todo_app/widget/setting_row.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';

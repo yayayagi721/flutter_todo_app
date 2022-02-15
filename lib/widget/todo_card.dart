@@ -11,7 +11,7 @@ class TodoCard extends HookConsumerWidget {
   TodoCard(this.todo);
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final todoListNotifier = ref.read(todoListProvider.notifier);
+    final todoListNotifier = ref.read(todoListStateProvider.notifier);
 
     return Padding(
         padding: EdgeInsets.only(top: 8),

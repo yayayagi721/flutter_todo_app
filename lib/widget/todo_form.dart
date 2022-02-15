@@ -4,8 +4,10 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_todo_app/const/common.dart';
 import 'package:flutter_todo_app/const/enums.dart';
 import 'package:flutter_todo_app/model/todo.dart';
-import 'package:flutter_todo_app/view_model/state/todo_form_state.dart';
-import 'package:flutter_todo_app/view_model/todo_form_state_notifier.dart';
+import 'package:flutter_todo_app/notifier/todo_form_pref_state_notifier.dart';
+import 'package:flutter_todo_app/notifier/todo_form_state_notifier.dart';
+import 'package:flutter_todo_app/state/todo_form_pref_state.dart';
+import 'package:flutter_todo_app/state/todo_form_state.dart';
 import 'package:flutter_todo_app/widget/datetime_input_tab.dart';
 import 'package:flutter_todo_app/widget/header_components.dart';
 import 'package:flutter_todo_app/widget/kind_select_button.dart';
@@ -15,9 +17,13 @@ import 'package:flutter_todo_app/widget/text_input_tab.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'form_submit_button.dart';
 
-final todoFormProvider =
+final todoFormStateProvider =
     StateNotifierProvider.autoDispose<TodoFormStateNotifier, TodoFormState>(
         (ref) => TodoFormStateNotifier(ref.read));
+
+final todoFormPrefStateProvider = StateNotifierProvider.autoDispose<
+    TodoFromPrefStateNotifier,
+    TodoFromPrefState>((ref) => TodoFromPrefStateNotifier(ref.read));
 
 class TodoInputForm extends HookConsumerWidget {
   final Todo? todo;
@@ -27,19 +33,19 @@ class TodoInputForm extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final FormNotifier = ref.read(todoFormProvider.notifier);
+    final formNotifier = ref.read(todoFormStateProvider.notifier);
+    final formPrefNotifier = ref.read(todoFormPrefStateProvider.notifier);
 
     useEffect(() {
       if (todo != null) {
-        FormNotifier.inputId(todo!.id);
-        FormNotifier.inputText(todo!.title);
-        FormNotifier.inputDatetime(todo!.eventAt);
-        FormNotifier.inputLocation(todo!.locationInfo.latitude,
+        formNotifier.inputId(todo!.id);
+        formNotifier.inputText(todo!.title);
+        formNotifier.inputDatetime(todo!.eventAt);
+        formNotifier.inputLocation(todo!.locationInfo.latitude,
             todo!.locationInfo.longitude, todo!.locationInfo.address);
       }
 
-      //FIXME:form種別を変更できてしまうのが良くない
-      FormNotifier.setFormKind(saveType);
+      formPrefNotifier.setFormKind(saveType);
       return () {};
     }, const []);
 
@@ -120,7 +126,7 @@ class TodoInputForm extends HookConsumerWidget {
 class FormMainArea extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final formState = ref.watch(todoFormProvider);
+    final formState = ref.watch(todoFormPrefStateProvider);
 
     switch (formState.inputKind) {
       case InputKind.text:

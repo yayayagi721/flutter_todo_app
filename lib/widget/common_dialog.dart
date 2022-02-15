@@ -15,6 +15,7 @@ class CommonDialog {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(20))),
               child: Container(
+                  //画面全体の2/3位の大きさにする
                   height: fullSize.height * (2 / 3),
                   width: double.infinity,
                   child: LocationInputer(initLatLng)));

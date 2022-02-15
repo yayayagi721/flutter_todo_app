@@ -8,10 +8,10 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 class HeaderText extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final formState = ref.watch(todoFormProvider);
+    final formPrefState = ref.watch(todoFormPrefStateProvider);
 
     final headerStr;
-    switch (formState.inputKind) {
+    switch (formPrefState.inputKind) {
       case InputKind.text:
         headerStr = "予定の内容";
         break;
@@ -39,9 +39,9 @@ class HeaderText extends HookConsumerWidget {
 class HeaderIcon extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final formState = ref.watch(todoFormProvider);
+    final formPrefState = ref.watch(todoFormPrefStateProvider);
 
-    if (formState.isUpKeyboard) {
+    if (formPrefState.isUpKeyboard) {
       return IconButton(
           onPressed: () {
             FocusManager.instance.primaryFocus?.unfocus();

@@ -1,10 +1,11 @@
 import 'package:flutter_todo_app/main.dart';
-import 'package:flutter_todo_app/view_model/state/textbox_state.dart';
+import 'package:flutter_todo_app/state/location_search_form_state.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class LocationSearchFormViewModel extends StateNotifier<TextBoxState> {
-  LocationSearchFormViewModel(this.read) : super(TextBoxState());
+class LocationSearchFormViewModel
+    extends StateNotifier<LocationSearchFormState> {
+  LocationSearchFormViewModel(this.read) : super(LocationSearchFormState());
 
   final Reader read;
 

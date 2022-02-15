@@ -1,8 +1,6 @@
-import 'package:flutter_todo_app/const/common.dart';
 import 'package:flutter_todo_app/const/hive_const.dart';
 import 'package:flutter_todo_app/model/location_info.dart';
 import 'package:flutter_todo_app/repository/setting_repository.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hive/hive.dart';
 
 class SettingRepositoryImpl implements SettingRepository {

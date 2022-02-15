@@ -19,12 +19,4 @@ class Todo with _$Todo {
       @HiveField(5) DateTime updatedAt,
       @HiveField(6) int? notificationId,
       @HiveField(7) int? notifyInAdvanceVal) = _Todo;
-
-  bool isValidTitle() {
-    return 0 < title.length && title.length <= 20;
-  }
-
-  bool isValidLocation() {
-    return locationInfo != null;
-  }
 }

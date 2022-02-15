@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter_todo_app/const/common.dart';
+import 'package:flutter_todo_app/state/map_state.dart';
 import 'package:flutter_todo_app/view/setting_view.dart';
-import 'package:flutter_todo_app/view_model/state/map_state.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
