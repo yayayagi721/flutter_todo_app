@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_todo_app/const/enums.dart';
+import 'package:flutter_todo_app/state/todo_form_state.dart';
 import 'package:flutter_todo_app/view/todo_list_view.dart';
-import 'package:flutter_todo_app/view_model/state/todo_form_state.dart';
 import 'package:flutter_todo_app/widget/todo_form.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -9,8 +9,9 @@ import 'package:fluttertoast/fluttertoast.dart';
 class FormSubmitButton extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final controller = ref.read(todoListProvider.notifier);
-    final formState = ref.watch(todoFormProvider);
+    final todoListNotifier = ref.read(todoListStateProvider.notifier);
+    final formState = ref.watch(todoFormStateProvider);
+    final formPrefState = ref.watch(todoFormPrefStateProvider);
     return Row(
       children: [
         ElevatedButton(
@@ -23,13 +24,13 @@ class FormSubmitButton extends HookConsumerWidget {
           onPressed: () {
             if (!_validation(context, formState)) return;
 
-            switch (formState.saveType) {
+            switch (formPrefState.saveType) {
               case SaveType.create:
-                controller.create(formState.title, formState.eventTime!,
+                todoListNotifier.create(formState.title, formState.eventTime!,
                     formState.locationInfo!, formState.notifyInAdvanceVal);
                 break;
               case SaveType.update:
-                controller.update(
+                todoListNotifier.update(
                     formState.id!,
                     formState.title,
                     formState.eventTime!,

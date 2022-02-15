@@ -2,9 +2,9 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_todo_app/const/enums.dart';
 import 'package:flutter_todo_app/model/todo.dart';
+import 'package:flutter_todo_app/notifier/todo_list_state_notifier.dart';
 import 'package:flutter_todo_app/repository/todo_list_repository_impl.dart';
-import 'package:flutter_todo_app/view_model/state/todo_list_state.dart';
-import 'package:flutter_todo_app/view_model/todo_list_view_model.dart';
+import 'package:flutter_todo_app/state/todo_list_state.dart';
 import 'package:flutter_todo_app/widget/todo_card.dart';
 import 'package:flutter_todo_app/widget/todo_form.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -19,21 +19,20 @@ final itemScrollControllerProvider = Provider(
   (ref) => ItemScrollController(),
 );
 
-final todoListProvider =
+final todoListStateProvider =
     StateNotifierProvider.autoDispose<TodoListStateNotifier, TodoListState>(
         (ref) => TodoListStateNotifier(ref.read));
 
 class TodoListView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final todoListNotifier = ref.read(todoListProvider.notifier);
-    final todoListState = ref.watch(todoListProvider);
+    final todoListNotifier = ref.read(todoListStateProvider.notifier);
+    final todoListState = ref.watch(todoListStateProvider);
     final itemScrollController = ref.read(itemScrollControllerProvider);
 
     useEffect(() {
       WidgetsBinding.instance!.addPostFrameCallback((_) {
         todoListNotifier.fetch();
-        todoListNotifier.getAllAddress();
       });
       return () {};
     }, const []);
@@ -77,7 +76,6 @@ class TodoListView extends HookConsumerWidget {
             builder: (context) => TodoInputForm(SaveType.create),
           )
         },
-        tooltip: 'AddTodo',
         child: Icon(Icons.add),
       ),
     );
@@ -87,7 +85,7 @@ class TodoListView extends HookConsumerWidget {
     //存在する日付でソート
     var sortKeys = todoListModel.keys.toList();
     sortKeys.sort((a, b) => a.compareTo(b));
-    final todoListState = ref.watch(todoListProvider);
+    final todoListState = ref.watch(todoListStateProvider);
 
     List<Widget> children = [];
     if (!todoListState.isOldLoadable) {
@@ -95,7 +93,7 @@ class TodoListView extends HookConsumerWidget {
     }
 
     sortKeys.forEach((key) {
-      children = [...children, todoOnOneDay(key, todoListModel[key]!)];
+      children = [...children, _todoOnOneDay(key, todoListModel[key]!)];
     });
     children.add(SizedBox(height: 50));
 
@@ -103,8 +101,8 @@ class TodoListView extends HookConsumerWidget {
   }
 
   Widget _oldLoadButton(WidgetRef ref) {
-    final todoListNotifier = ref.read(todoListProvider.notifier);
-    final todoListState = ref.watch(todoListProvider);
+    final todoListNotifier = ref.read(todoListStateProvider.notifier);
+    final todoListState = ref.watch(todoListStateProvider);
     final itemScrollController = ref.read(itemScrollControllerProvider);
 
     return Container(
@@ -130,7 +128,7 @@ class TodoListView extends HookConsumerWidget {
     );
   }
 
-  Widget todoOnOneDay(String targetDate, List<Todo> todos) {
+  Widget _todoOnOneDay(String targetDate, List<Todo> todos) {
     final datetime = DateTime.parse(targetDate);
     final formatter = new DateFormat('yyyy年M月d日', "ja_JP");
     final formatted = formatter.format(datetime); // DateからString

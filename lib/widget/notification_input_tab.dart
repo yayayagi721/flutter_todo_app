@@ -37,8 +37,8 @@ class NotificationSetBotton extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final formState = ref.watch(todoFormProvider);
-    final formNotifier = ref.read(todoFormProvider.notifier);
+    final formState = ref.watch(todoFormStateProvider);
+    final formNotifier = ref.read(todoFormStateProvider.notifier);
 
     final selected = formState.notifyInAdvanceVal == value;
     return Padding(

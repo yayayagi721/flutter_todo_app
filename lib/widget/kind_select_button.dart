@@ -11,23 +11,23 @@ class KindSelectButton extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final formState = ref.watch(todoFormProvider);
-    final formNotifier = ref.read(todoFormProvider.notifier);
+    final formPrefState = ref.watch(todoFormPrefStateProvider);
+    final formPrefNotifier = ref.read(todoFormPrefStateProvider.notifier);
 
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
-        color: formState.inputKind == inputKind
+        color: formPrefState.inputKind == inputKind
             ? Colors.white.withOpacity(0.8)
             : null,
       ),
       child: IconButton(
         icon: Icon(_icon(inputKind),
-            color: formState.inputKind == inputKind
+            color: formPrefState.inputKind == inputKind
                 ? Colors.black
                 : Colors.black54),
         onPressed: () {
-          formNotifier.selectTabKind(inputKind);
+          formPrefNotifier.selectTabKind(inputKind);
         },
       ),
     );

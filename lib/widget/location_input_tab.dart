@@ -7,8 +7,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 class LocationInputTab extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final formNotifier = ref.read(todoFormProvider.notifier);
-    final formState = ref.read(todoFormProvider);
+    final formNotifier = ref.read(todoFormStateProvider.notifier);
+    final formState = ref.watch(todoFormStateProvider);
 
     return Container(
       padding: EdgeInsets.only(top: 15, bottom: 15, left: 10),
@@ -43,7 +43,7 @@ class LocationInputTab extends HookConsumerWidget {
                     }
                   },
                   child: Text(
-                    "場所を入力",
+                    "位置情報を入力",
                     textAlign: TextAlign.right,
                     style: TextStyle(
                       fontSize: 20,

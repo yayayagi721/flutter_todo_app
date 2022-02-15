@@ -6,14 +6,13 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 class DatetimeInputTab extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final now = DateTime.now();
-    final todoFormNotifier = ref.read(todoFormProvider.notifier);
-    final todoFormState = ref.watch(todoFormProvider);
+    final formNotifier = ref.read(todoFormStateProvider.notifier);
+    final formState = ref.watch(todoFormStateProvider);
     final initDt = DateTime.now().add(Duration(minutes: 1));
 
     useEffect(() {
       WidgetsBinding.instance!
-          .addPostFrameCallback((_) => todoFormNotifier.inputDatetime(initDt));
+          .addPostFrameCallback((_) => formNotifier.inputDatetime(initDt));
     }, []);
 
     return Container(
@@ -21,9 +20,9 @@ class DatetimeInputTab extends HookConsumerWidget {
       height: 100,
       child: CupertinoDatePicker(
         minimumDate: DateTime.now(),
-        initialDateTime: todoFormState.eventTime ?? initDt,
+        initialDateTime: formState.eventTime ?? initDt,
         onDateTimeChanged: (DateTime newDt) {
-          todoFormNotifier.inputDatetime(newDt);
+          formNotifier.inputDatetime(newDt);
         },
         use24hFormat: true,
         minuteInterval: 1,

@@ -9,14 +9,15 @@ class TextInputTab extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     TextEditingController? _textEditingController;
 
-    final formNotifier = ref.read(todoFormProvider.notifier);
-    final formState = ref.watch(todoFormProvider);
+    final formNotifier = ref.read(todoFormStateProvider.notifier);
+    final formPrefNotifier = ref.read(todoFormPrefStateProvider.notifier);
+    final formState = ref.watch(todoFormStateProvider);
     final focusNode = useFocusNode();
 
     useEffect(() {
       _textEditingController = TextEditingController(text: formState.title);
       focusNode.addListener(() {
-        formNotifier.onFocusChangeTextfield(focusNode.hasFocus);
+        formPrefNotifier.onFocusChangeTextfield(focusNode.hasFocus);
       });
     }, [focusNode]);
     double bottomSpace = 0;

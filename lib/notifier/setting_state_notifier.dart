@@ -1,8 +1,7 @@
-import 'package:flutter_todo_app/const/common.dart';
 import 'package:flutter_todo_app/main.dart';
 import 'package:flutter_todo_app/model/location_info.dart';
+import 'package:flutter_todo_app/state/setting_state.dart';
 import 'package:flutter_todo_app/view/setting_view.dart';
-import 'package:flutter_todo_app/view_model/state/setting_state.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 

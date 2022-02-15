@@ -1,9 +1,8 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_todo_app/view_model/location_search_form_view_model.dart';
-import 'package:flutter_todo_app/view_model/map_view_model.dart';
-import 'package:flutter_todo_app/view_model/state/map_state.dart';
+import 'package:flutter_todo_app/notifier/location_search_form_state_notifier.dart';
+import 'package:flutter_todo_app/notifier/map_state_notifier.dart';
+import 'package:flutter_todo_app/state/map_state.dart';
+import 'package:flutter_todo_app/widget/map.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -15,7 +14,9 @@ final locationSearchFormViewModel = StateNotifierProvider(
   (ref) => LocationSearchFormViewModel(ref.read),
 );
 
-final Completer<GoogleMapController> controller = Completer();
+final fToastProvider = Provider(
+  (_) => FToast(),
+);
 
 class LocationInputer extends HookConsumerWidget {
   //マーカおよび、カメラの初期位置
@@ -28,8 +29,7 @@ class LocationInputer extends HookConsumerWidget {
         ref.read(locationSearchFormViewModel.notifier);
     final mapState = ref.watch(mapProvider);
     final mapNotifier = ref.read(mapProvider.notifier);
-
-    final fToast = FToast();
+    final fToast = ref.read(fToastProvider);
     fToast.init(context);
 
     return Column(
@@ -73,7 +73,7 @@ class LocationInputer extends HookConsumerWidget {
                     },
               icon: Icon(Icons.done)),
         ]),
-        Expanded(child: Map(initLatLng)),
+        Expanded(child: MapWidget(initLatLng)),
       ],
     );
   }
@@ -114,38 +114,4 @@ Widget _toast(Color color, IconData icon, String text) {
       ],
     ),
   );
-}
-
-class Map extends HookConsumerWidget {
-  final LatLng? latLng;
-  Map([this.latLng]);
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final mapState = ref.watch(mapProvider);
-    final mapNotifier = ref.read(mapProvider.notifier);
-
-    useEffect(() {
-      mapNotifier.init(latLng);
-      return () {};
-    }, const []);
-
-    return mapState.markers.isEmpty
-        ? Center(
-            child: CircularProgressIndicator(
-                valueColor: new AlwaysStoppedAnimation<Color>(Colors.black38)),
-          )
-        : GoogleMap(
-            onMapCreated: (GoogleMapController controller) {
-              if (!mapState.controller!.isCompleted)
-                mapState.controller!.complete(controller);
-            },
-            mapType: MapType.normal,
-            markers: mapState.markers,
-            initialCameraPosition: CameraPosition(
-                target: mapState.markers.elementAt(0).position, zoom: 15),
-            onTap: (latLng) => mapNotifier.createMarker(latLng),
-            myLocationEnabled: true,
-            myLocationButtonEnabled: true);
-  }
 }
