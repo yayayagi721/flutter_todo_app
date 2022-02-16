@@ -7,10 +7,13 @@ import 'package:flutter_todo_app/widget/map.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:location/location.dart';
 
 final mapProvider =
     StateNotifierProvider.autoDispose<MapStateNotifier, MapState>(
         (ref) => MapStateNotifier(ref.read));
+
+final locationProvider = Provider.autoDispose((_) => Location());
 
 final locationSearchFormStateProvider =
     StateNotifierProvider<LocationSearchFormNotifier, LocationSearchFormState>(

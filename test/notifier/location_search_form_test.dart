@@ -27,7 +27,7 @@ ProviderContainer override(LocationSearchRepository mockLocationSearchRepo) {
 
 @GenerateMocks([LocationSearchRepository])
 void main() {
-  group('LocationSearchForm', () {
+  group('LocationSearchFormNotifier', () {
     group('update', () {
       test('正常値', () {
         final container = ProviderContainer();
@@ -57,7 +57,7 @@ void main() {
 
       test('一件該当', () async {
         when(mockLocationSearchRepo.getLocations("correct_adress")).thenAnswer(
-            (_) async => Future.value([
+            (_) => Future.value([
                   Location(
                       latitude: 1,
                       longitude: 1,

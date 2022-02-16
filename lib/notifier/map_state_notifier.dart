@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter_todo_app/const/common.dart';
 import 'package:flutter_todo_app/state/map_state.dart';
 import 'package:flutter_todo_app/view/setting_view.dart';
+import 'package:flutter_todo_app/widget/location_inputer.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -11,7 +12,6 @@ class MapStateNotifier extends StateNotifier<MapState> {
   MapStateNotifier(this.read) : super(MapState());
 
   final Reader read;
-  final Completer<GoogleMapController> controller = Completer();
 
   void createMarker(LatLng latLng) {
     final newMarkers = {
@@ -24,47 +24,28 @@ class MapStateNotifier extends StateNotifier<MapState> {
   }
 
   Future init([LatLng? initLatLng]) async {
-    Location location = new Location();
-    //TODO:デフォルト値を設定から変えられるようにする
     final settingRepository = read(settingRepositoryProvider);
+    final location = read(locationProvider);
     final defaultLocationInfo = settingRepository.getDefaultLocationInfo();
-    LatLng? defaultLatLng;
-    if (defaultLocationInfo != null) {
-      defaultLatLng =
-          LatLng(defaultLocationInfo.latitude, defaultLocationInfo.longitude);
-    }
 
-    bool _serviceEnabled;
-    PermissionStatus _permissionGranted;
-
-    //パーミッションが足りないと、デフォルト位置にマーカが刺さる
-    _serviceEnabled = await location.serviceEnabled();
-    if (!_serviceEnabled) {
-      _serviceEnabled = await location.requestService();
-      if (!_serviceEnabled) {
-        createMarker(LatLng(CommonConst.initPosLat, CommonConst.initPosLng));
-      }
-    }
-
-    _permissionGranted = await location.hasPermission();
-    if (_permissionGranted == PermissionStatus.denied) {
-      _permissionGranted = await location.requestPermission();
-      if (_permissionGranted != PermissionStatus.granted) {
-        createMarker(LatLng(CommonConst.initPosLat, CommonConst.initPosLng));
-      }
-    }
-
-    final _locationData = await location.getLocation();
     LatLng latlng;
-    if (defaultLatLng != null) {
-      latlng = defaultLatLng;
-    } else if (initLatLng != null) {
+    if (initLatLng != null) {
+      //引数で位置情報を渡された場合
       latlng = initLatLng;
-    } else if (_locationData.latitude == null ||
-        _locationData.longitude == null) {
-      latlng = LatLng(CommonConst.initPosLat, CommonConst.initPosLng);
+    } else if (defaultLocationInfo != null) {
+      //デフォルト位置情報が設定されている場合
+      latlng =
+          LatLng(defaultLocationInfo.latitude, defaultLocationInfo.longitude);
     } else {
-      latlng = LatLng(_locationData.latitude!, _locationData.longitude!);
+      //どちらでもない場合は、現在位置を取得
+      final isEnable = await _locationIsEnable(location);
+      if (isEnable) {
+        //それでも取得できなかった場合、固定値を入れる
+        final _locationData = await location.getLocation();
+        latlng = LatLng(_locationData.latitude!, _locationData.longitude!);
+      } else {
+        latlng = LatLng(CommonConst.initPosLat, CommonConst.initPosLng);
+      }
     }
 
     createMarker(latlng);
@@ -73,14 +54,36 @@ class MapStateNotifier extends StateNotifier<MapState> {
     return true;
   }
 
-  Future changeCameraPosition(LatLng latLng) async {
-    if (state.controller != null) {
-      Completer<GoogleMapController> completer = state.controller!;
-      final GoogleMapController controller = await completer.future;
+  Future<bool> _locationIsEnable(Location location) async {
+    var _serviceEnabled;
+    var _permissionGranted;
 
-      controller.animateCamera(CameraUpdate.newCameraPosition(
-          CameraPosition(target: latLng, zoom: 14)));
+    _serviceEnabled = await location.serviceEnabled();
+    if (!_serviceEnabled) {
+      _serviceEnabled = await location.requestService();
+      if (!_serviceEnabled) {
+        return false;
+      }
     }
+
+    _permissionGranted = await location.hasPermission();
+    if (_permissionGranted == PermissionStatus.denied) {
+      _permissionGranted = await location.requestPermission();
+      if (_permissionGranted != PermissionStatus.granted) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  Future changeCameraPosition(LatLng latLng) async {
+    if (state.controller != null) return;
+    Completer<GoogleMapController> completer = state.controller!;
+    final GoogleMapController controller = await completer.future;
+
+    controller.animateCamera(CameraUpdate.newCameraPosition(
+        CameraPosition(target: latLng, zoom: 14)));
   }
 
   LatLng getMarkerLatLng() {
