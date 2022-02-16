@@ -7,8 +7,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class MapProvider extends StateNotifier<MapState> {
-  MapProvider(this.read) : super(MapState());
+class MapStateNotifier extends StateNotifier<MapState> {
+  MapStateNotifier(this.read) : super(MapState());
 
   final Reader read;
   final Completer<GoogleMapController> controller = Completer();

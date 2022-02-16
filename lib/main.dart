@@ -2,6 +2,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_todo_app/model/location_info.dart';
 import 'package:flutter_todo_app/model/todo.dart';
 import 'package:flutter_todo_app/repository/id_repository_impl.dart';
+import 'package:flutter_todo_app/repository/location_search_repository.dart';
 import 'package:flutter_todo_app/repository/location_search_repository_impl.dart';
 import 'package:flutter_todo_app/repository/notifications_repository_impl.dart';
 import 'package:flutter_todo_app/view/setting_view.dart';
@@ -12,7 +13,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'const/hive_const.dart';
 
-final locationSearchRepositoryProvider = Provider(
+final locationSearchRepositoryProvider = Provider<LocationSearchRepository>(
   (ref) => LocationSearchRepositoryImpl(),
 );
 
