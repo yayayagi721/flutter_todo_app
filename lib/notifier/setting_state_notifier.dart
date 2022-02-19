@@ -13,20 +13,28 @@ class SettingStateNotifier extends StateNotifier<SettingState> {
   final Reader read;
 
   Future changeDefaultLatLng(LatLng newLatLng) async {
-    final settingRepository = read(settingRepositoryProvider);
     final locationSearchRepository = read(locationSearchRepositoryProvider);
 
-    final address = await locationSearchRepository.getAddress(newLatLng);
+    final newInfo = LocationInfo(newLatLng.latitude, newLatLng.longitude, null);
 
-    final newInfo =
+    _setDefaultLatLng(newInfo);
+
+    final address = await locationSearchRepository.getAddress(newLatLng);
+    //address取得後、再度setする
+    final addressWithInfo =
         LocationInfo(newLatLng.latitude, newLatLng.longitude, address);
-    settingRepository.setDefaultLocationInfo(newInfo);
-    state = state.copyWith(defaultLocation: newInfo);
+    _setDefaultLatLng(addressWithInfo);
   }
 
   void changeRemaindInterval(int newInterval) {
     final settingRepository = read(settingRepositoryProvider);
     state = state.copyWith(remaindInterval: newInterval);
     settingRepository.setRemaindInterval(newInterval);
+  }
+
+  void _setDefaultLatLng(LocationInfo locationInfo) {
+    final settingRepository = read(settingRepositoryProvider);
+    settingRepository.setDefaultLocationInfo(locationInfo);
+    state = state.copyWith(defaultLocation: locationInfo);
   }
 }
