@@ -5,7 +5,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class TodoFormStateNotifier extends StateNotifier<TodoFormState> {
-  //TODO:初期化はこれでいいのか調べる
   TodoFormStateNotifier(this.read) : super(TodoFormState());
 
   final Reader read;
@@ -18,20 +17,19 @@ class TodoFormStateNotifier extends StateNotifier<TodoFormState> {
     state = state.copyWith(notifyInAdvanceVal: value);
   }
 
-  void inputText(String text) {
+  void inputTitle(String text) {
     state = state.copyWith(title: text);
   }
 
-  void inputLocation(double latitude, double longitude,
-      [String? locationName]) {
+  void inputLocation(LatLng newLatLng, [String? locationName]) {
     final locationSearchRepository = read(locationSearchRepositoryProvider);
-    final locationInfo = LocationInfo(latitude, longitude, locationName);
+    final locationInfo =
+        LocationInfo(newLatLng.latitude, newLatLng.longitude, locationName);
     state = state.copyWith(locationInfo: locationInfo);
     if (locationName == null) {
-      locationSearchRepository
-          .getAddress(LatLng(latitude, longitude))
-          .then((address) {
-        final locationInfo = LocationInfo(latitude, longitude, address);
+      locationSearchRepository.getAddress(newLatLng).then((address) {
+        final locationInfo =
+            LocationInfo(newLatLng.latitude, newLatLng.longitude, address);
         state = state.copyWith(locationInfo: locationInfo);
       });
     }

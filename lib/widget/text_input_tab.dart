@@ -41,7 +41,7 @@ class TextInputTab extends HookConsumerWidget {
           maxLength: 20,
           maxLines: 1,
           onChanged: (input) {
-            formNotifier.inputText(input);
+            formNotifier.inputTitle(input);
           },
           decoration: InputDecoration(
             hintText: '予定内容を入力してください',
