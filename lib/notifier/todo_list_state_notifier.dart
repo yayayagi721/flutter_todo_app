@@ -1,3 +1,4 @@
+import 'package:clock/clock.dart';
 import 'package:flutter_todo_app/main.dart';
 import 'package:flutter_todo_app/model/location_info.dart';
 import 'package:flutter_todo_app/state/todo_list_state.dart';
@@ -26,10 +27,8 @@ class TodoListStateNotifier extends StateNotifier<TodoListState> {
       state = state.copyWith(
           isLoaded: true,
           todoList:
-              _toTodoMap(todoListRepository.getTodosAfterDt(DateTime.now())));
+              _toTodoMap(todoListRepository.getTodosAfterDt(clock.now())));
     }
-
-    _getAllAddress();
   }
 
   Future create(String title, DateTime eventAt, LocationInfo locationInfo,
@@ -44,14 +43,14 @@ class TodoListStateNotifier extends StateNotifier<TodoListState> {
     if (notifyInAdvanceVal != null) {
       final durationed = eventAt.add(Duration(minutes: -notifyInAdvanceVal));
       //通知時刻が現在時刻より後の時、通知をセットする
-      if (durationed.isAfter(DateTime.now())) {
+      if (durationed.isAfter(clock.now())) {
         notificationId = await _setNotification(title, eventAt,
             eventAt.add(Duration(minutes: -notifyInAdvanceVal)));
       }
     }
 
     //通知時間が入っていたら通知をセットする
-    final now = DateTime.now();
+    final now = clock.now();
     final todo = Todo(todoId, title, eventAt, locationInfo, now, now,
         notificationId, notifyInAdvanceVal);
     final newTodoList = _addTodo(todo, {...state.todoList});
@@ -60,20 +59,28 @@ class TodoListStateNotifier extends StateNotifier<TodoListState> {
     _getAddress(todo);
   }
 
-  void update(String id, String title, DateTime eventAt,
+  Future update(String id, String title, DateTime eventAt,
       LocationInfo locationInfo, int? notifyInAdvanceVal) async {
     final todoListRepository = read(todoListRepositoryProvider);
 
     final todo = todoListRepository.get(id);
     var notificationId = todo.notificationId;
 
+    //予定の何分前に通知するための値が入っている時
     if (notifyInAdvanceVal != null) {
-      notificationId = await _setNotification(title, eventAt,
-          eventAt.add(Duration(minutes: -notifyInAdvanceVal)), notificationId);
+      final durationed = eventAt.add(Duration(minutes: -notifyInAdvanceVal));
+      //通知時刻が現在時刻より後の時、通知をセットする
+      if (durationed.isAfter(clock.now())) {
+        await _setNotification(
+            title,
+            eventAt,
+            eventAt.add(Duration(minutes: -notifyInAdvanceVal)),
+            notificationId);
+      }
     }
 
     //update時の時間を記録
-    final updatedAt = DateTime.now();
+    final updatedAt = clock.now();
     final newTodo = todo.copyWith(
         title: title,
         eventAt: eventAt,
@@ -86,14 +93,16 @@ class TodoListStateNotifier extends StateNotifier<TodoListState> {
     fetch();
   }
 
-  Future delete(String id, int? notificationId) async {
+  Future delete(Todo todo) async {
     final todoListRepository = read(todoListRepositoryProvider);
-    final notificationsRepository =
-        await read(notificationsRepositoryProvider.future);
 
-    if (notificationId != null)
-      await notificationsRepository.cancelNotification(notificationId);
-    todoListRepository.delete(id);
+    if (todo.notificationId != null) {
+      final notificationsRepository =
+          await read(notificationsRepositoryProvider.future);
+      await notificationsRepository.cancelNotification(todo.notificationId!);
+    }
+
+    todoListRepository.delete(todo.id);
     fetch();
   }
 

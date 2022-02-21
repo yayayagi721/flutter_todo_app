@@ -1,3 +1,4 @@
+import 'package:clock/clock.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_todo_app/widget/todo_form.dart';
@@ -8,7 +9,7 @@ class DatetimeInputTab extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final formNotifier = ref.read(todoFormStateProvider.notifier);
     final formState = ref.watch(todoFormStateProvider);
-    final initDt = DateTime.now().add(Duration(minutes: 1));
+    final initDt = clock.now().add(Duration(minutes: 1));
 
     useEffect(() {
       WidgetsBinding.instance!
@@ -19,7 +20,7 @@ class DatetimeInputTab extends HookConsumerWidget {
       padding: EdgeInsets.only(top: 15, bottom: 15),
       height: 100,
       child: CupertinoDatePicker(
-        minimumDate: DateTime.now(),
+        minimumDate: clock.now(),
         initialDateTime: formState.eventTime ?? initDt,
         onDateTimeChanged: (DateTime newDt) {
           formNotifier.inputDatetime(newDt);

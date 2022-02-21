@@ -1,9 +1,11 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_todo_app/model/location_info.dart';
 import 'package:flutter_todo_app/model/todo.dart';
+import 'package:flutter_todo_app/repository/id_repository.dart';
 import 'package:flutter_todo_app/repository/id_repository_impl.dart';
 import 'package:flutter_todo_app/repository/location_search_repository.dart';
 import 'package:flutter_todo_app/repository/location_search_repository_impl.dart';
+import 'package:flutter_todo_app/repository/notifications_repository.dart';
 import 'package:flutter_todo_app/repository/notifications_repository_impl.dart';
 import 'package:flutter_todo_app/view/setting_view.dart';
 import 'package:flutter_todo_app/view/todo_list_view.dart';
@@ -17,7 +19,7 @@ final locationSearchRepositoryProvider = Provider<LocationSearchRepository>(
   (ref) => LocationSearchRepositoryImpl(),
 );
 
-final idRepositoryProvider = Provider.autoDispose(
+final idRepositoryProvider = Provider.autoDispose<IdRepository>(
   (ref) => IdRepositoryImpl(),
 );
 
@@ -42,7 +44,8 @@ final flutterLocalNotificationsProvider = FutureProvider((ref) async {
   return flutterLocalNotificationsPlugin;
 });
 
-final notificationsRepositoryProvider = FutureProvider((ref) async {
+final notificationsRepositoryProvider =
+    FutureProvider<NotificationsRepository>((ref) async {
   final flutterLocalNotificationsPlugin =
       await ref.read(flutterLocalNotificationsProvider.future);
 

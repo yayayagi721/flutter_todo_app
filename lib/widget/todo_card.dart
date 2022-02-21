@@ -29,7 +29,7 @@ class TodoCard extends HookConsumerWidget {
                 ),
               )),
           onDismissed: (_) {
-            todoListNotifier.delete(todo.id, todo.notificationId);
+            todoListNotifier.delete(todo);
           },
           child: InkWell(
               onTap: () {

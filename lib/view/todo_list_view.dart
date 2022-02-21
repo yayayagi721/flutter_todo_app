@@ -1,8 +1,10 @@
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_todo_app/const/enums.dart';
+import 'package:flutter_todo_app/const/hive_const.dart';
 import 'package:flutter_todo_app/model/todo.dart';
 import 'package:flutter_todo_app/notifier/todo_list_state_notifier.dart';
+import 'package:flutter_todo_app/repository/todo_list_repository.dart';
 import 'package:flutter_todo_app/repository/todo_list_repository_impl.dart';
 import 'package:flutter_todo_app/state/todo_list_state.dart';
 import 'package:flutter_todo_app/widget/todo_card.dart';
@@ -11,8 +13,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
-final todoListRepositoryProvider = Provider(
-  (ref) => TodoListRepositoryImpl(),
+final todoListRepositoryProvider = Provider<TodoListRepository>(
+  (ref) => TodoListRepositoryImpl(BoxName.todoList),
 );
 
 final itemScrollControllerProvider = Provider(
