@@ -3,9 +3,9 @@ import 'package:flutter_todo_app/state/location_search_form_state.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class LocationSearchFormViewModel
+class LocationSearchFormNotifier
     extends StateNotifier<LocationSearchFormState> {
-  LocationSearchFormViewModel(this.read) : super(LocationSearchFormState());
+  LocationSearchFormNotifier(this.read) : super(LocationSearchFormState());
 
   final Reader read;
 

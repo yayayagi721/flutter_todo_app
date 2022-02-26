@@ -121,7 +121,7 @@ packages:
     source: hosted
     version: "0.3.5"
   clock:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: clock
       url: "https://pub.dartlang.org"
@@ -497,6 +497,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.1"
+  mockito:
+    dependency: "direct main"
+    description:
+      name: mockito
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "5.1.0"
   modal_bottom_sheet:
     dependency: "direct main"
     description:

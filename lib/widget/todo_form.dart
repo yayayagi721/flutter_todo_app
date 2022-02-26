@@ -14,6 +14,7 @@ import 'package:flutter_todo_app/widget/kind_select_button.dart';
 import 'package:flutter_todo_app/widget/location_input_tab.dart';
 import 'package:flutter_todo_app/widget/notification_input_tab.dart';
 import 'package:flutter_todo_app/widget/text_input_tab.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'form_submit_button.dart';
 
@@ -39,10 +40,12 @@ class TodoInputForm extends HookConsumerWidget {
     useEffect(() {
       if (todo != null) {
         formNotifier.inputId(todo!.id);
-        formNotifier.inputText(todo!.title);
+        formNotifier.inputTitle(todo!.title);
         formNotifier.inputDatetime(todo!.eventAt);
-        formNotifier.inputLocation(todo!.locationInfo.latitude,
-            todo!.locationInfo.longitude, todo!.locationInfo.address);
+        formNotifier.inputLocation(
+            LatLng(todo!.locationInfo.latitude, todo!.locationInfo.longitude),
+            todo!.locationInfo.address);
+        formNotifier.inputNotifyInAdvanceVal(todo!.notifyInAdvanceVal);
       }
 
       formPrefNotifier.setFormKind(saveType);

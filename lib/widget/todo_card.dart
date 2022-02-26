@@ -1,7 +1,9 @@
+import 'package:clock/clock.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_todo_app/const/enums.dart';
 import 'package:flutter_todo_app/model/todo.dart';
 import 'package:flutter_todo_app/view/todo_list_view.dart';
+import 'package:flutter_todo_app/widget/toast.dart';
 import 'package:flutter_todo_app/widget/todo_form.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -29,20 +31,24 @@ class TodoCard extends HookConsumerWidget {
                 ),
               )),
           onDismissed: (_) {
-            todoListNotifier.delete(todo.id, todo.notificationId);
+            todoListNotifier.delete(todo);
           },
           child: InkWell(
               onTap: () {
-                showModalBottomSheet(
-                  enableDrag: false,
-                  shape: RoundedRectangleBorder(
-                    borderRadius:
-                        BorderRadius.vertical(top: Radius.circular(16)),
-                  ),
-                  isDismissible: false,
-                  context: context,
-                  builder: (context) => TodoInputForm(SaveType.update, todo),
-                );
+                if (todo.eventAt.isAfter(clock.now())) {
+                  showModalBottomSheet(
+                    enableDrag: false,
+                    shape: RoundedRectangleBorder(
+                      borderRadius:
+                          BorderRadius.vertical(top: Radius.circular(16)),
+                    ),
+                    isDismissible: false,
+                    context: context,
+                    builder: (context) => TodoInputForm(SaveType.update, todo),
+                  );
+                } else {
+                  CommonToast.showErorrToast(context, "過去の予定は編集できません");
+                }
               },
               child: ClipRRect(
                 borderRadius: BorderRadius.only(

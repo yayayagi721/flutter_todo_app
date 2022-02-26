@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_todo_app/notifier/location_search_form_state_notifier.dart';
 import 'package:flutter_todo_app/notifier/map_state_notifier.dart';
+import 'package:flutter_todo_app/state/location_search_form_state.dart';
 import 'package:flutter_todo_app/state/map_state.dart';
 import 'package:flutter_todo_app/widget/map.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:location/location.dart';
 
-final mapProvider = StateNotifierProvider.autoDispose<MapProvider, MapState>(
-    (ref) => MapProvider(ref.read));
+final mapProvider = StateNotifierProvider<MapStateNotifier, MapState>(
+    (ref) => MapStateNotifier(ref.read));
 
-final locationSearchFormViewModel = StateNotifierProvider(
-  (ref) => LocationSearchFormViewModel(ref.read),
+final locationProvider = Provider.autoDispose((_) => Location());
+
+final locationSearchFormStateProvider =
+    StateNotifierProvider<LocationSearchFormNotifier, LocationSearchFormState>(
+  (ref) => LocationSearchFormNotifier(ref.read),
 );
 
 final fToastProvider = Provider(
@@ -26,7 +31,7 @@ class LocationInputer extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final locationSearchFormNotifier =
-        ref.read(locationSearchFormViewModel.notifier);
+        ref.read(locationSearchFormStateProvider.notifier);
     final mapState = ref.watch(mapProvider);
     final mapNotifier = ref.read(mapProvider.notifier);
     final fToast = ref.read(fToastProvider);
