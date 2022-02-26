@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_todo_app/const/enums.dart';
 import 'package:flutter_todo_app/state/todo_form_state.dart';
 import 'package:flutter_todo_app/view/todo_list_view.dart';
+import 'package:flutter_todo_app/widget/toast.dart';
 import 'package:flutter_todo_app/widget/todo_form.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -46,9 +47,6 @@ class FormSubmitButton extends HookConsumerWidget {
   }
 
   bool _validation(BuildContext context, TodoFormState formState) {
-    final fToast = FToast();
-    fToast.init(context);
-
     var massege;
 
     if (!formState.isValidTitle()) {
@@ -60,33 +58,9 @@ class FormSubmitButton extends HookConsumerWidget {
     }
 
     if (massege != null) {
-      fToast.showToast(
-        child: _toast(massege),
-        gravity: ToastGravity.BOTTOM,
-        toastDuration: Duration(seconds: 2),
-      );
+      CommonToast.showErorrToast(context, massege);
       return false;
     }
     return true;
-  }
-
-  Widget _toast(String text) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(25.0),
-        color: Colors.redAccent,
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(Icons.close),
-          SizedBox(
-            width: 12.0,
-          ),
-          Text(text),
-        ],
-      ),
-    );
   }
 }

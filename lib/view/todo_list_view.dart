@@ -141,7 +141,8 @@ class TodoListView extends HookConsumerWidget {
   }
 
   Widget _dateLine(String targetDate) {
-    return Container(
+    return AnimatedContainer(
+      duration: Duration(seconds: 1),
       alignment: AlignmentDirectional.centerStart,
       padding: EdgeInsets.only(top: 20),
       child: Text(

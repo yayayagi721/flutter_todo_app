@@ -45,6 +45,7 @@ class TodoInputForm extends HookConsumerWidget {
         formNotifier.inputLocation(
             LatLng(todo!.locationInfo.latitude, todo!.locationInfo.longitude),
             todo!.locationInfo.address);
+        formNotifier.inputNotifyInAdvanceVal(todo!.notifyInAdvanceVal);
       }
 
       formPrefNotifier.setFormKind(saveType);

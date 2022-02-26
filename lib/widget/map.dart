@@ -14,7 +14,8 @@ class MapWidget extends HookConsumerWidget {
     final mapNotifier = ref.read(mapProvider.notifier);
 
     useEffect(() {
-      mapNotifier.init(latLng);
+      WidgetsBinding.instance!
+          .addPostFrameCallback((_) => mapNotifier.init(latLng));
       return () {};
     }, const []);
 

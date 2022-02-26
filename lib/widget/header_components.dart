@@ -60,7 +60,7 @@ class HeaderIcon extends HookConsumerWidget {
   }
 
   Future<bool> _onWillPopDialog(BuildContext context) async {
-    bool isExit = await showDialog(
+    bool? isExit = await showDialog(
       context: context,
       builder: (_) {
         return AlertDialog(
@@ -80,6 +80,6 @@ class HeaderIcon extends HookConsumerWidget {
       },
     );
 
-    return isExit;
+    return isExit ?? false;
   }
 }

@@ -38,8 +38,7 @@ class LocationInputTab extends HookConsumerWidget {
                     }
 
                     if (latLng != null) {
-                      formNotifier.inputLocation(
-                          latLng.latitude, latLng.longitude);
+                      formNotifier.inputLocation(latLng);
                     }
                   },
                   child: Text(

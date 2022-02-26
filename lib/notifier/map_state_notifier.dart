@@ -49,6 +49,7 @@ class MapStateNotifier extends StateNotifier<MapState> {
     }
 
     createMarker(latlng);
+    changeCameraPosition(latlng);
     state = state.copyWith(controller: Completer());
 
     return true;
@@ -78,7 +79,7 @@ class MapStateNotifier extends StateNotifier<MapState> {
   }
 
   Future changeCameraPosition(LatLng latLng) async {
-    if (state.controller != null) return;
+    if (state.controller == null) return;
     Completer<GoogleMapController> completer = state.controller!;
     final GoogleMapController controller = await completer.future;
 
